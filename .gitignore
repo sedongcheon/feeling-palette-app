@@ -49,3 +49,15 @@ app.*.map.json
 .env.json
 .env.*.json
 
+# Generated seed/test backup files
+feeling-palette-seed*.json
+
+# Android signing (NEVER commit)
+android/key.properties
+*.jks
+*.keystore
+
+# iOS certificates/profiles (NEVER commit)
+*.p12
+*.mobileprovision
+
