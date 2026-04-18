@@ -6,6 +6,7 @@ import '../constants/emotions.dart';
 import '../constants/theme.dart';
 import '../models/diary.dart';
 import '../providers/diary_provider.dart';
+import '../widgets/day_average_card.dart';
 import '../widgets/diary_detail_card.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -47,6 +48,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
     final selectedEntries = _selectedDay == null
         ? const <DiaryEntry>[]
         : (entriesByDate[_ymd(_selectedDay!)] ?? const []);
+    final selectedAggregate = _selectedDay == null
+        ? null
+        : aggregatesByDate[_ymd(_selectedDay!)];
 
     return Scaffold(
       backgroundColor: palette.background,
@@ -169,7 +173,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: _buildDetail(palette, selectedEntries),
+              child: _buildDetail(palette, selectedEntries, selectedAggregate),
             ),
           ],
         ),
@@ -177,11 +181,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  Widget _buildDetail(AppPalette palette, List<DiaryEntry> entries) {
+  Widget _buildDetail(
+    AppPalette palette,
+    List<DiaryEntry> entries,
+    DayAggregate? aggregate,
+  ) {
     if (_selectedDay != null && entries.isNotEmpty) {
       final ordered = entries.reversed.toList();
+      final showAverage = aggregate != null && aggregate.hasAnalysis;
       return Column(
         children: [
+          if (showAverage) ...[
+            DayAverageCard(aggregate: aggregate),
+            const SizedBox(height: 16),
+          ],
           for (var i = 0; i < ordered.length; i++)
             Padding(
               padding: EdgeInsets.only(top: i == 0 ? 0 : 16),
