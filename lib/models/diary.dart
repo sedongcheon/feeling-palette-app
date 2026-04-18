@@ -92,6 +92,7 @@ class EmotionScores {
 }
 
 const int kMaxAnalysisCount = 3;
+const int kMaxDailyAnalyzedEntries = 10;
 
 class DiaryEntry {
   final String id;

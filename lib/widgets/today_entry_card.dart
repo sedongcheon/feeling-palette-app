@@ -60,6 +60,10 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
       return;
     }
     final store = context.read<DiaryProvider>();
+    if (widget.entry.analysisCount == 0 && store.dailyAnalysisLimitReached) {
+      _showSnack('오늘 AI 분석 한도($kMaxDailyAnalyzedEntries개)를 모두 사용했어요.');
+      return;
+    }
     setState(() => _isAnalyzing = true);
     try {
       final result = await widget.analyzer.analyze(widget.entry.content);
@@ -73,11 +77,15 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
       if (!mounted || updated == null) return;
       final used = updated.analysisCount;
       final remaining = updated.remainingAnalyses;
+      final dailyUsed = store.todayAnalyzedCount;
       _showSnack(
         remaining == 0
-            ? '분석 완료! 이번 일기의 분석 횟수($kMaxAnalysisCount/$kMaxAnalysisCount)를 모두 사용했어요.'
-            : '분석 완료! ($used/$kMaxAnalysisCount회 사용, 남은 횟수 $remaining)',
+            ? '분석 완료! 이번 일기의 분석 횟수($kMaxAnalysisCount/$kMaxAnalysisCount)를 모두 사용했어요. (오늘 $dailyUsed/$kMaxDailyAnalyzedEntries)'
+            : '분석 완료! ($used/$kMaxAnalysisCount회 사용, 남은 횟수 $remaining · 오늘 $dailyUsed/$kMaxDailyAnalyzedEntries)',
       );
+    } on DailyAnalysisLimitException {
+      if (!mounted) return;
+      _showSnack('오늘 AI 분석 한도($kMaxDailyAnalyzedEntries개)를 모두 사용했어요.');
     } catch (_) {
       if (!mounted) return;
       await showDialog<void>(
@@ -154,6 +162,9 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
     final palette = context.palette;
     final entry = widget.entry;
     final hasAnalysis = entry.aiComment.isNotEmpty;
+    final store = context.watch<DiaryProvider>();
+    final dailyBlocked =
+        entry.analysisCount == 0 && store.dailyAnalysisLimitReached;
 
     return Container(
       margin: const EdgeInsets.only(top: 12),
@@ -235,12 +246,16 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  onPressed: entry.canAnalyze ? _runAnalysis : null,
+                  onPressed: (entry.canAnalyze && !dailyBlocked)
+                      ? _runAnalysis
+                      : null,
                   icon: const Icon(Icons.auto_awesome_rounded, size: 18),
                   label: Text(
-                    entry.canAnalyze
-                        ? 'AI 감정 분석 (${entry.remainingAnalyses}/$kMaxAnalysisCount)'
-                        : '분석 횟수를 모두 사용했어요',
+                    !entry.canAnalyze
+                        ? '분석 횟수를 모두 사용했어요'
+                        : dailyBlocked
+                            ? '오늘 AI 분석 한도($kMaxDailyAnalyzedEntries개)를 모두 사용했어요'
+                            : 'AI 감정 분석 (${entry.remainingAnalyses}/$kMaxAnalysisCount)',
                     style: const TextStyle(
                         fontSize: 14, fontWeight: FontWeight.w700),
                   ),

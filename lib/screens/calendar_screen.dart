@@ -179,12 +179,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   Widget _buildDetail(AppPalette palette, List<DiaryEntry> entries) {
     if (_selectedDay != null && entries.isNotEmpty) {
+      final ordered = entries.reversed.toList();
       return Column(
         children: [
-          for (var i = 0; i < entries.length; i++)
+          for (var i = 0; i < ordered.length; i++)
             Padding(
               padding: EdgeInsets.only(top: i == 0 ? 0 : 16),
-              child: DiaryDetailCard(entry: entries[i]),
+              child: DiaryDetailCard(entry: ordered[i]),
             ),
         ],
       );

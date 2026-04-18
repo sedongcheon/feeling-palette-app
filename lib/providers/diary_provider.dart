@@ -35,6 +35,12 @@ class DiaryProvider extends ChangeNotifier {
   List<DiaryEntry> get monthEntries => _monthEntries;
   List<DiaryEntry> get timelineEntries => _timelineEntries;
 
+  int get todayAnalyzedCount =>
+      _todayEntries.where((e) => e.analysisCount > 0).length;
+
+  bool get dailyAnalysisLimitReached =>
+      todayAnalyzedCount >= kMaxDailyAnalyzedEntries;
+
   Future<void> loadTodayEntries() async {
     _todayEntries = await _dao.findAllByDate(todayString());
     notifyListeners();
@@ -124,6 +130,14 @@ class DiaryProvider extends ChangeNotifier {
   }) async {
     final existing = await _dao.findById(id);
     if (existing == null) return null;
+    // Defensive: a brand-new analysis on today's entry must respect the
+    // daily quota. Re-analyses of already-analyzed entries are unaffected.
+    final isFirstAnalysis = existing.analysisCount == 0;
+    if (isFirstAnalysis &&
+        existing.date == todayString() &&
+        dailyAnalysisLimitReached) {
+      throw DailyAnalysisLimitException();
+    }
     final now = DateTime.now().millisecondsSinceEpoch;
     final updated = existing.copyWith(
       primaryEmotion: primaryEmotion,
@@ -176,4 +190,9 @@ class UpdateOutcome {
     required this.contentChanged,
     required this.analysisLocked,
   });
+}
+
+class DailyAnalysisLimitException implements Exception {
+  @override
+  String toString() => 'DailyAnalysisLimitException';
 }

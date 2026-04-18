@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/theme.dart';
+import '../models/diary.dart';
 import '../providers/diary_provider.dart';
 import '../services/emotion_analyzer.dart';
 import '../widgets/today_entry_card.dart';
@@ -156,6 +157,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
+                    const Spacer(),
+                    _DailyQuotaBadge(
+                      used: store.todayAnalyzedCount,
+                      max: kMaxDailyAnalyzedEntries,
+                      palette: palette,
+                    ),
                   ],
                 ),
                 for (final entry in reversed)
@@ -243,6 +250,48 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DailyQuotaBadge extends StatelessWidget {
+  final int used;
+  final int max;
+  final AppPalette palette;
+
+  const _DailyQuotaBadge({
+    required this.used,
+    required this.max,
+    required this.palette,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final reached = used >= max;
+    final color = reached ? const Color(0xFFE74C3C) : palette.textSecondary;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: reached
+            ? const Color(0xFFE74C3C).withAlpha(0x18)
+            : palette.border.withAlpha(0x66),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.auto_awesome_rounded, size: 12, color: color),
+          const SizedBox(width: 4),
+          Text(
+            'AI 분석 $used/$max',
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: color,
             ),
           ),
         ],

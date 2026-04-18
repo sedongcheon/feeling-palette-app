@@ -45,6 +45,42 @@ class _BackupScreenState extends State<BackupScreen> {
     });
   }
 
+  Future<void> _showSuccessDialog({
+    required String title,
+    required String message,
+  }) async {
+    if (!mounted) return;
+    await showDialog<void>(
+      context: context,
+      builder: (ctx) {
+        final palette = ctx.palette;
+        return AlertDialog(
+          icon: Icon(
+            Icons.check_circle_rounded,
+            color: palette.tabBarActive,
+            size: 40,
+          ),
+          title: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
+          content: Text(
+            message,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 14, height: 1.5),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<T?> _runBusy<T>(Future<T> Function() task) async {
     setState(() {
       _busy = true;
@@ -70,12 +106,13 @@ class _BackupScreenState extends State<BackupScreen> {
         );
         final result = await SharePlus.instance.share(params);
         if (!mounted) return;
-        if (result.status == ShareResultStatus.success) {
-          _setStatus('백업 파일이 저장되었습니다.');
-        } else if (result.status == ShareResultStatus.dismissed) {
+        if (result.status == ShareResultStatus.dismissed) {
           _setStatus('백업이 취소되었습니다.', isError: true);
         } else {
-          _setStatus('백업이 완료되었습니다.');
+          await _showSuccessDialog(
+            title: '백업 완료',
+            message: '백업 파일이 저장되었어요.',
+          );
         }
       } catch (err) {
         if (mounted) _setStatus('백업 실패: $err', isError: true);
@@ -103,10 +140,13 @@ class _BackupScreenState extends State<BackupScreen> {
       try {
         final outcome = await _service.importFromBytes(bytes);
         if (!mounted) return;
-        _setStatus(
-          '복원 완료 — 새로 추가 ${outcome.inserted}개, 덮어쓰기 ${outcome.updated}개',
-        );
         await context.read<DiaryProvider>().loadTodayEntries();
+        if (!mounted) return;
+        await _showSuccessDialog(
+          title: '복원 완료',
+          message:
+              '새로 추가 ${outcome.inserted}개, 덮어쓰기 ${outcome.updated}개',
+        );
       } catch (err) {
         if (mounted) _setStatus('복원 실패: $err', isError: true);
       }
@@ -142,9 +182,11 @@ class _BackupScreenState extends State<BackupScreen> {
     await _runBusy(() async {
       try {
         final file = await _drive.uploadBackup();
-        if (mounted) {
-          _setStatus('Drive 업로드 완료: ${file.name}');
-        }
+        if (!mounted) return;
+        await _showSuccessDialog(
+          title: 'Drive 백업 완료',
+          message: '${file.name} 파일로 저장되었어요.',
+        );
       } catch (err) {
         if (mounted) _setStatus('업로드 실패: $err', isError: true);
       }
@@ -181,10 +223,13 @@ class _BackupScreenState extends State<BackupScreen> {
       try {
         final outcome = await _drive.restoreBackup(picked.id);
         if (!mounted) return;
-        _setStatus(
-          '복원 완료 — 새로 추가 ${outcome.inserted}개, 덮어쓰기 ${outcome.updated}개',
-        );
         await context.read<DiaryProvider>().loadTodayEntries();
+        if (!mounted) return;
+        await _showSuccessDialog(
+          title: '복원 완료',
+          message:
+              '새로 추가 ${outcome.inserted}개, 덮어쓰기 ${outcome.updated}개',
+        );
       } catch (err) {
         if (mounted) _setStatus('복원 실패: $err', isError: true);
       }
