@@ -92,7 +92,20 @@ class EmotionScores {
 }
 
 const int kMaxAnalysisCount = 3;
-const int kMaxDailyAnalyzedEntries = 10;
+const int kMaxDailyAnalyzedEntries = 3;
+
+// Rewarded-ad bonus unlock policy.
+// Absolute daily cap = kMaxDailyAnalyzedEntries + (kRewardBonusPerAd * kRewardMaxAdsPerDay).
+const int kRewardBonusPerAd = 1;
+const int kRewardMaxAdsPerDay = 5;
+
+// Monthly AI summary quota — scoped per month key (YYYY-MM), not per day.
+//   base     : free regenerations any user gets for that month
+//   refill N : every N diary entries added to the month grants +1 regeneration
+//   max ads  : hard cap on rewarded-ad unlocks for a single month (safety net)
+const int kMonthSummaryBaseRegens = 3;
+const int kMonthSummaryEntriesPerRefill = 5;
+const int kMonthSummaryMaxAdsPerMonth = 20;
 
 class DiaryEntry {
   final String id;

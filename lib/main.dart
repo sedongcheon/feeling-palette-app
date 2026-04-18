@@ -7,6 +7,8 @@ import 'constants/theme.dart';
 import 'db/database.dart';
 import 'providers/auth_provider.dart';
 import 'providers/diary_provider.dart';
+import 'services/ads_service.dart';
+import 'services/premium_service.dart';
 import 'widgets/app_lock_gate.dart';
 
 Future<void> main() async {
@@ -24,6 +26,9 @@ class FeelingPaletteApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<DiaryProvider>(create: (_) => DiaryProvider()),
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+        ChangeNotifierProvider<AdsService>.value(value: AdsService.instance),
+        ChangeNotifierProvider<PremiumService>.value(
+            value: PremiumService.instance),
       ],
       child: MaterialApp(
         title: 'Feeling Palette',

@@ -7,6 +7,7 @@ import '../providers/diary_provider.dart';
 import '../services/emotion_analyzer.dart';
 import '../widgets/today_entry_card.dart';
 import 'backup_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,7 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<DiaryProvider>().loadTodayEntries();
+      final store = context.read<DiaryProvider>();
+      store.loadTodayEntries();
+      store.loadDailyBonus();
     });
   }
 
@@ -45,6 +48,22 @@ class _HomeScreenState extends State<HomeScreen> {
       ..showSnackBar(SnackBar(
         content: Text(message),
         duration: const Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+      ));
+  }
+
+  Future<void> _handleBonusUnlock(BuildContext context) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final granted = await context.read<DiaryProvider>().watchAdForBonus();
+    if (!mounted) return;
+    messenger
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(
+        content: Text(
+          granted
+              ? 'AI 분석 +$kRewardBonusPerAd개가 언락되었어요!'
+              : '광고를 끝까지 시청해야 보상을 받을 수 있어요.',
+        ),
         behavior: SnackBarBehavior.floating,
       ));
   }
@@ -105,6 +124,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ));
             },
           ),
+          IconButton(
+            tooltip: '설정',
+            icon: Icon(Icons.settings_rounded, color: palette.tabBarActive),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (_) => const SettingsScreen(),
+              ));
+            },
+          ),
         ],
       ),
       body: SafeArea(
@@ -160,11 +189,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     const Spacer(),
                     _DailyQuotaBadge(
                       used: store.todayAnalyzedCount,
-                      max: kMaxDailyAnalyzedEntries,
+                      max: store.effectiveDailyLimit,
                       palette: palette,
                     ),
                   ],
                 ),
+                if (store.dailyAnalysisLimitReached && store.canWatchBonusAd) ...[
+                  const SizedBox(height: 10),
+                  _BonusUnlockButton(
+                    palette: palette,
+                    adsRemaining: store.todayBonusAdsRemaining,
+                    onTap: () => _handleBonusUnlock(context),
+                  ),
+                ],
                 for (final entry in reversed)
                   TodayEntryCard(
                     key: ValueKey(entry.id),
@@ -295,6 +332,46 @@ class _DailyQuotaBadge extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _BonusUnlockButton extends StatelessWidget {
+  final AppPalette palette;
+  final int adsRemaining;
+  final VoidCallback onTap;
+
+  const _BonusUnlockButton({
+    required this.palette,
+    required this.adsRemaining,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        onPressed: onTap,
+        icon: Icon(Icons.card_giftcard_rounded,
+            size: 18, color: palette.tabBarActive),
+        label: Text(
+          '광고 보고 AI 분석 +$kRewardBonusPerAd 언락 (남은 시청 $adsRemaining회)',
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+            color: palette.tabBarActive,
+          ),
+        ),
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(color: palette.tabBarActive.withAlpha(0x55)),
+          backgroundColor: palette.tabBarActive.withAlpha(0x10),
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
       ),
     );
   }

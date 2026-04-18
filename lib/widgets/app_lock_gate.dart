@@ -7,6 +7,9 @@ import '../providers/diary_provider.dart';
 import '../screens/lock_screen.dart';
 import '../screens/main_tabs.dart';
 import '../screens/pin_setup_screen.dart';
+import '../services/ads_service.dart';
+import '../services/consent_service.dart';
+import '../services/premium_service.dart';
 
 class AppLockGate extends StatefulWidget {
   const AppLockGate({super.key});
@@ -26,6 +29,17 @@ class _AppLockGateState extends State<AppLockGate> {
     if (_previousStage == AuthStage.unlocked && stage == AuthStage.needsSetup) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) context.read<DiaryProvider>().clearCache();
+      });
+    }
+    // Kick off consent / ATT / AdMob init the first time the user reaches the
+    // main app in this session. Non-blocking: UMP and ATT sheets appear over
+    // MainTabs while ads preload in the background.
+    if (_previousStage != AuthStage.unlocked && stage == AuthStage.unlocked) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await ConsentService.instance.gather();
+        // Premium check first so ads init can skip preloading for paid users.
+        await PremiumService.instance.initialize();
+        await AdsService.instance.initialize();
       });
     }
     _previousStage = stage;

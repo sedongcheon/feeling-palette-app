@@ -1,0 +1,10 @@
+# Copy this file to `android/key.properties` (in the same directory)
+# and fill in the real values. key.properties is gitignored.
+#
+# storeFile must be an absolute path. If the keystore lives in the user's
+# home directory, expand `~` yourself — Gradle won't.
+
+storePassword=YOUR_KEYSTORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=upload
+storeFile=/Users/YOUR_MAC_USERNAME/upload-keystore.jks

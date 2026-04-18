@@ -2,7 +2,7 @@ import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
 const String _dbName = 'feelingpalette.db';
-const int _dbVersion = 2;
+const int _dbVersion = 4;
 
 class AppDatabase {
   AppDatabase._();
@@ -60,6 +60,16 @@ class AppDatabase {
             value TEXT NOT NULL
           );
         ''');
+        await db.execute('''
+          CREATE TABLE IF NOT EXISTS month_summaries (
+            month_key TEXT PRIMARY KEY NOT NULL,
+            summary_text TEXT NOT NULL,
+            dominant_emotion TEXT,
+            generated_at INTEGER NOT NULL,
+            regen_count INTEGER NOT NULL DEFAULT 0,
+            ad_count INTEGER NOT NULL DEFAULT 0
+          );
+        ''');
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -69,6 +79,29 @@ class AppDatabase {
           // Backfill: existing entries with an aiComment have been analyzed at least once
           await db.execute(
             "UPDATE diary_entries SET analysis_count = 1 WHERE ai_comment != '' AND analysis_count = 0;",
+          );
+        }
+        if (oldVersion < 3) {
+          await db.execute('''
+            CREATE TABLE IF NOT EXISTS month_summaries (
+              month_key TEXT PRIMARY KEY NOT NULL,
+              summary_text TEXT NOT NULL,
+              dominant_emotion TEXT,
+              generated_at INTEGER NOT NULL
+            );
+          ''');
+        }
+        if (oldVersion < 4) {
+          await db.execute(
+            "ALTER TABLE month_summaries ADD COLUMN regen_count INTEGER NOT NULL DEFAULT 0;",
+          );
+          await db.execute(
+            "ALTER TABLE month_summaries ADD COLUMN ad_count INTEGER NOT NULL DEFAULT 0;",
+          );
+          // Existing rows created under the old quota scheme had exactly
+          // one generation backing them — backfill so the budget math works.
+          await db.execute(
+            "UPDATE month_summaries SET regen_count = 1 WHERE regen_count = 0;",
           );
         }
       },

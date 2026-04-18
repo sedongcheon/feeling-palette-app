@@ -5,6 +5,7 @@ import '../constants/emotions.dart';
 import '../constants/theme.dart';
 import '../models/diary.dart';
 import '../providers/diary_provider.dart';
+import '../widgets/banner_ad_slot.dart';
 import 'diary_detail_screen.dart';
 
 class TimelineScreen extends StatefulWidget {
@@ -79,26 +80,30 @@ class _TimelineScreenState extends State<TimelineScreen> {
             style: TextStyle(
                 fontWeight: FontWeight.w700, fontSize: 17, color: palette.text)),
       ),
-      body: entries.isEmpty
-          ? Center(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 80),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text('📋', style: TextStyle(fontSize: 36)),
-                    const SizedBox(height: 12),
-                    Text(
-                      '작성한 일기가 없어요\n오늘의 감정을 기록해보세요',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 14, height: 22 / 14, color: palette.textSecondary),
+      body: Column(children: [
+        Expanded(
+          child: entries.isEmpty
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 80),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('📋', style: TextStyle(fontSize: 36)),
+                        const SizedBox(height: 12),
+                        Text(
+                          '작성한 일기가 없어요\n오늘의 감정을 기록해보세요',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 14,
+                              height: 22 / 14,
+                              color: palette.textSecondary),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            )
-          : ListView.separated(
+                  ),
+                )
+              : ListView.separated(
               controller: _scrollController,
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
               itemCount: entries.length + 1,
@@ -132,9 +137,12 @@ class _TimelineScreenState extends State<TimelineScreen> {
                   }
                   return const SizedBox.shrink();
                 }
-                return _TimelineItem(entry: entries[index]);
-              },
-            ),
+                    return _TimelineItem(entry: entries[index]);
+                  },
+                ),
+        ),
+        const BannerAdSlot(),
+      ]),
     );
   }
 }

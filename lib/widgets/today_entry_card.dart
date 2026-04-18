@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../constants/theme.dart';
 import '../models/diary.dart';
 import '../providers/diary_provider.dart';
+import '../services/ads_service.dart';
 import '../services/emotion_analyzer.dart';
 import 'emotion_result_card.dart';
 
@@ -61,7 +62,9 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
     }
     final store = context.read<DiaryProvider>();
     if (widget.entry.analysisCount == 0 && store.dailyAnalysisLimitReached) {
-      _showSnack('오늘 AI 분석 한도($kMaxDailyAnalyzedEntries개)를 모두 사용했어요.');
+      _showSnack(
+        '오늘 AI 분석 한도(${store.effectiveDailyLimit}개)를 모두 사용했어요.',
+      );
       return;
     }
     setState(() => _isAnalyzing = true);
@@ -78,14 +81,18 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
       final used = updated.analysisCount;
       final remaining = updated.remainingAnalyses;
       final dailyUsed = store.todayAnalyzedCount;
+      final dailyLimit = store.effectiveDailyLimit;
       _showSnack(
         remaining == 0
-            ? '분석 완료! 이번 일기의 분석 횟수($kMaxAnalysisCount/$kMaxAnalysisCount)를 모두 사용했어요. (오늘 $dailyUsed/$kMaxDailyAnalyzedEntries)'
-            : '분석 완료! ($used/$kMaxAnalysisCount회 사용, 남은 횟수 $remaining · 오늘 $dailyUsed/$kMaxDailyAnalyzedEntries)',
+            ? '분석 완료! 이번 일기의 분석 횟수($kMaxAnalysisCount/$kMaxAnalysisCount)를 모두 사용했어요. (오늘 $dailyUsed/$dailyLimit)'
+            : '분석 완료! ($used/$kMaxAnalysisCount회 사용, 남은 횟수 $remaining · 오늘 $dailyUsed/$dailyLimit)',
       );
+      AdsService.instance.onAnalysisCompleted();
     } on DailyAnalysisLimitException {
       if (!mounted) return;
-      _showSnack('오늘 AI 분석 한도($kMaxDailyAnalyzedEntries개)를 모두 사용했어요.');
+      _showSnack(
+        '오늘 AI 분석 한도(${store.effectiveDailyLimit}개)를 모두 사용했어요.',
+      );
     } catch (_) {
       if (!mounted) return;
       await showDialog<void>(
@@ -243,36 +250,89 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
           if (!hasAnalysis && !_isAnalyzing && !_isEditing)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: (entry.canAnalyze && !dailyBlocked)
-                      ? _runAnalysis
-                      : null,
-                  icon: const Icon(Icons.auto_awesome_rounded, size: 18),
-                  label: Text(
-                    !entry.canAnalyze
-                        ? '분석 횟수를 모두 사용했어요'
-                        : dailyBlocked
-                            ? '오늘 AI 분석 한도($kMaxDailyAnalyzedEntries개)를 모두 사용했어요'
-                            : 'AI 감정 분석 (${entry.remainingAnalyses}/$kMaxAnalysisCount)',
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w700),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: palette.tabBarActive,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 0,
-                  ),
-                ),
-              ),
+              child: _buildAnalyzeButton(palette, store, dailyBlocked),
             ),
         ],
       ),
+    );
+  }
+
+  Widget _buildAnalyzeButton(
+    AppPalette palette,
+    DiaryProvider store,
+    bool dailyBlocked,
+  ) {
+    final entry = widget.entry;
+    // Per-entry cap is hit: nothing to offer, show disabled state.
+    if (!entry.canAnalyze) {
+      return _analyzeButton(
+        palette: palette,
+        label: '분석 횟수를 모두 사용했어요',
+        onPressed: null,
+      );
+    }
+    // Daily limit hit but user still has bonus ad views available:
+    // offer the rewarded-ad unlock right from the card.
+    if (dailyBlocked && store.canWatchBonusAd) {
+      return _analyzeButton(
+        palette: palette,
+        label:
+            '광고 보고 AI 분석 +$kRewardBonusPerAd 언락 (남은 시청 ${store.todayBonusAdsRemaining}회)',
+        icon: Icons.card_giftcard_rounded,
+        onPressed: _handleBonusUnlock,
+      );
+    }
+    // Daily limit hit and no more ads left today.
+    if (dailyBlocked) {
+      return _analyzeButton(
+        palette: palette,
+        label: '오늘 AI 분석 한도를 모두 사용했어요',
+        onPressed: null,
+      );
+    }
+    // Normal state.
+    return _analyzeButton(
+      palette: palette,
+      label: 'AI 감정 분석 (${entry.remainingAnalyses}/$kMaxAnalysisCount)',
+      onPressed: _runAnalysis,
+    );
+  }
+
+  Widget _analyzeButton({
+    required AppPalette palette,
+    required String label,
+    required VoidCallback? onPressed,
+    IconData icon = Icons.auto_awesome_rounded,
+  }) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: onPressed,
+        icon: Icon(icon, size: 18),
+        label: Text(
+          label,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: palette.tabBarActive,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 0,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _handleBonusUnlock() async {
+    final granted = await context.read<DiaryProvider>().watchAdForBonus();
+    if (!mounted) return;
+    _showSnack(
+      granted
+          ? 'AI 분석 +$kRewardBonusPerAd개가 언락되었어요!'
+          : '광고를 끝까지 시청해야 보상을 받을 수 있어요.',
     );
   }
 
