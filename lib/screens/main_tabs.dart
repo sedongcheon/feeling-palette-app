@@ -18,11 +18,14 @@ class MainTabs extends StatefulWidget {
 class _MainTabsState extends State<MainTabs> {
   int _index = 0;
 
-  static const _tabs = [
-    HomeScreen(),
-    CalendarScreen(),
-    StatsScreen(),
-    TimelineScreen(),
+  final GlobalKey<CalendarScreenState> _calendarKey =
+      GlobalKey<CalendarScreenState>();
+
+  late final List<Widget> _tabs = [
+    const HomeScreen(),
+    CalendarScreen(key: _calendarKey),
+    const StatsScreen(),
+    const TimelineScreen(),
   ];
 
   static const _items = <_TabItem>[
@@ -39,8 +42,11 @@ class _MainTabsState extends State<MainTabs> {
     switch (i) {
       case 0:
         store.loadTodayEntries();
+        store.loadDailyBonus();
         break;
       case 1:
+        _calendarKey.currentState?.refreshCurrentMonth();
+        break;
       case 2:
         store.loadMonthEntries(formatYearMonth(DateTime.now()));
         break;

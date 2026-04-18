@@ -6,6 +6,7 @@ import '../constants/emotions.dart';
 import '../constants/theme.dart';
 import '../models/diary.dart';
 import '../providers/diary_provider.dart';
+import '../widgets/banner_ad_slot.dart';
 import '../widgets/day_average_card.dart';
 import '../widgets/diary_detail_card.dart';
 
@@ -13,10 +14,10 @@ class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
 
   @override
-  State<CalendarScreen> createState() => _CalendarScreenState();
+  State<CalendarScreen> createState() => CalendarScreenState();
 }
 
-class _CalendarScreenState extends State<CalendarScreen> {
+class CalendarScreenState extends State<CalendarScreen> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   String _currentMonth = '';
@@ -28,6 +29,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<DiaryProvider>().loadMonthEntries(_currentMonth);
     });
+  }
+
+  /// Reloads entries for the month currently focused in the calendar.
+  /// Called by `MainTabs` when the user returns to this tab so the
+  /// provider's cache can't be left pointing at a different month.
+  void refreshCurrentMonth() {
+    if (_currentMonth.isEmpty) return;
+    context.read<DiaryProvider>().loadMonthEntries(_currentMonth);
   }
 
   String _ymd(DateTime d) =>
@@ -62,10 +71,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
             style: TextStyle(
                 fontWeight: FontWeight.w700, fontSize: 17, color: palette.text)),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 40),
-        child: Column(
-          children: [
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 40),
+              child: Column(
+                children: [
             Container(
               margin: const EdgeInsets.fromLTRB(12, 8, 12, 0),
               decoration: BoxDecoration(
@@ -171,13 +183,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: _buildDetail(palette, selectedEntries, selectedAggregate),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  child:
+                      _buildDetail(palette, selectedEntries, selectedAggregate),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        const BannerAdSlot(),
+      ]),
     );
   }
 
