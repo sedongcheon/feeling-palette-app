@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720"
+     font-family="-apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif">
+
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#9CA3AF"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="720" fill="#FAFAFA"/>
+
+  <text x="600" y="42" font-size="24" font-weight="700" text-anchor="middle" fill="#1F2937">
+    감정 팔레트 — 외부 콘솔 셋업 지도
+  </text>
+  <text x="600" y="66" font-size="13" text-anchor="middle" fill="#6B7280">
+    각 콘솔에서 무엇을 받아 어디에 넣어야 하는가
+  </text>
+
+  <text x="170" y="106" font-size="14" font-weight="700" text-anchor="middle" fill="#374151">콘솔</text>
+  <text x="600" y="106" font-size="14" font-weight="700" text-anchor="middle" fill="#374151">받는 것 (output)</text>
+  <text x="1020" y="106" font-size="14" font-weight="700" text-anchor="middle" fill="#374151">어디에 넣는지</text>
+
+  <!-- ROW 1: Gemini -->
+  <g transform="translate(0, 130)">
+    <rect x="20" y="0" width="300" height="64" rx="10" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+    <text x="170" y="28" font-size="14" font-weight="700" text-anchor="middle" fill="#78350F">Google AI Studio / GCP</text>
+    <text x="170" y="48" font-size="11" text-anchor="middle" fill="#92400E">Gemini API 발급</text>
+    <line x1="320" y1="32" x2="445" y2="32" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="600" y="28" font-size="13" font-weight="600" text-anchor="middle" fill="#1F2937">GEMINI_API_KEY</text>
+    <text x="600" y="46" font-size="11" text-anchor="middle" fill="#6B7280">(Service Account Bound)</text>
+    <line x1="755" y1="32" x2="880" y2="32" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="880" y="0" width="280" height="64" rx="10" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1.5"/>
+    <text x="1020" y="28" font-size="13" font-weight="600" text-anchor="middle" fill="#1F2937">AWS SSM SecureString</text>
+    <text x="1020" y="48" font-size="11" text-anchor="middle" fill="#6B7280">→ Lambda 환경변수</text>
+  </g>
+
+  <!-- ROW 2: GCP OAuth -->
+  <g transform="translate(0, 215)">
+    <rect x="20" y="0" width="300" height="64" rx="10" fill="#DBEAFE" stroke="#3B82F6" stroke-width="2"/>
+    <text x="170" y="28" font-size="14" font-weight="700" text-anchor="middle" fill="#1E3A8A">Google Cloud Console</text>
+    <text x="170" y="48" font-size="11" text-anchor="middle" fill="#1E40AF">Drive OAuth 클라이언트</text>
+    <line x1="320" y1="32" x2="445" y2="32" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="600" y="28" font-size="13" font-weight="600" text-anchor="middle" fill="#1F2937">Client ID + SHA-1 등록</text>
+    <text x="600" y="46" font-size="11" text-anchor="middle" fill="#6B7280">(iOS / Android × 3종)</text>
+    <line x1="755" y1="32" x2="880" y2="32" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="880" y="0" width="280" height="64" rx="10" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1.5"/>
+    <text x="1020" y="28" font-size="13" font-weight="600" text-anchor="middle" fill="#1F2937">Info.plist / Manifest</text>
+    <text x="1020" y="48" font-size="11" text-anchor="middle" fill="#6B7280">+ google-services.json</text>
+  </g>
+
+  <!-- ROW 3: Play Console -->
+  <g transform="translate(0, 300)">
+    <rect x="20" y="0" width="300" height="64" rx="10" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+    <text x="170" y="28" font-size="14" font-weight="700" text-anchor="middle" fill="#064E3B">Google Play Console</text>
+    <text x="170" y="48" font-size="11" text-anchor="middle" fill="#065F46">Android 출시 + IAP</text>
+    <line x1="320" y1="32" x2="445" y2="32" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="600" y="28" font-size="13" font-weight="600" text-anchor="middle" fill="#1F2937">AAB 업로드 + remove_ads</text>
+    <text x="600" y="46" font-size="11" text-anchor="middle" fill="#6B7280">+ Data Safety 선언</text>
+    <line x1="755" y1="32" x2="880" y2="32" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="880" y="0" width="280" height="64" rx="10" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1.5"/>
+    <text x="1020" y="28" font-size="13" font-weight="600" text-anchor="middle" fill="#1F2937">Play Store 노출</text>
+    <text x="1020" y="48" font-size="11" text-anchor="middle" fill="#6B7280">+ 사용자 결제</text>
+  </g>
+
+  <!-- ROW 4: AdMob -->
+  <g transform="translate(0, 385)">
+    <rect x="20" y="0" width="300" height="64" rx="10" fill="#FEE2E2" stroke="#EF4444" stroke-width="2"/>
+    <text x="170" y="28" font-size="14" font-weight="700" text-anchor="middle" fill="#7F1D1D">Google AdMob</text>
+    <text x="170" y="48" font-size="11" text-anchor="middle" fill="#991B1B">광고 수익화</text>
+    <line x1="320" y1="32" x2="445" y2="32" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="600" y="28" font-size="13" font-weight="600" text-anchor="middle" fill="#1F2937">App ID + 광고 단위 ID</text>
+    <text x="600" y="46" font-size="11" text-anchor="middle" fill="#6B7280">(배너 / 전면 / 리워드)</text>
+    <line x1="755" y1="32" x2="880" y2="32" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="880" y="0" width="280" height="64" rx="10" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1.5"/>
+    <text x="1020" y="28" font-size="13" font-weight="600" text-anchor="middle" fill="#1F2937">ad_ids.dart + Manifest</text>
+    <text x="1020" y="48" font-size="11" text-anchor="middle" fill="#6B7280">+ Info.plist</text>
+  </g>
+
+  <!-- ROW 5: Apple -->
+  <g transform="translate(0, 470)">
+    <rect x="20" y="0" width="300" height="64" rx="10" fill="#E5E7EB" stroke="#6B7280" stroke-width="2"/>
+    <text x="170" y="28" font-size="14" font-weight="700" text-anchor="middle" fill="#1F2937">Apple Developer +</text>
+    <text x="170" y="48" font-size="11" text-anchor="middle" fill="#374151">App Store Connect</text>
+    <line x1="320" y1="32" x2="445" y2="32" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="600" y="28" font-size="13" font-weight="600" text-anchor="middle" fill="#1F2937">Bundle ID + IAP Tier 2</text>
+    <text x="600" y="46" font-size="11" text-anchor="middle" fill="#6B7280">+ App Privacy 선언</text>
+    <line x1="755" y1="32" x2="880" y2="32" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="880" y="0" width="280" height="64" rx="10" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1.5"/>
+    <text x="1020" y="28" font-size="13" font-weight="600" text-anchor="middle" fill="#1F2937">TestFlight → App Store</text>
+    <text x="1020" y="48" font-size="11" text-anchor="middle" fill="#6B7280">(연 $99)</text>
+  </g>
+
+  <!-- ROW 6: AWS -->
+  <g transform="translate(0, 555)">
+    <rect x="20" y="0" width="300" height="64" rx="10" fill="#FED7AA" stroke="#F97316" stroke-width="2"/>
+    <text x="170" y="28" font-size="14" font-weight="700" text-anchor="middle" fill="#7C2D12">AWS Console</text>
+    <text x="170" y="48" font-size="11" text-anchor="middle" fill="#9A3412">백엔드 인프라</text>
+    <line x1="320" y1="32" x2="445" y2="32" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="600" y="28" font-size="13" font-weight="600" text-anchor="middle" fill="#1F2937">IAM Role + ECR + ACM</text>
+    <text x="600" y="46" font-size="11" text-anchor="middle" fill="#6B7280">+ Route53 / DNS</text>
+    <line x1="755" y1="32" x2="880" y2="32" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="880" y="0" width="280" height="64" rx="10" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1.5"/>
+    <text x="1020" y="28" font-size="13" font-weight="600" text-anchor="middle" fill="#1F2937">GitHub Actions + SAM</text>
+    <text x="1020" y="48" font-size="11" text-anchor="middle" fill="#6B7280">(Lambda 자동 배포)</text>
+  </g>
+
+  <text x="600" y="685" font-size="11" text-anchor="middle" fill="#9CA3AF">
+    Feeling Palette — 자바 개발자가 만든 AI 감정일기 앱
+  </text>
+</svg>
