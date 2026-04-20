@@ -65,6 +65,72 @@ AI가 분석해주는 나만의 감정일기입니다.
 
 ---
 
+## 🔑 Google Cloud / OAuth 설정 (Drive 백업)
+
+Drive 백업·복원 기능이 작동하려면 **Google Cloud Console에 Android OAuth 클라이언트로 현재 빌드의 SHA-1 지문을 등록**해야 합니다. 등록이 빠지면 로그인 창이 열렸다가 **즉시 닫힘** (Flutter 콘솔에 `ApiException: 10` 또는 `DEVELOPER_ERROR`가 찍힘).
+
+### 1. 현재 빌드의 SHA-1/SHA-256 확인
+
+**설치된 APK 기준 (권장)**:
+```bash
+export PATH="$HOME/Library/Android/sdk/build-tools/34.0.0:$PATH"
+apksigner verify --print-certs build/app/outputs/flutter-apk/app-release.apk \
+  | grep -E "SHA-(1|256)"
+```
+
+**키스토어에서 직접**:
+```bash
+# upload-keystore (릴리스용)
+keytool -list -v -keystore ~/upload-keystore.jks -alias upload \
+  | grep -E "SHA1|SHA256"
+
+# debug (flutter run 개발 빌드용)
+keytool -list -v -keystore ~/.android/debug.keystore \
+  -alias androiddebugkey -storepass android | grep -E "SHA1|SHA256"
+```
+
+### 2. Google Cloud Console 설정
+
+1. <https://console.cloud.google.com/> → 프로젝트 생성 또는 선택
+2. **APIs & Services → Library** → "Google Drive API" 사용 설정
+3. **APIs & Services → OAuth consent screen**:
+   - External, Testing 모드로 시작 OK
+   - Scope에 `https://www.googleapis.com/auth/drive.appdata` 추가 (비민감 스코프, 별도 검증 불필요)
+   - Testing 모드면 본인 Google 계정을 **Test users**에 추가
+4. **APIs & Services → Credentials → Create Credentials → OAuth client ID**:
+   - Application type: **Android**
+   - Package name: `com.feelingpalette.feeling_palette`
+   - SHA-1 지문: 위 §1에서 확인한 값 붙여넣기
+5. 저장 후 **5~10분 전파 대기** → 앱에서 재시도
+
+### 3. 등록이 필요한 빌드 종류
+
+동시에 여러 서명 키를 쓰면 각각 별도의 Android OAuth 클라이언트로 등록해야 합니다:
+
+- **로컬 개발** (`flutter run` / debug): `~/.android/debug.keystore`의 SHA-1
+- **TestFlight·사이드로드·내부배포** (`flutter build apk/appbundle --release`): `~/upload-keystore.jks`의 SHA-1
+- **Play Store 공개 배포**: Play가 재서명하는 **앱 서명 키**의 SHA-1 (Play Console → "앱 무결성 → 앱 서명"에서 확인)
+
+**Play Store 배포 시 특히 주의**: 업로드 키로만 등록해두면 **스토어에서 내려받은 앱에서는 로그인이 안 됩니다**. Play Console → "앱 무결성 → 앱 서명" 화면에 표시되는 **앱 서명 키의 SHA-1**을 별도 Android OAuth 클라이언트로 추가 등록해야 함.
+
+### 4. 진단: 로그인이 여전히 실패할 때
+
+기기 연결 후:
+```bash
+adb logcat | grep -iE "ApiException|GoogleApiManager|status:|SignIn"
+```
+앱에서 로그인 시도하면 에러 코드가 찍힘:
+- `status: 10` → DEVELOPER_ERROR — SHA-1 미등록/오타. §1→§2 재확인.
+- `status: 12501` → 사용자가 팝업 취소
+- `status: 7` → 네트워크
+- `status: 12500` → 일반 실패 (동의화면 미설정, 스코프 누락 등)
+
+### 5. (선택) 서버 검증용 Web Client
+
+현재 코드는 Drive API 직접 호출만 써서 **불필요**. 나중에 백엔드에서 Google ID 토큰을 검증할 계획이 생기면 "OAuth client ID → Web application" 하나 추가하고 `GoogleSignIn(serverClientId: "...")`에 그 ID를 넣으면 됩니다.
+
+---
+
 ## 🤖 Android 릴리스
 
 ### 1. 서명 키 생성 (한 번만)
@@ -115,6 +181,7 @@ flutter build appbundle --release
 5. **앱 번들 업로드** (내부 테스트 → 비공개 → 공개 프로덕션 순)
 
 ### 6. Data Safety 선언 (Play Console)
+
 | 질문 | 답변 |
 |------|------|
 | 개인정보를 수집/공유? | **예** |
@@ -182,6 +249,7 @@ flutter build ipa --release
 - [ ] `android/key.properties` 커밋 안 됨
 - [ ] `*.jks` 파일 커밋 안 됨
 - [ ] AdMob 실 ID가 코드에 있는 건 OK (시크릿 아님)
+- [ ] Google Cloud OAuth 클라이언트에 **업로드 키 SHA-1**과 **Play 앱 서명 키 SHA-1** 둘 다 등록됨 (§Google Cloud / OAuth 참조)
 
 ---
 
@@ -191,6 +259,7 @@ flutter build ipa --release
 - [ ] 실기기에서 릴리스 빌드 설치
 - [ ] **광고가 실 ID로 제대로 뜨는지** (테스트 광고 아닌 실제 광고)
 - [ ] **IAP 실결제 테스트** (샌드박스 계정으로 ₩1,000 광고 제거)
+- [ ] **Google Drive 로그인** 정상 동작 (로그인창 즉시 닫힘 = SHA-1 미등록 — §Google Cloud / OAuth 참조)
 - [ ] Google Drive 백업/복원 한 사이클
 - [ ] 앱 잠금 + 데이터 초기화 플로우
 - [ ] 카탈로그 지워도 재설치 후 "구매 복원" 동작

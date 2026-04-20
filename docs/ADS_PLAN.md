@@ -12,7 +12,7 @@ Feeling Palette에 **리워드 + 배너 + 전면** 광고를 **AdMob + Pangle me
 | Mediation | **1단계(현재): AdMob 단독** / 2단계: Pangle 추가 (사업자 등록 이후) / 3단계: AppLovin·Meta·Unity |
 | 광고 ID 관리 | 코드 상수 + `kDebugMode` 스위치 (`.env.json` 사용 안 함) |
 | 보너스 저장 | `flutter_secure_storage`에 `bonus_YYYY-MM-DD` 키 |
-| 광고 제거 IAP | 비소모성 단일 상품 `remove_ads` (₩3,900). 구현은 Phase 9로 후속 |
+| 광고 제거 IAP | 비소모성 단일 상품 `remove_ads` (₩2,500). 구현은 Phase 9로 후속 |
 
 > **Pangle 유보 사유**: 개인 개발자 자격으로 가입 시 반려율 높음 + 사업자 등록 필요. 현재 단계에선 수익 규모 대비 리스크가 커서 AdMob 단독으로 시작. 앱 성장 및 사업자 등록 여부 판단 후 Pangle mediation 추가 예정.
 
@@ -124,7 +124,7 @@ class AdIds {
 |------|----|
 | 상품 타입 | 비소모성 (Non-consumable) |
 | Product ID | `remove_ads` |
-| 가격 | ₩3,900 |
+| 가격 | ₩2,500 |
 | 효과 | 배너 + 전면 광고 제거. **리워드는 유지** (자발적 시청이므로) |
 | 미래 확장 | "Premium" 구독으로 전환 시 "광고 제거 + 분석 무제한" 번들 |
 
@@ -229,7 +229,7 @@ bonus_2026-04-18: {"bonus": 6, "adsShown": 2}
 
 ### Phase 9 — (후속) 광고 제거 IAP
 - `in_app_purchase` 구현
-- App Store Connect / Play Console에 상품 등록: `remove_ads` ₩3,900
+- App Store Connect / Play Console에 상품 등록: `remove_ads` ₩2,500
 - `lib/services/premium_service.dart` 생성 → `AdsService.adFree`와 연결
 - 구매 복원 버튼 (설정/백업 화면에)
 - 구매 상태는 로컬 캐시 + 앱 실행 시 복원 쿼리로 이중 검증

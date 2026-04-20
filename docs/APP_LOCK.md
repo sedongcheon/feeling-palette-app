@@ -10,12 +10,12 @@
 |------|------|
 | 첫 실행 (PIN 미설정) | PIN 설정 화면 → PIN 확인 → 생체인증 선택 → 메인 |
 | 이후 실행 | 잠금 화면 (생체인증 자동 시도) → 메인 |
-| 백그라운드 → 포그라운드 복귀 | 즉시 잠금 |
+| 백그라운드 → 포그라운드 복귀 | 설정된 유예 시간 경과 시 잠금 (기본 30초) |
 | PIN 분실 | 잠금 화면의 "비밀번호를 잊으셨나요?" → 전체 데이터 초기화 → PIN 재설정 |
 
-- **잠금 시점**: `AppLifecycleState.paused` 또는 `hidden` 발생 시 즉시 `locked` 상태로 전환.
+- **잠금 시점**: `AppLifecycleState.paused` 또는 `hidden` 진입 시 타임스탬프 기록 → `resumed` 시 경과 시간이 유예 시간을 넘었으면 `locked` 로 전환. 유예 시간이 0초면 `paused`/`hidden` 즉시 전환.
 - **생체인증 중 오동작 방지**: 생체인증 프롬프트가 뜨면 iOS에서 `inactive`가 발생할 수 있음. `_isAuthenticatingBiometric` 플래그로 해당 순간의 lifecycle 이벤트는 무시.
-- **유예 시간 없음**: 백그라운드 나갔다가 바로 돌아와도 잠금.
+- **유예 시간**: 설정 화면 → "앱 잠금" → "자동 잠금" 에서 `즉시 / 30초 / 1분 / 5분 / 10분` 중 선택. 기본값은 30초 (`AuthService.defaultAutoLockDelaySeconds`).
 
 ---
 
@@ -45,6 +45,7 @@
 - `lock_pin_hash`: SHA-256 해시의 Base64
 - `lock_pin_salt`: 16바이트 랜덤 salt의 Base64
 - `lock_biometric_enabled`: `'1'` | `'0'`
+- `lock_auto_lock_delay_seconds`: 자동 잠금 유예 시간(초) 문자열. 미설정/파싱 실패 시 `AuthService.defaultAutoLockDelaySeconds` (현재 30초).
 
 ### 해시 방식
 ```
@@ -119,7 +120,7 @@ crypto: ^3.0.5
 | 변경할 내용 | 위치 |
 |-------------|------|
 | PIN 자릿수 | `pin_pad.dart`의 `length` 파라미터 + `pin_setup_screen.dart`/`lock_screen.dart`의 `== 4` 비교 |
-| 잠금 유예 시간 (예: 1분 뒤에만 잠금) | `auth_provider.dart` `didChangeAppLifecycleState`에 타임스탬프 저장 로직 추가 |
+| 잠금 유예 시간 옵션 추가/변경 | `settings_screen.dart` `_autoLockOptions` 상수 수정 (레이블/초 단위) |
 | 해시 stretch 횟수 | `auth_service.dart` `_hashPin`의 `5000` 상수 |
 | PIN 변경 기능 | `AuthService.setPin()`은 이미 덮어쓰기 가능. UI만 추가하면 됨 |
 | 자동 잠금 시점 (inactive 포함) | `auth_provider.dart` `didChangeAppLifecycleState` 조건에 `inactive` 추가 시 생체인증 프롬프트와 충돌 주의 |
