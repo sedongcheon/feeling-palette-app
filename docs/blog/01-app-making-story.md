@@ -186,13 +186,38 @@ PIN을 잊어버리면 복구 불가능합니다. 대신 "비밀번호 잊으셨
 
 ---
 
-## 8. 회고 — 가장 헤맸던 두 가지
+## 8. 회고 — 라이프사이클이 생각보다 까다롭다
 
-**(1) 라이프사이클이 생각보다 까다롭다.**
-앱이 잠금된 상태에서 화면 캡처가 보이면 안 되고, 라이프사이클 이벤트(`paused / hidden / resumed`)가 OS마다 다르게 발생합니다. iOS는 알림센터를 내리는 순간 `inactive` 가, 안드로이드는 그냥 `paused` 만 옵니다. 결국 `paused` 와 `hidden` 둘 다 잡고, 경과 시간은 별도 타이머로 재는 식으로 안정화했습니다.
+자동 잠금 기능을 붙이면서 가장 헤맸던 건 라이프사이클 이벤트 처리였습니다. 앱이 백그라운드로 갔다가 돌아왔을 때 잠가야 하는데, Flutter의 `AppLifecycleState` 는 `paused`, `hidden`, `inactive`, `resumed` 처럼 케이스가 여러 개고 OS별 발생 패턴도 미묘하게 다릅니다.
 
-**(2) Provider의 의존성 그래프 폭발.**
-`DiaryProvider` 가 `AdsService` 를 알아야 하고, `AdsService` 는 `PremiumService` 의 ad-free 플래그를 봐야 하고… 자바라면 그냥 `@Autowired` 로 끝낼 일이 Dart에선 `MultiProvider` + `ProxyProvider` 로 손수 엮어야 합니다. **"의존성 주입은 결국 어디든 똑같이 어렵다"** 는 걸 다시 배웠습니다.
+이 프로젝트에서는 다음과 같이 정리했습니다(`auth_provider.dart`):
+
+```dart
+@override
+void didChangeAppLifecycleState(AppLifecycleState state) {
+  if (state == AppLifecycleState.paused ||
+      state == AppLifecycleState.hidden) {
+    if (_autoLockDelaySecs <= 0) {
+      lock();
+    } else {
+      _backgroundedAt = DateTime.now();   // 타이머 시작
+    }
+  } else if (state == AppLifecycleState.resumed) {
+    final bg = _backgroundedAt;
+    _backgroundedAt = null;
+    if (bg != null) {
+      final elapsed = DateTime.now().difference(bg).inSeconds;
+      if (elapsed >= _autoLockDelaySecs) lock();
+    }
+  }
+}
+```
+
+- `paused` 와 `hidden` 둘 다 백그라운드 진입으로 본다 (둘 중 하나만 잡으면 OS에 따라 누락)
+- 즉시 잠그는 게 아니라 `_backgroundedAt` 타임스탬프만 찍어두고, `resumed` 시점에 경과 시간으로 판정
+- 생체인증 다이얼로그가 열리는 동안 `paused` 가 잠시 들어와서 자기 자신이 잠기는 사고를 막기 위해 `_isAuthenticatingBiometric` 플래그도 따로 관리
+
+자바였다면 `Activity#onPause` 한 곳만 잡으면 되는데, 크로스 플랫폼이라 OS별 동작 차이를 고려한 조합이 필요했습니다.
 
 ---
 

@@ -65,7 +65,7 @@
      - Package name: `com.feelingpalette.feeling_palette`
      - SHA-1 지문: 아래 §"등록할 SHA-1 3종" 참조
    - **iOS** 클라이언트:
-     - Bundle ID: `com.feelingpalette.feeling_palette`
+     - Bundle ID: `com.feelingpalette.feelingPalette` (iOS는 camelCase, Android와 다름에 주의)
      - 발급된 iOS Client ID는 `Info.plist` 의 `GIDClientID` 와 `CFBundleURLSchemes` 에 등록
 
 ### 등록할 SHA-1 3종 (Android)
@@ -166,7 +166,7 @@ class AdIds {
 Apple은 **연 $99 (약 ₩130,000)** 결제가 시작점입니다.
 
 1. **Apple Developer 등록** — `developer.apple.com/programs/`
-2. **Bundle ID 등록** — `com.feelingpalette.feeling_palette` (Android와 동일하게 맞추는 게 편함)
+2. **Bundle ID 등록** — `com.feelingpalette.feelingPalette` (iOS는 camelCase. Android의 `com.feelingpalette.feeling_palette` 와 표기 규칙이 달라서 둘 다 정확히 맞춰야 함)
 3. **App Store Connect → 새 앱**
    - 플랫폼: iOS
    - 기본 언어: 한국어
