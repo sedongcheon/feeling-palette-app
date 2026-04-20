@@ -4,6 +4,13 @@
 <dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>ko</string>
+		<string>en</string>
+	</array>
 	<key>NSFaceIDUsageDescription</key>
 	<string>앱 잠금 해제에 Face ID를 사용합니다.</string>
 	<key>GADApplicationIdentifier</key>

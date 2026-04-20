@@ -2,7 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/theme.dart';
+import '../providers/auth_provider.dart';
 import '../services/premium_service.dart';
+
+const _autoLockOptions = <(int, String)>[
+  (0, '즉시'),
+  (5, '5초'),
+  (30, '30초'),
+  (60, '1분'),
+  (300, '5분'),
+  (600, '10분'),
+];
+
+String _autoLockLabel(int seconds) {
+  for (final option in _autoLockOptions) {
+    if (option.$1 == seconds) return option.$2;
+  }
+  return '$seconds초';
+}
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -42,6 +59,10 @@ class SettingsScreen extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 40),
           children: [
+            _sectionLabel(palette, '앱 잠금'),
+            const SizedBox(height: 8),
+            const _AutoLockDelayTile(),
+            const SizedBox(height: 24),
             _sectionLabel(palette, '구매'),
             const SizedBox(height: 8),
             const _RemoveAdsCard(),
@@ -287,6 +308,138 @@ class _RestorePurchasesTileState extends State<_RestorePurchasesTile> {
                     color: palette.tabBarActive,
                   ),
                 ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AutoLockDelayTile extends StatelessWidget {
+  const _AutoLockDelayTile();
+
+  Future<void> _pick(BuildContext context) async {
+    final palette = context.palette;
+    final current = context.read<AuthProvider>().autoLockDelaySeconds;
+    final picked = await showModalBottomSheet<int>(
+      context: context,
+      backgroundColor: palette.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 12, 8, 12),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+                  child: Row(
+                    children: [
+                      Text(
+                        '자동 잠금',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: palette.text,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                for (final option in _autoLockOptions)
+                  ListTile(
+                    title: Text(
+                      option.$2,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: palette.text,
+                      ),
+                    ),
+                    trailing: option.$1 == current
+                        ? Icon(
+                            Icons.check_rounded,
+                            color: palette.tabBarActive,
+                          )
+                        : null,
+                    onTap: () => Navigator.of(sheetContext).pop(option.$1),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    if (picked != null && picked != current && context.mounted) {
+      await context.read<AuthProvider>().setAutoLockDelaySeconds(picked);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    final seconds = context.watch<AuthProvider>().autoLockDelaySeconds;
+    return Material(
+      color: palette.surface,
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: () => _pick(context),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            border: Border.all(color: palette.border),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                Icons.lock_clock_rounded,
+                color: palette.textSecondary,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '자동 잠금',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: palette.text,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '앱을 벗어난 뒤 이 시간이 지나면 잠금 화면이 다시 뜹니다.',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: palette.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                _autoLockLabel(seconds),
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: palette.tabBarActive,
+                ),
+              ),
+              const SizedBox(width: 4),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: palette.textSecondary,
+              ),
             ],
           ),
         ),

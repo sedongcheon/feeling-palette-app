@@ -23,6 +23,11 @@ class ConsentService {
 
   Future<void> gather() async {
     if (_done || _inFlight) return;
+    // Screenshot mode: skip UMP + ATT so popups don't interrupt captures.
+    if (const bool.fromEnvironment('SCREENSHOT_MODE')) {
+      _done = true;
+      return;
+    }
     _inFlight = true;
     try {
       await _runUmp();

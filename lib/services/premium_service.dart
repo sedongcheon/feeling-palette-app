@@ -48,6 +48,17 @@ class PremiumService extends ChangeNotifier {
   Future<void> initialize() async {
     if (_initialized) return;
 
+    // Screenshot mode: force ad-free for App Store screenshot captures.
+    // Enable with: flutter run --dart-define=SCREENSHOT_MODE=true
+    if (const bool.fromEnvironment('SCREENSHOT_MODE')) {
+      _isPremium = true;
+      _available = false;
+      AdsService.instance.setAdFree(true);
+      _initialized = true;
+      notifyListeners();
+      return;
+    }
+
     // Load cached flag so UI reflects last known state immediately.
     final cached = await _storage.read(key: _kIsPremiumKey);
     if (cached == '1') {

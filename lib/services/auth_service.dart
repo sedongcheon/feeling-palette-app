@@ -9,6 +9,7 @@ class AuthService {
   static const _pinHashKey = 'lock_pin_hash';
   static const _pinSaltKey = 'lock_pin_salt';
   static const _biometricEnabledKey = 'lock_biometric_enabled';
+  static const _autoLockDelayKey = 'lock_auto_lock_delay_seconds';
 
   static const _storage = FlutterSecureStorage(
     aOptions: AndroidOptions(encryptedSharedPreferences: true),
@@ -33,6 +34,17 @@ class AuthService {
       key: _biometricEnabledKey,
       value: enabled ? '1' : '0',
     );
+  }
+
+  static const int defaultAutoLockDelaySeconds = 5;
+
+  Future<int> getAutoLockDelaySeconds() async {
+    final raw = await _storage.read(key: _autoLockDelayKey);
+    return int.tryParse(raw ?? '') ?? defaultAutoLockDelaySeconds;
+  }
+
+  Future<void> setAutoLockDelaySeconds(int seconds) async {
+    await _storage.write(key: _autoLockDelayKey, value: seconds.toString());
   }
 
   Future<bool> canUseBiometric() async {
@@ -78,6 +90,7 @@ class AuthService {
     await _storage.delete(key: _pinHashKey);
     await _storage.delete(key: _pinSaltKey);
     await _storage.delete(key: _biometricEnabledKey);
+    await _storage.delete(key: _autoLockDelayKey);
   }
 
   String _generateSalt() {

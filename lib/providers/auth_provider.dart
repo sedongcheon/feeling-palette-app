@@ -17,17 +17,28 @@ class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
   bool _biometricEnabled = false;
   bool _biometricAvailable = false;
   bool _isAuthenticatingBiometric = false;
+  int _autoLockDelaySecs = AuthService.defaultAutoLockDelaySeconds;
+  DateTime? _backgroundedAt;
 
   AuthStage get stage => _stage;
   bool get isUnlocked => _stage == AuthStage.unlocked;
   bool get biometricEnabled => _biometricEnabled;
   bool get biometricAvailable => _biometricAvailable;
+  int get autoLockDelaySeconds => _autoLockDelaySecs;
 
   Future<void> _init() async {
     final hasPin = await _service.hasPin();
     _biometricAvailable = await _service.canUseBiometric();
     _biometricEnabled = await _service.biometricEnabled();
+    _autoLockDelaySecs = await _service.getAutoLockDelaySeconds();
     _stage = hasPin ? AuthStage.locked : AuthStage.needsSetup;
+    notifyListeners();
+  }
+
+  Future<void> setAutoLockDelaySeconds(int seconds) async {
+    await _service.setAutoLockDelaySeconds(seconds);
+    _autoLockDelaySecs = seconds;
+    _backgroundedAt = null;
     notifyListeners();
   }
 
@@ -80,6 +91,8 @@ class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
     await _service.clearAll();
     await AppDatabase.instance.wipe();
     _biometricEnabled = false;
+    _autoLockDelaySecs = AuthService.defaultAutoLockDelaySeconds;
+    _backgroundedAt = null;
     _stage = AuthStage.needsSetup;
     notifyListeners();
   }
@@ -87,9 +100,21 @@ class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (_isAuthenticatingBiometric) return;
+
     if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.hidden) {
-      lock();
+      if (_autoLockDelaySecs <= 0) {
+        lock();
+      } else {
+        _backgroundedAt = DateTime.now();
+      }
+    } else if (state == AppLifecycleState.resumed) {
+      final bg = _backgroundedAt;
+      _backgroundedAt = null;
+      if (bg != null) {
+        final elapsed = DateTime.now().difference(bg).inSeconds;
+        if (elapsed >= _autoLockDelaySecs) lock();
+      }
     }
   }
 
