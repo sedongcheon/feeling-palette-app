@@ -6,10 +6,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../db/diary_dao.dart';
 import '../db/month_summary_dao.dart';
+import '../db/weekly_insight_dao.dart';
 import '../models/diary.dart';
 import '../models/month_summary.dart';
+import '../models/weekly_insight.dart';
 import '../services/ads_service.dart';
 import '../services/month_summary_service.dart';
+import '../services/weekly_insight_service.dart';
 
 String todayString() {
   final d = DateTime.now();
@@ -33,13 +36,20 @@ class DiaryProvider extends ChangeNotifier {
     DiaryDao? dao,
     MonthSummaryDao? monthSummaryDao,
     MonthSummaryService? monthSummaryService,
+    WeeklyInsightDao? weeklyInsightDao,
+    WeeklyInsightService? weeklyInsightService,
   })  : _dao = dao ?? DiaryDao(),
         _monthSummaryDao = monthSummaryDao ?? MonthSummaryDao(),
-        _monthSummaryService = monthSummaryService ?? MonthSummaryService();
+        _monthSummaryService = monthSummaryService ?? MonthSummaryService(),
+        _weeklyInsightDao = weeklyInsightDao ?? WeeklyInsightDao(),
+        _weeklyInsightService =
+            weeklyInsightService ?? WeeklyInsightService();
 
   final DiaryDao _dao;
   final MonthSummaryDao _monthSummaryDao;
   final MonthSummaryService _monthSummaryService;
+  final WeeklyInsightDao _weeklyInsightDao;
+  final WeeklyInsightService _weeklyInsightService;
 
   static const _storage = FlutterSecureStorage(
     aOptions: AndroidOptions(encryptedSharedPreferences: true),
@@ -61,6 +71,17 @@ class DiaryProvider extends ChangeNotifier {
   final Map<String, MonthSummary> _monthSummaries = {};
   final Set<String> _loadedSummaryKeys = {};
   bool _summaryInFlight = false;
+
+  // Weekly insight state. We only cache the latest generated insight plus the
+  // per-month usage counters needed for quota math.
+  WeeklyInsight? _latestInsight;
+  bool _insightLoaded = false;
+  bool _insightInFlight = false;
+  // Per-month insight counters, keyed by 'YYYY-MM'. Regen count = total
+  // insights generated in that month; ad count = subset unlocked via reward.
+  final Map<String, int> _insightRegenByMonth = {};
+  final Map<String, int> _insightAdByMonth = {};
+  final Set<String> _loadedInsightMonths = {};
 
   List<DiaryEntry> get todayEntries => _todayEntries;
   List<DiaryEntry> get monthEntries => _monthEntries;
@@ -122,6 +143,53 @@ class DiaryProvider extends ChangeNotifier {
     return remainder == 0
         ? kMonthSummaryEntriesPerRefill
         : kMonthSummaryEntriesPerRefill - remainder;
+  }
+
+  // --- Weekly proactive insight quota (per month key) ---
+
+  bool get isInsightInFlight => _insightInFlight;
+  WeeklyInsight? get latestInsight => _latestInsight;
+  bool get hasInsightLoaded => _insightLoaded;
+
+  int insightRegensUsedForMonth(String monthKey) =>
+      _insightRegenByMonth[monthKey] ?? 0;
+
+  int insightAdsUsedForMonth(String monthKey) =>
+      _insightAdByMonth[monthKey] ?? 0;
+
+  int insightBudgetForMonth(String monthKey) =>
+      kWeeklyInsightBaseRegens + insightAdsUsedForMonth(monthKey);
+
+  int availableInsightsForMonth(String monthKey) {
+    final remaining =
+        insightBudgetForMonth(monthKey) - insightRegensUsedForMonth(monthKey);
+    return remaining < 0 ? 0 : remaining;
+  }
+
+  bool canGenerateInsightFree(String monthKey) =>
+      availableInsightsForMonth(monthKey) > 0;
+
+  bool canWatchAdForInsight(String monthKey) =>
+      insightAdsUsedForMonth(monthKey) < kWeeklyInsightMaxAdsPerMonth;
+
+  /// Whether the cooldown since the last generated insight has elapsed.
+  /// Returns true when no insight exists yet.
+  bool get insightCooldownElapsed {
+    final last = _latestInsight;
+    if (last == null) return true;
+    final nowMs = DateTime.now().millisecondsSinceEpoch;
+    final delta = Duration(milliseconds: nowMs - last.generatedAt);
+    return delta.inDays >= kWeeklyInsightCooldownDays;
+  }
+
+  /// Days remaining until the next insight is eligible. 0 when elapsed.
+  int get insightDaysUntilRefresh {
+    final last = _latestInsight;
+    if (last == null) return 0;
+    final nowMs = DateTime.now().millisecondsSinceEpoch;
+    final elapsed = Duration(milliseconds: nowMs - last.generatedAt).inDays;
+    final remain = kWeeklyInsightCooldownDays - elapsed;
+    return remain < 0 ? 0 : remain;
   }
 
   Future<void> loadTodayEntries() async {
@@ -265,6 +333,122 @@ class DiaryProvider extends ChangeNotifier {
     }
   }
 
+  /// Loads the most recently generated insight from DB (if any) and the
+  /// regen/ad counts for the current month. Idempotent within a session.
+  Future<void> loadLatestInsight() async {
+    if (_insightLoaded) return;
+    final latest = await _weeklyInsightDao.findLatest();
+    _latestInsight = latest;
+    if (latest != null) {
+      await _loadInsightMonth(latest.monthKey);
+    }
+    await _loadInsightMonth(formatYearMonth(DateTime.now()));
+    _insightLoaded = true;
+    notifyListeners();
+  }
+
+  Future<void> _loadInsightMonth(String monthKey) async {
+    if (_loadedInsightMonths.contains(monthKey)) return;
+    final rows = await _weeklyInsightDao.findByMonth(monthKey);
+    int regen = 0;
+    int ads = 0;
+    for (final row in rows) {
+      regen += row.regenCount > 0 ? row.regenCount : 1;
+      ads += row.adCount;
+    }
+    // Fallback: if stored regen_count is 0 (legacy), count rows instead.
+    if (regen == 0 && rows.isNotEmpty) regen = rows.length;
+    _insightRegenByMonth[monthKey] = regen;
+    _insightAdByMonth[monthKey] = ads;
+    _loadedInsightMonths.add(monthKey);
+  }
+
+  /// Collects recent entries for the insight input window (last N days ending
+  /// today). May span 2 calendar months.
+  Future<List<DiaryEntry>> _recentEntriesForInsight() async {
+    final now = DateTime.now();
+    final start = now.subtract(const Duration(days: kWeeklyInsightInputDays - 1));
+    return _dao.findByDateRange(
+      startYmd: _formatYmd(start),
+      endYmd: _formatYmd(now),
+    );
+  }
+
+  /// Generate an insight against the free quota for the current month.
+  /// Throws [WeeklyInsightQuotaException] if no free slot,
+  /// [WeeklyInsightCooldownException] if the 7-day cooldown is still active,
+  /// or [WeeklyInsightNotEnoughDataException] if the user has too few entries.
+  Future<WeeklyInsight> generateInsightWithFreeSlot() async {
+    final monthKey = formatYearMonth(DateTime.now());
+    await _loadInsightMonth(monthKey);
+    if (!insightCooldownElapsed) throw WeeklyInsightCooldownException();
+    if (!canGenerateInsightFree(monthKey)) {
+      throw WeeklyInsightQuotaException();
+    }
+    return _runInsight(viaAd: false);
+  }
+
+  /// Generate an insight by spending a rewarded ad unlock for the current
+  /// month. Throws [WeeklyInsightQuotaException] if the per-month ad cap is
+  /// reached, [WeeklyInsightAdException] if the ad did not reward,
+  /// [WeeklyInsightCooldownException] if the cooldown is still active, or
+  /// [WeeklyInsightNotEnoughDataException] if the user has too few entries.
+  Future<WeeklyInsight> generateInsightViaAd() async {
+    final monthKey = formatYearMonth(DateTime.now());
+    await _loadInsightMonth(monthKey);
+    if (!insightCooldownElapsed) throw WeeklyInsightCooldownException();
+    if (!canWatchAdForInsight(monthKey)) {
+      throw WeeklyInsightQuotaException();
+    }
+    final earned = await AdsService.instance.showRewarded();
+    if (!earned) throw WeeklyInsightAdException();
+    return _runInsight(viaAd: true);
+  }
+
+  Future<WeeklyInsight> _runInsight({required bool viaAd}) async {
+    if (_insightInFlight) {
+      throw StateError('이미 인사이트를 생성 중입니다.');
+    }
+    final entries = await _recentEntriesForInsight();
+    if (entries.length < kWeeklyInsightMinEntries) {
+      throw WeeklyInsightNotEnoughDataException();
+    }
+    _insightInFlight = true;
+    notifyListeners();
+    try {
+      final today = todayString();
+      final monthKey = today.substring(0, 7);
+      final resp = await _weeklyInsightService.generate(
+        anchorDate: today,
+        entries: entries,
+      );
+      final prevRegen = _insightRegenByMonth[monthKey] ?? 0;
+      final prevAd = _insightAdByMonth[monthKey] ?? 0;
+      final now = DateTime.now().millisecondsSinceEpoch;
+      final next = WeeklyInsight(
+        anchorDate: today,
+        insightText: resp.insightText,
+        trend: trendFromString(resp.trend),
+        keyword: resp.keyword,
+        confidence: confidenceFromString(resp.confidence),
+        careFlag: resp.careFlag,
+        generatedAt: now,
+        monthKey: monthKey,
+        regenCount: prevRegen + 1,
+        adCount: prevAd + (viaAd ? 1 : 0),
+      );
+      await _weeklyInsightDao.upsert(next);
+      _latestInsight = next;
+      _insightRegenByMonth[monthKey] = prevRegen + 1;
+      _insightAdByMonth[monthKey] = prevAd + (viaAd ? 1 : 0);
+      _loadedInsightMonths.add(monthKey);
+      return next;
+    } finally {
+      _insightInFlight = false;
+      notifyListeners();
+    }
+  }
+
   Future<void> loadMonthEntries(String yearMonth) async {
     _monthEntries = await _dao.findByMonth(yearMonth);
     notifyListeners();
@@ -402,6 +586,12 @@ class DiaryProvider extends ChangeNotifier {
     _monthSummaries.clear();
     _loadedSummaryKeys.clear();
     _summaryInFlight = false;
+    _latestInsight = null;
+    _insightLoaded = false;
+    _insightInFlight = false;
+    _insightRegenByMonth.clear();
+    _insightAdByMonth.clear();
+    _loadedInsightMonths.clear();
     notifyListeners();
   }
 }
@@ -430,4 +620,24 @@ class MonthSummaryQuotaException implements Exception {
 class MonthSummaryAdException implements Exception {
   @override
   String toString() => 'MonthSummaryAdException';
+}
+
+class WeeklyInsightQuotaException implements Exception {
+  @override
+  String toString() => 'WeeklyInsightQuotaException';
+}
+
+class WeeklyInsightAdException implements Exception {
+  @override
+  String toString() => 'WeeklyInsightAdException';
+}
+
+class WeeklyInsightCooldownException implements Exception {
+  @override
+  String toString() => 'WeeklyInsightCooldownException';
+}
+
+class WeeklyInsightNotEnoughDataException implements Exception {
+  @override
+  String toString() => 'WeeklyInsightNotEnoughDataException';
 }

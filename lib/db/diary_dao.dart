@@ -74,4 +74,20 @@ class DiaryDao {
     );
     return rows.map(DiaryEntry.fromRow).toList();
   }
+
+  /// Returns entries with `date` in the inclusive range [startYmd, endYmd]
+  /// (both 'YYYY-MM-DD'), ordered by date ascending.
+  Future<List<DiaryEntry>> findByDateRange({
+    required String startYmd,
+    required String endYmd,
+  }) async {
+    final db = await AppDatabase.instance.database;
+    final rows = await db.query(
+      'diary_entries',
+      where: 'date >= ? AND date <= ?',
+      whereArgs: [startYmd, endYmd],
+      orderBy: 'date ASC, created_at ASC',
+    );
+    return rows.map(DiaryEntry.fromRow).toList();
+  }
 }

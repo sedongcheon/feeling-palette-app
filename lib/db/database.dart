@@ -2,7 +2,7 @@ import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
 const String _dbName = 'feelingpalette.db';
-const int _dbVersion = 4;
+const int _dbVersion = 5;
 
 class AppDatabase {
   AppDatabase._();
@@ -70,6 +70,26 @@ class AppDatabase {
             ad_count INTEGER NOT NULL DEFAULT 0
           );
         ''');
+        await db.execute('''
+          CREATE TABLE IF NOT EXISTS weekly_insights (
+            anchor_date TEXT PRIMARY KEY NOT NULL,
+            insight_text TEXT NOT NULL,
+            trend TEXT NOT NULL,
+            keyword TEXT,
+            confidence TEXT NOT NULL,
+            care_flag INTEGER NOT NULL DEFAULT 0,
+            generated_at INTEGER NOT NULL,
+            month_key TEXT NOT NULL,
+            regen_count INTEGER NOT NULL DEFAULT 0,
+            ad_count INTEGER NOT NULL DEFAULT 0
+          );
+        ''');
+        await db.execute(
+          'CREATE INDEX IF NOT EXISTS idx_weekly_generated ON weekly_insights(generated_at);',
+        );
+        await db.execute(
+          'CREATE INDEX IF NOT EXISTS idx_weekly_month ON weekly_insights(month_key);',
+        );
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
@@ -102,6 +122,28 @@ class AppDatabase {
           // one generation backing them — backfill so the budget math works.
           await db.execute(
             "UPDATE month_summaries SET regen_count = 1 WHERE regen_count = 0;",
+          );
+        }
+        if (oldVersion < 5) {
+          await db.execute('''
+            CREATE TABLE IF NOT EXISTS weekly_insights (
+              anchor_date TEXT PRIMARY KEY NOT NULL,
+              insight_text TEXT NOT NULL,
+              trend TEXT NOT NULL,
+              keyword TEXT,
+              confidence TEXT NOT NULL,
+              care_flag INTEGER NOT NULL DEFAULT 0,
+              generated_at INTEGER NOT NULL,
+              month_key TEXT NOT NULL,
+              regen_count INTEGER NOT NULL DEFAULT 0,
+              ad_count INTEGER NOT NULL DEFAULT 0
+            );
+          ''');
+          await db.execute(
+            'CREATE INDEX IF NOT EXISTS idx_weekly_generated ON weekly_insights(generated_at);',
+          );
+          await db.execute(
+            'CREATE INDEX IF NOT EXISTS idx_weekly_month ON weekly_insights(month_key);',
           );
         }
       },

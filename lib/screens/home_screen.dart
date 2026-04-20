@@ -6,6 +6,7 @@ import '../models/diary.dart';
 import '../providers/diary_provider.dart';
 import '../services/emotion_analyzer.dart';
 import '../widgets/today_entry_card.dart';
+import '../widgets/weekly_insight_block.dart';
 import 'backup_screen.dart';
 import 'settings_screen.dart';
 
@@ -32,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       final store = context.read<DiaryProvider>();
       store.loadTodayEntries();
       store.loadDailyBonus();
+      store.loadLatestInsight();
     });
   }
 
@@ -155,6 +157,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: palette.text,
                 ),
               ),
+              const SizedBox(height: 16),
+              const WeeklyInsightBlock(),
               const SizedBox(height: 16),
               _buildComposer(palette),
               if (entries.isNotEmpty) ...[

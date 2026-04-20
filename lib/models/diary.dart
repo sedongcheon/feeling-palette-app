@@ -107,6 +107,18 @@ const int kMonthSummaryBaseRegens = 3;
 const int kMonthSummaryEntriesPerRefill = 5;
 const int kMonthSummaryMaxAdsPerMonth = 20;
 
+// Weekly proactive insight quota — scoped per month key (YYYY-MM).
+//   base        : free generations per month
+//   max ads     : rewarded-ad unlocks per month
+//   cooldown    : minimum days between generations (rolling 7-day window)
+//   input window: how many recent days of entries to send to the LLM
+const int kWeeklyInsightBaseRegens = 2;
+const int kWeeklyInsightMaxAdsPerMonth = 5;
+const int kWeeklyInsightCooldownDays = 7;
+const int kWeeklyInsightInputDays = 30;
+// Minimum entries needed before we even attempt to call the LLM.
+const int kWeeklyInsightMinEntries = 3;
+
 class DiaryEntry {
   final String id;
   final String date; // YYYY-MM-DD
