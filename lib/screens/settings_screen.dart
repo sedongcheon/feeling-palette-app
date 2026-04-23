@@ -107,6 +107,10 @@ class _RemoveAdsCard extends StatelessWidget {
     }
   }
 
+  Future<void> _handleRetry(BuildContext context) async {
+    await context.read<PremiumService>().retryLoadProduct();
+  }
+
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
@@ -198,40 +202,91 @@ class _RemoveAdsCard extends StatelessWidget {
                       ),
                     ),
                   )
-                : FilledButton(
-                    onPressed: canBuy ? () => _handleBuy(context) : null,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: palette.tabBarActive,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: premium.purchaseInFlight
-                        ? const SizedBox(
-                            width: 18,
-                            height: 18,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : Text(
-                            price.isNotEmpty
-                                ? '$price에 구매하기'
-                                : premium.isAvailable
-                                    ? '구매 정보 로딩 중…'
-                                    : '스토어에 연결할 수 없어요',
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                  ),
+                : _buildPurchaseButton(context, palette, premium, price, canBuy),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildPurchaseButton(
+    BuildContext context,
+    AppPalette palette,
+    PremiumService premium,
+    String price,
+    bool canBuy,
+  ) {
+    if (premium.purchaseInFlight) {
+      return _filled(
+        palette,
+        onPressed: null,
+        child: const SizedBox(
+          width: 18,
+          height: 18,
+          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+        ),
+      );
+    }
+    if (price.isNotEmpty) {
+      return _filled(
+        palette,
+        onPressed: canBuy ? () => _handleBuy(context) : null,
+        child: Text(
+          '$price에 구매하기',
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+        ),
+      );
+    }
+    if (!premium.isAvailable) {
+      return _filled(
+        palette,
+        onPressed: null,
+        child: const Text(
+          '스토어에 연결할 수 없어요',
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+        ),
+      );
+    }
+    if (premium.loadFailed) {
+      return OutlinedButton.icon(
+        onPressed: () => _handleRetry(context),
+        icon: Icon(Icons.refresh_rounded, color: palette.tabBarActive),
+        label: Text(
+          '구매 정보를 불러오지 못했어요 · 다시 시도',
+          style: TextStyle(
+            color: palette.tabBarActive,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(color: palette.tabBarActive.withAlpha(0x55)),
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      );
+    }
+    return _filled(
+      palette,
+      onPressed: null,
+      child: const SizedBox(
+        width: 18,
+        height: 18,
+        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+      ),
+    );
+  }
+
+  Widget _filled(AppPalette palette,
+      {required VoidCallback? onPressed, required Widget child}) {
+    return FilledButton(
+      onPressed: onPressed,
+      style: FilledButton.styleFrom(
+        backgroundColor: palette.tabBarActive,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      child: child,
     );
   }
 }

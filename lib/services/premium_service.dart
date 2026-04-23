@@ -35,13 +35,20 @@ class PremiumService extends ChangeNotifier {
   bool _available = false;
   bool _isPremium = false;
   bool _purchaseInFlight = false;
+  bool _productLoading = false;
+  bool _loadFailed = false;
   ProductDetails? _product;
   StreamSubscription<List<PurchaseDetails>>? _sub;
+
+  static const Duration _productLoadTimeout = Duration(seconds: 10);
+  static const int _autoRetryCount = 1;
 
   bool get isInitialized => _initialized;
   bool get isAvailable => _available;
   bool get isPremium => _isPremium;
   bool get purchaseInFlight => _purchaseInFlight;
+  bool get productLoading => _productLoading;
+  bool get loadFailed => _loadFailed;
   ProductDetails? get product => _product;
   String get priceLabel => _product?.price ?? '';
 
@@ -80,33 +87,76 @@ class PremiumService extends ChangeNotifier {
       },
     );
 
-    await _loadProduct();
+    _initialized = true;
+    notifyListeners();
+
+    // Fire-and-forget so a stuck store call can't block initialize().
+    unawaited(_loadProductWithRetry());
 
     // Ask the store for any existing purchases (reinstall case etc.).
-    await _iap.restorePurchases();
+    unawaited(_iap.restorePurchases());
+  }
 
-    _initialized = true;
+  Future<void> _loadProductWithRetry() async {
+    for (var attempt = 0; attempt <= _autoRetryCount; attempt++) {
+      final ok = await _loadProduct();
+      if (ok) return;
+      if (attempt < _autoRetryCount) {
+        await Future<void>.delayed(const Duration(seconds: 2));
+      }
+    }
+    _loadFailed = true;
+    _productLoading = false;
     notifyListeners();
   }
 
-  Future<void> _loadProduct() async {
+  Future<bool> _loadProduct() async {
+    _productLoading = true;
+    _loadFailed = false;
+    notifyListeners();
     try {
-      final resp =
-          await _iap.queryProductDetails({kRemoveAdsProductId});
+      final resp = await _iap
+          .queryProductDetails({kRemoveAdsProductId})
+          .timeout(_productLoadTimeout);
       if (resp.error != null) {
         if (kDebugMode) debugPrint('[Premium] queryProductDetails error: ${resp.error}');
+        return false;
       }
-      if (resp.productDetails.isNotEmpty) {
-        _product = resp.productDetails.first;
-      } else if (kDebugMode) {
-        debugPrint(
-          '[Premium] remove_ads product not found. '
-          'Have you registered it in Play Console / App Store Connect?',
-        );
+      if (resp.productDetails.isEmpty) {
+        if (kDebugMode) {
+          debugPrint(
+            '[Premium] remove_ads product not found. '
+            'Have you registered it in Play Console / App Store Connect '
+            'and attached it to the build for the first IAP submission?',
+          );
+        }
+        return false;
       }
+      _product = resp.productDetails.first;
+      _productLoading = false;
+      notifyListeners();
+      return true;
+    } on TimeoutException catch (_) {
+      if (kDebugMode) debugPrint('[Premium] queryProductDetails timeout');
+      return false;
     } catch (e) {
       if (kDebugMode) debugPrint('[Premium] loadProduct exception: $e');
+      return false;
     }
+  }
+
+  /// Manually retry loading the product. Safe to call from UI when the
+  /// user taps a "retry" button after a failed load.
+  Future<void> retryLoadProduct() async {
+    if (_productLoading) return;
+    if (!_available) {
+      _available = await _iap.isAvailable();
+      if (!_available) {
+        notifyListeners();
+        return;
+      }
+    }
+    await _loadProductWithRetry();
   }
 
   /// Initiates the purchase flow. Returns immediately; the actual result

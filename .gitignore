@@ -67,3 +67,6 @@ android/key.properties
 *_accessKeys.csv
 *_credentials.csv
 
+# Playwright MCP session artifacts (temp logs/snapshots)
+.playwright-mcp/
+
