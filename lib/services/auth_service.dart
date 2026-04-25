@@ -27,13 +27,26 @@ class AuthService {
 
   final LocalAuthentication _localAuth = LocalAuthentication();
 
+  // 일부 Samsung 기기에서 첫 설치 후 EncryptedSharedPreferences/KeyStore 초기화가
+  // 무한 대기에 빠지는 케이스가 있다. 모든 read 작업에 timeout을 걸어서
+  // 일정 시간 안에 응답이 없으면 null로 폴백 → "값 없음" 처리 → 앱이 멈추지 않음.
+  static const _readTimeout = Duration(seconds: 3);
+
+  Future<String?> _readWithTimeout(String key) async {
+    try {
+      return await _storage.read(key: key).timeout(_readTimeout);
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<bool> hasPin() async {
-    final hash = await _storage.read(key: _pinHashKey);
+    final hash = await _readWithTimeout(_pinHashKey);
     return hash != null && hash.isNotEmpty;
   }
 
   Future<bool> biometricEnabled() async {
-    return (await _storage.read(key: _biometricEnabledKey)) == '1';
+    return (await _readWithTimeout(_biometricEnabledKey)) == '1';
   }
 
   Future<void> setBiometricEnabled(bool enabled) async {
@@ -46,7 +59,7 @@ class AuthService {
   static const int defaultAutoLockDelaySeconds = 5;
 
   Future<int> getAutoLockDelaySeconds() async {
-    final raw = await _storage.read(key: _autoLockDelayKey);
+    final raw = await _readWithTimeout(_autoLockDelayKey);
     return int.tryParse(raw ?? '') ?? defaultAutoLockDelaySeconds;
   }
 
@@ -55,6 +68,15 @@ class AuthService {
   }
 
   Future<bool> canUseBiometric() async {
+    // 일부 Samsung 기기에서 local_auth 호출이 멈추는 케이스 대비.
+    try {
+      return await _checkBiometric().timeout(_readTimeout);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> _checkBiometric() async {
     try {
       if (!await _localAuth.isDeviceSupported()) return false;
       if (!await _localAuth.canCheckBiometrics) return false;
@@ -87,8 +109,8 @@ class AuthService {
   }
 
   Future<bool> verifyPin(String pin) async {
-    final salt = await _storage.read(key: _pinSaltKey);
-    final hash = await _storage.read(key: _pinHashKey);
+    final salt = await _readWithTimeout(_pinSaltKey);
+    final hash = await _readWithTimeout(_pinHashKey);
     if (salt == null || hash == null) return false;
     return _hashPin(pin, salt) == hash;
   }

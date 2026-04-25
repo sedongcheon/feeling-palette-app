@@ -27,6 +27,21 @@ class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
   int get autoLockDelaySeconds => _autoLockDelaySecs;
 
   Future<void> _init() async {
+    // 전체 init이 5초 이상 걸리면(예: Samsung KeyStore 첫 init 무한 대기) 안전하게
+    // needsSetup으로 폴백해 사용자가 "흰 화면 + 동그라미 빙빙" 상태에 갇히지 않게 한다.
+    // AuthService 내부 read도 각각 3초 timeout이 걸려있어 정상 케이스는 거의 즉시 완료.
+    try {
+      await _loadAll().timeout(const Duration(seconds: 5));
+    } catch (_) {
+      _biometricAvailable = false;
+      _biometricEnabled = false;
+      _autoLockDelaySecs = AuthService.defaultAutoLockDelaySeconds;
+      _stage = AuthStage.needsSetup;
+      notifyListeners();
+    }
+  }
+
+  Future<void> _loadAll() async {
     final hasPin = await _service.hasPin();
     _biometricAvailable = await _service.canUseBiometric();
     _biometricEnabled = await _service.biometricEnabled();
