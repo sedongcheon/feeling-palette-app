@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -94,9 +95,15 @@ class DiaryProvider extends ChangeNotifier {
   int get todayBonusAdsShown => _todayBonusAdsShown;
   int get todayBonusAdsRemaining =>
       (kRewardMaxAdsPerDay - _todayBonusAdsShown).clamp(0, kRewardMaxAdsPerDay);
+  // iOS는 보상형 광고로 한도를 늘릴 수 없으므로(canWatchBonusAd 참고) 무료 한도
+  // 자체를 8개로 상향. Android는 기본 3 + 광고 시청으로 추가 (최대 8).
   int get effectiveDailyLimit =>
-      kMaxDailyAnalyzedEntries + _todayBonusAnalyses;
-  bool get canWatchBonusAd => _todayBonusAdsShown < kRewardMaxAdsPerDay;
+      (Platform.isIOS ? 8 : kMaxDailyAnalyzedEntries) + _todayBonusAnalyses;
+  // iOS는 App Store 리뷰 환경에서 보상형 광고가 안정적으로 재생되지 않아
+  // 리뷰어가 보상을 받지 못한다고 판단해 거절. Android는 그대로 노출.
+  // (iOS Apple Paid Apps Agreement 활성화/사업자등록 후 재평가 예정)
+  bool get canWatchBonusAd =>
+      !Platform.isIOS && _todayBonusAdsShown < kRewardMaxAdsPerDay;
 
   bool get dailyAnalysisLimitReached =>
       todayAnalyzedCount >= effectiveDailyLimit;
@@ -118,8 +125,9 @@ class DiaryProvider extends ChangeNotifier {
 
   /// Total budget (base + entry-driven refills + ad unlocks) for [monthKey]
   /// given the current number of diary entries in that month.
+  /// iOS는 광고 시청으로 한도를 늘릴 수 없으므로 base를 8로 상향.
   int budgetForMonth(String monthKey, int entryCount) =>
-      kMonthSummaryBaseRegens +
+      (Platform.isIOS ? 8 : kMonthSummaryBaseRegens) +
       refillsEarnedForEntryCount(entryCount) +
       adsUsedForMonth(monthKey);
 
@@ -135,6 +143,7 @@ class DiaryProvider extends ChangeNotifier {
       availableRegensForMonth(monthKey, entryCount) > 0;
 
   bool canWatchAdForMonth(String monthKey) =>
+      !Platform.isIOS &&
       adsUsedForMonth(monthKey) < kMonthSummaryMaxAdsPerMonth;
 
   /// Number of additional entries needed before the next +1 refill lands.
@@ -157,8 +166,10 @@ class DiaryProvider extends ChangeNotifier {
   int insightAdsUsedForMonth(String monthKey) =>
       _insightAdByMonth[monthKey] ?? 0;
 
+  // iOS는 광고로 추가 못 받으므로 base 5로 상향. Android는 그대로.
   int insightBudgetForMonth(String monthKey) =>
-      kWeeklyInsightBaseRegens + insightAdsUsedForMonth(monthKey);
+      (Platform.isIOS ? 5 : kWeeklyInsightBaseRegens) +
+      insightAdsUsedForMonth(monthKey);
 
   int availableInsightsForMonth(String monthKey) {
     final remaining =
@@ -170,6 +181,7 @@ class DiaryProvider extends ChangeNotifier {
       availableInsightsForMonth(monthKey) > 0;
 
   bool canWatchAdForInsight(String monthKey) =>
+      !Platform.isIOS &&
       insightAdsUsedForMonth(monthKey) < kWeeklyInsightMaxAdsPerMonth;
 
   /// Whether the cooldown since the last generated insight has elapsed.

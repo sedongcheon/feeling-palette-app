@@ -21,10 +21,12 @@ class AdsService extends ChangeNotifier {
   AdsService._();
   static final AdsService instance = AdsService._();
 
-  // Throttle config (mirrors docs/ADS_PLAN.md §5)
-  static const int kInterstitialEveryNAnalyses = 2;
-  static const int kInterstitialSessionCap = 1;
-  static const Duration kInterstitialCooldown = Duration(minutes: 3);
+  // Throttle config — balanced policy. 세션당 최대 3회, 90초 쿨다운, 분석 3번마다.
+  // 보상 광고를 본 직후의 분석은 카운터에서 제외해(_skipNextAnalysisInterstitial)
+  // 한 번에 두 광고가 연달아 뜨는 일을 방지한다.
+  static const int kInterstitialEveryNAnalyses = 3;
+  static const int kInterstitialSessionCap = 3;
+  static const Duration kInterstitialCooldown = Duration(seconds: 90);
 
   bool _initialized = false;
   bool _adFree = false;
@@ -38,6 +40,9 @@ class AdsService extends ChangeNotifier {
   int _sessionInterstitialShown = 0;
   int _sessionAnalysisCount = 0;
   DateTime? _lastInterstitialShownAt;
+  // 직전에 보상 광고를 봐서 보너스 분석을 받은 사용자에게는 다음 분석 1회를
+  // 자동 광고 카운터에서 제외한다. 보상 광고 + 전면 광고가 연달아 뜨는 부담 방지.
+  bool _skipNextAnalysisInterstitial = false;
 
   bool get isInitialized => _initialized;
   bool get adFree => _adFree;
@@ -172,7 +177,14 @@ class AdsService extends ChangeNotifier {
   /// Call right after a successful AI analysis. Tracks session count and
   /// fires an interstitial on every [kInterstitialEveryNAnalyses]-th success
   /// (subject to session cap and cooldown).
+  ///
+  /// 보상 광고 직후의 분석은 _skipNextAnalysisInterstitial 플래그가 켜져 있어
+  /// 카운트도 증가시키지 않고 광고 트리거도 하지 않는다.
   void onAnalysisCompleted() {
+    if (_skipNextAnalysisInterstitial) {
+      _skipNextAnalysisInterstitial = false;
+      return;
+    }
     _sessionAnalysisCount++;
     if (_sessionAnalysisCount % kInterstitialEveryNAnalyses == 0) {
       unawaited(maybeShowInterstitial());
@@ -236,6 +248,9 @@ class AdsService extends ChangeNotifier {
     await ad.show(
       onUserEarnedReward: (ad, reward) {
         earned = true;
+        // 보상 받음 → 다음 분석 1회는 자동 광고 카운터에서 제외해
+        // 보상 광고와 전면 광고가 연달아 뜨는 부담을 막는다.
+        _skipNextAnalysisInterstitial = true;
       },
     );
     return completer.future;

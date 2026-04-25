@@ -13,6 +13,8 @@
 	</array>
 	<key>NSFaceIDUsageDescription</key>
 	<string>앱 잠금 해제에 Face ID를 사용합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>백업 파일을 선택하거나 저장할 때 사진 라이브러리에 접근합니다.</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-5457202364123068~2337687639</string>
 	<key>NSUserTrackingUsageDescription</key>

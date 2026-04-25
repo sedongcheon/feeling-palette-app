@@ -11,8 +11,15 @@ class AuthService {
   static const _biometricEnabledKey = 'lock_biometric_enabled';
   static const _autoLockDelayKey = 'lock_auto_lock_delay_seconds';
 
+  // resetOnError: KeyStore 키가 무효화되면(앱 재설치/OS 업데이트/Samsung 키 회전 등)
+  // EncryptedSharedPreferences 복호화가 실패하며 읽기가 무한 대기에 빠지는 케이스가 있다.
+  // 이 옵션이 true면 복호화 실패 시 저장소를 자동 리셋해 앱이 멈추지 않게 한다.
+  // 트레이드오프: 사용자는 PIN/생체인증 설정을 다시 해야 함.
   static const _storage = FlutterSecureStorage(
-    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+    aOptions: AndroidOptions(
+      encryptedSharedPreferences: true,
+      resetOnError: true,
+    ),
     iOptions: IOSOptions(
       accessibility: KeychainAccessibility.first_unlock_this_device,
     ),

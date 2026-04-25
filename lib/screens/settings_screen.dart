@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -62,12 +64,19 @@ class SettingsScreen extends StatelessWidget {
             _sectionLabel(palette, '앱 잠금'),
             const SizedBox(height: 8),
             const _AutoLockDelayTile(),
-            const SizedBox(height: 24),
-            _sectionLabel(palette, '구매'),
-            const SizedBox(height: 8),
-            const _RemoveAdsCard(),
-            const SizedBox(height: 12),
-            const _RestorePurchasesTile(),
+            // iOS 한정으로 IAP 섹션 숨김. Apple Paid Apps Agreement에 필요한
+            // 한국 사업자등록 / 세금 정보가 미완성 상태라 IAP가 production에서
+            // 로드 실패 → 리뷰어가 "구매 정보 로딩 실패" 화면을 봐서 거절됨.
+            // 사업자등록 진행 후 다시 활성화 예정. Android는 Google Play Billing
+            // 으로 정상 동작 중이라 그대로 노출.
+            if (!Platform.isIOS) ...[
+              const SizedBox(height: 24),
+              _sectionLabel(palette, '구매'),
+              const SizedBox(height: 8),
+              const _RemoveAdsCard(),
+              const SizedBox(height: 12),
+              const _RestorePurchasesTile(),
+            ],
           ],
         ),
       ),
@@ -268,10 +277,21 @@ class _RemoveAdsCard extends StatelessWidget {
     return _filled(
       palette,
       onPressed: null,
-      child: const SizedBox(
-        width: 18,
-        height: 18,
-        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          SizedBox(
+            width: 16,
+            height: 16,
+            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+          ),
+          SizedBox(width: 10),
+          Text(
+            '구매 정보 불러오는 중…',
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          ),
+        ],
       ),
     );
   }

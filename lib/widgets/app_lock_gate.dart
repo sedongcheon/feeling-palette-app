@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -37,8 +39,10 @@ class _AppLockGateState extends State<AppLockGate> {
     if (_previousStage != AuthStage.unlocked && stage == AuthStage.unlocked) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         await ConsentService.instance.gather();
-        // Premium check first so ads init can skip preloading for paid users.
-        await PremiumService.instance.initialize();
+        // iOS는 IAP 미사용 (settings_screen 참고). 광고만 활성화.
+        if (!Platform.isIOS) {
+          await PremiumService.instance.initialize();
+        }
         await AdsService.instance.initialize();
       });
     }

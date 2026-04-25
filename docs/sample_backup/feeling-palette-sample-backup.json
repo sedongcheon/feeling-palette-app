@@ -1,0 +1,540 @@
+{
+  "app": "feeling_palette",
+  "schema_version": 1,
+  "exported_at": "2026-04-22T20:13:16.355961",
+  "count": 28,
+  "entries": [
+    {
+      "id": "374815c6-ba0a-42da-b02b-9e4e656fd72a",
+      "date": "2026-03-24",
+      "content": "오랜만에 혼자 카페에 앉아 책을 읽었다. 조용히 흘러가는 시간이 마음을 편안하게 해줬다.",
+      "primary_emotion": "calm",
+      "emotions": {
+        "joy": 30,
+        "sadness": 10,
+        "anger": 5,
+        "anxiety": 15,
+        "calm": 85,
+        "excitement": 20
+      },
+      "ai_comment": "자기만의 시간을 가지는 건 중요해요. 오늘 느낀 고요함이 내일의 원동력이 되길 바라요.",
+      "color": "#8FD8C6",
+      "created_at": 1774328400000,
+      "updated_at": 1774328400000,
+      "analysis_count": 1
+    },
+    {
+      "id": "7fea2732-b8d8-4992-8f46-c0b857d6734c",
+      "date": "2026-03-25",
+      "content": "업무 마감이 다가와서 하루 종일 바빴다. 조금 지쳤지만 해냈다는 뿌듯함도 있다.",
+      "primary_emotion": "joy",
+      "emotions": {
+        "joy": 60,
+        "sadness": 15,
+        "anger": 10,
+        "anxiety": 45,
+        "calm": 30,
+        "excitement": 40
+      },
+      "ai_comment": "고생 많으셨어요. 바쁜 하루 끝의 뿌듯함은 정말 값진 감정이에요.",
+      "color": "#FFD166",
+      "created_at": 1774444033000,
+      "updated_at": 1774444033000,
+      "analysis_count": 1
+    },
+    {
+      "id": "fb806436-b1c3-40db-9e8a-be5d3ee6a8a0",
+      "date": "2026-03-27",
+      "content": "친구와 오랜만에 저녁을 먹었다. 웃음이 끊이지 않는 시간이었다.",
+      "primary_emotion": "joy",
+      "emotions": {
+        "joy": 90,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 10,
+        "calm": 55,
+        "excitement": 75
+      },
+      "ai_comment": "가까운 사람과의 시간이 주는 행복이 잘 느껴져요. 마음이 따뜻해지는 하루였네요.",
+      "color": "#FFD166",
+      "created_at": 1774613666000,
+      "updated_at": 1774613666000,
+      "analysis_count": 1
+    },
+    {
+      "id": "c1d44385-9990-4945-a1a6-88a23085c719",
+      "date": "2026-03-28",
+      "content": "출근길 지하철이 너무 붐벼서 아침부터 지쳤다.",
+      "primary_emotion": "anxiety",
+      "emotions": {
+        "joy": 10,
+        "sadness": 25,
+        "anger": 30,
+        "anxiety": 70,
+        "calm": 15,
+        "excitement": 5
+      },
+      "ai_comment": "아침부터 피곤한 하루셨네요. 잠시 심호흡하며 몸을 이완시켜보세요.",
+      "color": "#A89FD4",
+      "created_at": 1774657299000,
+      "updated_at": 1774657299000,
+      "analysis_count": 1
+    },
+    {
+      "id": "06961f69-4ed0-4f41-9253-0eb54521e0d5",
+      "date": "2026-03-29",
+      "content": "새 취미로 시작한 그림 그리기가 생각보다 재미있다. 색을 섞는 게 신기하다.",
+      "primary_emotion": "excitement",
+      "emotions": {
+        "joy": 70,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 10,
+        "calm": 40,
+        "excitement": 80
+      },
+      "ai_comment": "새로운 도전이 가져다주는 설렘이 잘 느껴져요. 꾸준히 이어가 보세요.",
+      "color": "#FF9CAB",
+      "created_at": 1774783732000,
+      "updated_at": 1774783732000,
+      "analysis_count": 1
+    },
+    {
+      "id": "b2897214-2838-405f-9c11-d76848d6cc33",
+      "date": "2026-03-30",
+      "content": "비가 와서 우울했다. 창밖을 보며 멍하니 있다가 하루가 지나갔다.",
+      "primary_emotion": "sadness",
+      "emotions": {
+        "joy": 10,
+        "sadness": 75,
+        "anger": 5,
+        "anxiety": 30,
+        "calm": 40,
+        "excitement": 5
+      },
+      "ai_comment": "흐린 날씨는 기분에도 영향을 주죠. 따뜻한 차 한 잔 어떠세요?",
+      "color": "#6B8EFF",
+      "created_at": 1774863305000,
+      "updated_at": 1774863305000,
+      "analysis_count": 1
+    },
+    {
+      "id": "557d4599-ad77-4992-8156-238752f63e60",
+      "date": "2026-03-31",
+      "content": "동료가 내 의견을 무시해서 화가 났다. 말로 표현하지 못해 답답했다.",
+      "primary_emotion": "anger",
+      "emotions": {
+        "joy": 5,
+        "sadness": 30,
+        "anger": 80,
+        "anxiety": 50,
+        "calm": 10,
+        "excitement": 5
+      },
+      "ai_comment": "말로 표현하지 못한 감정은 오래 남을 수 있어요. 내일은 조금이라도 마음을 전해보세요.",
+      "color": "#EF6F6C",
+      "created_at": 1774953738000,
+      "updated_at": 1774953738000,
+      "analysis_count": 1
+    },
+    {
+      "id": "a33b3fb0-47fe-48cd-81a2-1e81094b328e",
+      "date": "2026-04-01",
+      "content": "오늘은 그냥 평범했다. 큰 기복 없이 담담하게 흘러갔다.",
+      "primary_emotion": "calm",
+      "emotions": {
+        "joy": 35,
+        "sadness": 20,
+        "anger": 10,
+        "anxiety": 20,
+        "calm": 70,
+        "excitement": 15
+      },
+      "ai_comment": "평범함도 소중한 하루예요. 잔잔함 속에서 나만의 리듬을 찾으셨네요.",
+      "color": "#8FD8C6",
+      "created_at": 1775054971000,
+      "updated_at": 1775054971000,
+      "analysis_count": 1
+    },
+    {
+      "id": "202c0812-7b7b-47cf-a924-9ea596db3b11",
+      "date": "2026-04-03",
+      "content": "주말이라 늦잠 자고 영화를 봤다. 재밌는 장면에서 크게 웃었다.",
+      "primary_emotion": "joy",
+      "emotions": {
+        "joy": 80,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 5,
+        "calm": 50,
+        "excitement": 65
+      },
+      "ai_comment": "여유 있는 주말이었네요. 웃음이 주는 힐링이 느껴져요.",
+      "color": "#FFD166",
+      "created_at": 1775199404000,
+      "updated_at": 1775199404000,
+      "analysis_count": 1
+    },
+    {
+      "id": "84eeee9e-f6f5-484f-815d-b4bfe4dbfea2",
+      "date": "2026-04-04",
+      "content": "가족과 통화하며 오래 이야기 나눴다. 그리웠던 마음이 풀린 것 같다.",
+      "primary_emotion": "calm",
+      "emotions": {
+        "joy": 55,
+        "sadness": 20,
+        "anger": 0,
+        "anxiety": 10,
+        "calm": 75,
+        "excitement": 30
+      },
+      "ai_comment": "가족의 목소리는 마음의 안식처가 되어주죠. 따뜻한 시간이었어요.",
+      "color": "#8FD8C6",
+      "created_at": 1775304237000,
+      "updated_at": 1775304237000,
+      "analysis_count": 1
+    },
+    {
+      "id": "3323a643-e410-4415-ac34-62c28a6fde51",
+      "date": "2026-04-05",
+      "content": "회의에서 내 제안이 채택됐다! 준비한 보람이 있다.",
+      "primary_emotion": "excitement",
+      "emotions": {
+        "joy": 85,
+        "sadness": 0,
+        "anger": 0,
+        "anxiety": 20,
+        "calm": 35,
+        "excitement": 90
+      },
+      "ai_comment": "준비와 노력이 결실을 맺는 순간은 정말 특별하죠. 축하드려요!",
+      "color": "#FF9CAB",
+      "created_at": 1775373010000,
+      "updated_at": 1775373010000,
+      "analysis_count": 1
+    },
+    {
+      "id": "8a195763-d877-4941-9b99-5eb98383dab0",
+      "date": "2026-04-06",
+      "content": "밤에 잠이 안 와서 이것저것 생각이 많았다. 내일 또 피곤할 것 같다.",
+      "primary_emotion": "anxiety",
+      "emotions": {
+        "joy": 5,
+        "sadness": 30,
+        "anger": 5,
+        "anxiety": 85,
+        "calm": 10,
+        "excitement": 5
+      },
+      "ai_comment": "불면으로 인한 답답함이 느껴져요. 생각을 내려놓는 연습을 해보세요.",
+      "color": "#A89FD4",
+      "created_at": 1775409443000,
+      "updated_at": 1775409443000,
+      "analysis_count": 1
+    },
+    {
+      "id": "e17e93b7-9808-4a80-9f7a-b31145126740",
+      "date": "2026-04-08",
+      "content": "오랜만에 산책을 길게 했다. 벚꽃이 피어서 마음이 설렜다.",
+      "primary_emotion": "excitement",
+      "emotions": {
+        "joy": 70,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 10,
+        "calm": 60,
+        "excitement": 75
+      },
+      "ai_comment": "자연이 주는 계절의 선물을 온전히 느끼셨네요. 마음의 환기가 된 하루예요.",
+      "color": "#FF9CAB",
+      "created_at": 1775636676000,
+      "updated_at": 1775636676000,
+      "analysis_count": 1
+    },
+    {
+      "id": "1350ab7a-3b7a-4996-8052-5f59e594f463",
+      "date": "2026-04-09",
+      "content": "일이 잘 안 풀려서 짜증이 났다. 집에 와서도 생각이 가시질 않았다.",
+      "primary_emotion": "anger",
+      "emotions": {
+        "joy": 10,
+        "sadness": 35,
+        "anger": 70,
+        "anxiety": 55,
+        "calm": 10,
+        "excitement": 5
+      },
+      "ai_comment": "풀리지 않는 일이 마음을 무겁게 하는군요. 잠시 거리를 두는 것도 방법이에요.",
+      "color": "#EF6F6C",
+      "created_at": 1775741509000,
+      "updated_at": 1775741509000,
+      "analysis_count": 1
+    },
+    {
+      "id": "0c60c0fc-ca57-41d7-9c3a-5075a5cf8f22",
+      "date": "2026-04-10",
+      "content": "친한 친구의 결혼식에 다녀왔다. 축하하는 마음이 크다.",
+      "primary_emotion": "joy",
+      "emotions": {
+        "joy": 85,
+        "sadness": 15,
+        "anger": 0,
+        "anxiety": 5,
+        "calm": 50,
+        "excitement": 70
+      },
+      "ai_comment": "소중한 사람의 기쁜 순간을 함께한 값진 하루였네요.",
+      "color": "#FFD166",
+      "created_at": 1775821082000,
+      "updated_at": 1775821082000,
+      "analysis_count": 1
+    },
+    {
+      "id": "e8d3fb7c-8f29-4a64-8759-666e774ee51d",
+      "date": "2026-04-12",
+      "content": "잠깐 멍하니 하늘을 봤다. 구름이 느리게 흘러가서 마음이 가라앉았다.",
+      "primary_emotion": "calm",
+      "emotions": {
+        "joy": 30,
+        "sadness": 15,
+        "anger": 0,
+        "anxiety": 15,
+        "calm": 85,
+        "excitement": 20
+      },
+      "ai_comment": "일상의 작은 여백이 큰 위로가 되죠. 충분히 잘 쉬셨어요.",
+      "color": "#8FD8C6",
+      "created_at": 1775983515000,
+      "updated_at": 1775983515000,
+      "analysis_count": 1
+    },
+    {
+      "id": "e2956046-d5f5-4ffc-90cc-7ddcb8588510",
+      "date": "2026-04-13",
+      "content": "새로운 프로젝트가 시작됐다. 기대되면서도 걱정이 앞선다.",
+      "primary_emotion": "anxiety",
+      "emotions": {
+        "joy": 40,
+        "sadness": 10,
+        "anger": 5,
+        "anxiety": 65,
+        "calm": 25,
+        "excitement": 50
+      },
+      "ai_comment": "기대와 걱정이 공존하는 복합적인 감정이네요. 한 걸음씩 가보시면 돼요.",
+      "color": "#A89FD4",
+      "created_at": 1776041548000,
+      "updated_at": 1776041548000,
+      "analysis_count": 1
+    },
+    {
+      "id": "d943342e-940b-45b8-93fb-4138f3bb14ba",
+      "date": "2026-04-15",
+      "content": "오랜만에 요리를 했다. 맛있게 나와서 스스로 칭찬했다.",
+      "primary_emotion": "joy",
+      "emotions": {
+        "joy": 75,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 10,
+        "calm": 55,
+        "excitement": 50
+      },
+      "ai_comment": "스스로를 칭찬할 수 있는 하루는 소중해요. 자기 돌봄이 잘 되고 있어요.",
+      "color": "#FFD166",
+      "created_at": 1776250781000,
+      "updated_at": 1776250781000,
+      "analysis_count": 1
+    },
+    {
+      "id": "813d3aee-c0ea-4980-a6a4-42eca4ac3053",
+      "date": "2026-04-16",
+      "content": "몸이 피곤한데 해야 할 일은 많고… 의욕이 떨어진다.",
+      "primary_emotion": "sadness",
+      "emotions": {
+        "joy": 10,
+        "sadness": 70,
+        "anger": 15,
+        "anxiety": 60,
+        "calm": 15,
+        "excitement": 5
+      },
+      "ai_comment": "몸과 마음이 함께 지친 날이에요. 오늘은 일찍 쉬시는 걸 권해요.",
+      "color": "#6B8EFF",
+      "created_at": 1776341214000,
+      "updated_at": 1776341214000,
+      "analysis_count": 1
+    },
+    {
+      "id": "cdd44dbd-046c-4ab6-91de-45ae7ad67484",
+      "date": "2026-04-17",
+      "content": "좋아하는 노래를 크게 틀고 설거지를 했다. 의외로 기분이 나아졌다.",
+      "primary_emotion": "calm",
+      "emotions": {
+        "joy": 55,
+        "sadness": 15,
+        "anger": 0,
+        "anxiety": 10,
+        "calm": 70,
+        "excitement": 35
+      },
+      "ai_comment": "작은 루틴이 감정을 바꿔주기도 하죠. 좋은 방법을 찾으셨네요.",
+      "color": "#8FD8C6",
+      "created_at": 1776399187000,
+      "updated_at": 1776399187000,
+      "analysis_count": 1
+    },
+    {
+      "id": "e9c9de09-85dd-420e-97ff-f64960fefb78",
+      "date": "2026-04-18",
+      "content": "아침에 커피 향이 유난히 좋았다. 소소한 행복.",
+      "primary_emotion": "joy",
+      "emotions": {
+        "joy": 75,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 5,
+        "calm": 65,
+        "excitement": 40
+      },
+      "ai_comment": "소소한 순간에서 기쁨을 발견하는 시선이 반가워요.",
+      "color": "#FFD166",
+      "created_at": 1776468020000,
+      "updated_at": 1776468020000,
+      "analysis_count": 1
+    },
+    {
+      "id": "046d18ee-a07a-46a6-86ba-51edce942a11",
+      "date": "2026-04-19",
+      "content": "회의가 길어져서 지쳤다. 집에 와서 바로 누웠다.",
+      "primary_emotion": "anxiety",
+      "emotions": {
+        "joy": 10,
+        "sadness": 25,
+        "anger": 20,
+        "anxiety": 65,
+        "calm": 15,
+        "excitement": 5
+      },
+      "ai_comment": "오늘은 푹 쉬는 게 최선이에요. 내일은 조금 더 가벼운 마음이 되길.",
+      "color": "#A89FD4",
+      "created_at": 1776605253000,
+      "updated_at": 1776605253000,
+      "analysis_count": 1
+    },
+    {
+      "id": "f64406f9-b87a-4cc6-aa47-b162862726ed",
+      "date": "2026-04-20",
+      "content": "친구와 카톡으로 오래 이야기했다. 가끔 이런 시간이 필요하다.",
+      "primary_emotion": "calm",
+      "emotions": {
+        "joy": 60,
+        "sadness": 10,
+        "anger": 0,
+        "anxiety": 10,
+        "calm": 75,
+        "excitement": 30
+      },
+      "ai_comment": "마음을 나눌 수 있는 관계가 주는 안정감이 느껴져요.",
+      "color": "#8FD8C6",
+      "created_at": 1776695686000,
+      "updated_at": 1776695686000,
+      "analysis_count": 1
+    },
+    {
+      "id": "865142f9-88b7-4ad4-9e53-1f8176f43963",
+      "date": "2026-04-21",
+      "content": "어제보다 컨디션이 좋다. 오늘은 운동을 해볼까 한다.",
+      "primary_emotion": "excitement",
+      "emotions": {
+        "joy": 65,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 10,
+        "calm": 45,
+        "excitement": 70
+      },
+      "ai_comment": "회복의 신호가 보여요. 작은 실천으로 하루를 활기차게 보내 보세요.",
+      "color": "#FF9CAB",
+      "created_at": 1776732119000,
+      "updated_at": 1776732119000,
+      "analysis_count": 1
+    },
+    {
+      "id": "c8848682-3ccd-47c3-a793-385a8800803b",
+      "date": "2026-04-22",
+      "content": "오늘은 평온한 아침. 일기를 쓰는 이 순간이 좋다.",
+      "primary_emotion": "calm",
+      "emotions": {
+        "joy": 60,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 10,
+        "calm": 80,
+        "excitement": 30
+      },
+      "ai_comment": "지금 이 순간에 머무르는 감각이 글에서 느껴져요. 좋은 시작이에요.",
+      "color": "#8FD8C6",
+      "created_at": 1776815292000,
+      "updated_at": 1776815292000,
+      "analysis_count": 1
+    },
+    {
+      "id": "0f4651c2-94c0-49b4-9d7f-68c8d98af634",
+      "date": "2026-03-26",
+      "content": "저녁에는 피곤이 몰려왔다. 그래도 오늘 하루 잘 보낸 것 같다.",
+      "primary_emotion": "calm",
+      "emotions": {
+        "joy": 40,
+        "sadness": 20,
+        "anger": 5,
+        "anxiety": 30,
+        "calm": 70,
+        "excitement": 20
+      },
+      "ai_comment": "하루를 마무리하며 스스로를 인정하는 태도가 보기 좋아요.",
+      "color": "#8FD8C6",
+      "created_at": 1774536925000,
+      "updated_at": 1774536925000,
+      "analysis_count": 1
+    },
+    {
+      "id": "2e34a9f3-2620-47e2-a1d1-65e59bae3804",
+      "date": "2026-04-07",
+      "content": "점심에 먹은 파스타가 맛있었다. 소소한 만족.",
+      "primary_emotion": "joy",
+      "emotions": {
+        "joy": 65,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 5,
+        "calm": 55,
+        "excitement": 40
+      },
+      "ai_comment": "식사에서 얻는 즐거움도 행복의 한 조각이에요.",
+      "color": "#FFD166",
+      "created_at": 1775534558000,
+      "updated_at": 1775534558000,
+      "analysis_count": 1
+    },
+    {
+      "id": "52f5801b-c121-4bfb-bc13-3527190ea31c",
+      "date": "2026-04-07",
+      "content": "저녁에 동료와 짧은 산책을 했다. 대화가 잘 통해서 즐거웠다.",
+      "primary_emotion": "excitement",
+      "emotions": {
+        "joy": 75,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 10,
+        "calm": 50,
+        "excitement": 70
+      },
+      "ai_comment": "함께하는 시간이 에너지를 주었네요. 좋은 동료와의 산책 좋은 아이디어예요.",
+      "color": "#FF9CAB",
+      "created_at": 1775556591000,
+      "updated_at": 1775556591000,
+      "analysis_count": 1
+    }
+  ]
+}
