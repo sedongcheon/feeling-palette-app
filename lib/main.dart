@@ -1,4 +1,8 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'firebase_options.dart';
 import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
@@ -16,6 +20,24 @@ import 'widgets/app_lock_gate.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Android 15+ SDK 35 edge-to-edge 요구사항. 시스템 바 아래까지 콘텐츠를 그리고
+  // SafeArea로 인셋을 처리한다.
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  await FirebaseCrashlytics.instance
+      .setCrashlyticsCollectionEnabled(!kDebugMode);
+
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
   await AppDatabase.instance.database;
   // IAP 상품 정보 사전 로드. iOS는 Apple Paid Apps Agreement 미완성으로
   // production에서 IAP가 작동하지 않아 UI도 숨겨둔 상태(settings_screen 참고).
@@ -54,10 +76,25 @@ class FeelingPaletteApp extends StatelessWidget {
         supportedLocales: const [Locale('ko', 'KR'), Locale('en', 'US')],
         builder: (context, child) {
           final isDark = Theme.of(context).brightness == Brightness.dark;
+          // Android 15+ SDK 35: setStatusBarColor/setNavigationBarColor가
+          // deprecated. 색상 필드를 비워두면 Flutter가 그 메서드를 호출하지
+          // 않으므로 Play Console 경고가 줄어든다. brightness만 지정한다.
+          const overlay = SystemUiOverlayStyle(
+            systemNavigationBarContrastEnforced: false,
+          );
+          final styled = isDark
+              ? overlay.copyWith(
+                  statusBarBrightness: Brightness.dark,
+                  statusBarIconBrightness: Brightness.light,
+                  systemNavigationBarIconBrightness: Brightness.light,
+                )
+              : overlay.copyWith(
+                  statusBarBrightness: Brightness.light,
+                  statusBarIconBrightness: Brightness.dark,
+                  systemNavigationBarIconBrightness: Brightness.dark,
+                );
           return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: isDark
-                ? SystemUiOverlayStyle.light
-                : SystemUiOverlayStyle.dark,
+            value: styled,
             child: child ?? const SizedBox.shrink(),
           );
         },

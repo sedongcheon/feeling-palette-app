@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "862703291464",
+    "project_id": "agent-115a8",
+    "storage_bucket": "agent-115a8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862703291464:android:09e1fc88309b0fcc5a1c7d",
+        "android_client_info": {
+          "package_name": "com.feelingpalette.feeling_palette"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChg43AW_S-mu185plYpuW3_MruRuOIPMs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862703291464:android:6408a32fd14011aa5a1c7d",
+        "android_client_info": {
+          "package_name": "kr.co.sedoli.grantadvisor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChg43AW_S-mu185plYpuW3_MruRuOIPMs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
