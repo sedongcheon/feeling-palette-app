@@ -485,4 +485,29 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get weeklyInsightGenericError => '생성 중 문제가 발생했어요.';
+
+  @override
+  String homeDateHeading(String dateLabel, String dayLabel) {
+    return '$dateLabel $dayLabel요일';
+  }
+
+  @override
+  String get homeTodayHeading => '오늘 하루는 어땠나요?';
+
+  @override
+  String get homeEntrySavedToast => '오늘의 일기가 저장되었어요.';
+
+  @override
+  String get homeTodayEntries => '오늘의 기록';
+
+  @override
+  String get homeComposerHint => '오늘 있었던 일, 느낀 감정을 자유롭게 적어보세요...';
+
+  @override
+  String get homeAddEntryButton => '기록 추가';
+
+  @override
+  String homeDailyQuotaBadge(int used, int max) {
+    return 'AI 분석 $used/$max';
+  }
 }

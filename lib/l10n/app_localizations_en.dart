@@ -497,4 +497,29 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get weeklyInsightGenericError =>
       'Something went wrong while generating.';
+
+  @override
+  String homeDateHeading(String dateLabel, String dayLabel) {
+    return '$dateLabel, $dayLabel';
+  }
+
+  @override
+  String get homeTodayHeading => 'How was your day?';
+
+  @override
+  String get homeEntrySavedToast => 'Today\'s diary entry was saved.';
+
+  @override
+  String get homeTodayEntries => 'Today\'s entries';
+
+  @override
+  String get homeComposerHint => 'Write freely about your day and feelings…';
+
+  @override
+  String get homeAddEntryButton => 'Add entry';
+
+  @override
+  String homeDailyQuotaBadge(int used, int max) {
+    return 'AI analyses $used/$max';
+  }
 }

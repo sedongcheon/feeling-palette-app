@@ -285,5 +285,26 @@
   "weeklyInsightQuotaError": "이번 달 한도를 모두 사용했어요.",
   "weeklyInsightAdError": "광고를 끝까지 시청해야 생성할 수 있어요.",
   "weeklyInsightNotEnoughData": "패턴을 찾기엔 기록이 조금 부족해요.",
-  "weeklyInsightGenericError": "생성 중 문제가 발생했어요."
+  "weeklyInsightGenericError": "생성 중 문제가 발생했어요.",
+
+  "homeDateHeading": "{dateLabel} {dayLabel}요일",
+  "@homeDateHeading": {
+    "description": "홈 상단 날짜 (ko 전용 요일 결합). en은 그대로 dateLabel만 사용.",
+    "placeholders": {
+      "dateLabel": { "type": "String" },
+      "dayLabel": { "type": "String" }
+    }
+  },
+  "homeTodayHeading": "오늘 하루는 어땠나요?",
+  "homeEntrySavedToast": "오늘의 일기가 저장되었어요.",
+  "homeTodayEntries": "오늘의 기록",
+  "homeComposerHint": "오늘 있었던 일, 느낀 감정을 자유롭게 적어보세요...",
+  "homeAddEntryButton": "기록 추가",
+  "homeDailyQuotaBadge": "AI 분석 {used}/{max}",
+  "@homeDailyQuotaBadge": {
+    "placeholders": {
+      "used": { "type": "int" },
+      "max": { "type": "int" }
+    }
+  }
 }

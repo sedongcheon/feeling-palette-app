@@ -857,6 +857,48 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'생성 중 문제가 발생했어요.'**
   String get weeklyInsightGenericError;
+
+  /// 홈 상단 날짜 (ko 전용 요일 결합). en은 그대로 dateLabel만 사용.
+  ///
+  /// In ko, this message translates to:
+  /// **'{dateLabel} {dayLabel}요일'**
+  String homeDateHeading(String dateLabel, String dayLabel);
+
+  /// No description provided for @homeTodayHeading.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘 하루는 어땠나요?'**
+  String get homeTodayHeading;
+
+  /// No description provided for @homeEntrySavedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘의 일기가 저장되었어요.'**
+  String get homeEntrySavedToast;
+
+  /// No description provided for @homeTodayEntries.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘의 기록'**
+  String get homeTodayEntries;
+
+  /// No description provided for @homeComposerHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘 있었던 일, 느낀 감정을 자유롭게 적어보세요...'**
+  String get homeComposerHint;
+
+  /// No description provided for @homeAddEntryButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'기록 추가'**
+  String get homeAddEntryButton;
+
+  /// No description provided for @homeDailyQuotaBadge.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 분석 {used}/{max}'**
+  String homeDailyQuotaBadge(int used, int max);
 }
 
 class _AppLocalizationsDelegate

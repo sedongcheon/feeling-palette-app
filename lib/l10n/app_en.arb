@@ -158,5 +158,13 @@
   "weeklyInsightQuotaError": "You've used this month's quota.",
   "weeklyInsightAdError": "Watch the full ad to generate.",
   "weeklyInsightNotEnoughData": "Not quite enough entries to find a pattern.",
-  "weeklyInsightGenericError": "Something went wrong while generating."
+  "weeklyInsightGenericError": "Something went wrong while generating.",
+
+  "homeDateHeading": "{dateLabel}, {dayLabel}",
+  "homeTodayHeading": "How was your day?",
+  "homeEntrySavedToast": "Today's diary entry was saved.",
+  "homeTodayEntries": "Today's entries",
+  "homeComposerHint": "Write freely about your day and feelings…",
+  "homeAddEntryButton": "Add entry",
+  "homeDailyQuotaBadge": "AI analyses {used}/{max}"
 }

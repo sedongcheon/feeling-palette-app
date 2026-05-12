@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/theme.dart';
+import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import '../providers/diary_provider.dart';
 import '../services/emotion_analyzer.dart';
@@ -55,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _handleBonusUnlock(BuildContext context) async {
+    final loc = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     final granted = await context.read<DiaryProvider>().watchAdForBonus();
     if (!mounted) return;
@@ -63,17 +66,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ..showSnackBar(SnackBar(
         content: Text(
           granted
-              ? 'AI 분석 +$kRewardBonusPerAd개가 언락되었어요!'
-              : '광고를 끝까지 시청해야 보상을 받을 수 있어요.',
+              ? loc.todayEntryBonusUnlocked(kRewardBonusPerAd)
+              : loc.todayEntryBonusAdIncomplete,
         ),
         behavior: SnackBarBehavior.floating,
       ));
   }
 
   Future<void> _handleSave() async {
+    final loc = AppLocalizations.of(context);
     final trimmed = _controller.text.trim();
     if (trimmed.isEmpty) {
-      _showSnack('일기 내용을 입력해주세요.');
+      _showSnack(loc.todayEntryEmptyContent);
       return;
     }
     setState(() => _isSaving = true);
@@ -82,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (!mounted) return;
       _controller.clear();
       _focus.unfocus();
-      _showSnack('오늘의 일기가 저장되었어요.');
+      _showSnack(loc.homeEntrySavedToast);
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }
@@ -91,12 +95,20 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final loc = AppLocalizations.of(context);
     final store = context.watch<DiaryProvider>();
 
     final today = DateTime.now();
-    const dayNames = ['월', '화', '수', '목', '금', '토', '일'];
-    final dateStr = '${today.year}년 ${today.month}월 ${today.day}일';
-    final dayStr = dayNames[today.weekday - 1];
+    final localeName = loc.localeName;
+    // ko: '5월 12일 월요일' 패턴을 호환하려면 ICU에 dateLabel/dayLabel을 따로
+    // 넘긴다. en 로케일에선 dayLabel은 비워두고 dateLabel만 사용.
+    final isKo = localeName.startsWith('ko');
+    final dateLabel = isKo
+        ? DateFormat.yMMMd('ko').format(today)
+        : DateFormat.yMMMMd(localeName).format(today);
+    final dayLabel = isKo
+        ? DateFormat.E('ko').format(today).replaceAll('요일', '')
+        : DateFormat.EEEE(localeName).format(today);
 
     final entries = store.todayEntries;
     final reversed = entries.reversed.toList();
@@ -117,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            tooltip: '백업 / 복원',
+            tooltip: loc.backupTitle,
             icon: Icon(Icons.cloud_sync_rounded, color: palette.tabBarActive),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
@@ -127,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           IconButton(
-            tooltip: '설정',
+            tooltip: loc.settingsTitle,
             icon: Icon(Icons.settings_rounded, color: palette.tabBarActive),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
@@ -145,12 +157,12 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '$dateStr $dayStr요일',
+                loc.homeDateHeading(dateLabel, dayLabel),
                 style: TextStyle(fontSize: 14, color: palette.textSecondary),
               ),
               const SizedBox(height: 4),
               Text(
-                '오늘 하루는 어땠나요?',
+                loc.homeTodayHeading,
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -160,13 +172,13 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16),
               const WeeklyInsightBlock(),
               const SizedBox(height: 16),
-              _buildComposer(palette),
+              _buildComposer(palette, loc),
               if (entries.isNotEmpty) ...[
                 const SizedBox(height: 24),
                 Row(
                   children: [
                     Text(
-                      '오늘의 기록',
+                      loc.homeTodayEntries,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
@@ -220,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildComposer(AppPalette palette) {
+  Widget _buildComposer(AppPalette palette, AppLocalizations loc) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -240,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
             style:
                 TextStyle(fontSize: 16, height: 26 / 16, color: palette.text),
             decoration: InputDecoration(
-              hintText: '오늘 있었던 일, 느낀 감정을 자유롭게 적어보세요...',
+              hintText: loc.homeComposerHint,
               hintStyle: TextStyle(color: palette.textSecondary),
               border: InputBorder.none,
               counterText: '',
@@ -277,8 +289,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.white,
                           ),
                         )
-                      : const Text('기록 추가',
-                          style: TextStyle(fontWeight: FontWeight.w700)),
+                      : Text(loc.homeAddEntryButton,
+                          style: const TextStyle(fontWeight: FontWeight.w700)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: palette.tabBarActive,
                     foregroundColor: Colors.white,
@@ -312,6 +324,7 @@ class _DailyQuotaBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     final reached = used >= max;
     final color = reached ? const Color(0xFFE74C3C) : palette.textSecondary;
     return Container(
@@ -328,7 +341,7 @@ class _DailyQuotaBadge extends StatelessWidget {
           Icon(Icons.auto_awesome_rounded, size: 12, color: color),
           const SizedBox(width: 4),
           Text(
-            'AI 분석 $used/$max',
+            loc.homeDailyQuotaBadge(used, max),
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w700,
@@ -354,6 +367,7 @@ class _BonusUnlockButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return SizedBox(
       width: double.infinity,
       child: OutlinedButton.icon(
@@ -361,7 +375,7 @@ class _BonusUnlockButton extends StatelessWidget {
         icon: Icon(Icons.card_giftcard_rounded,
             size: 18, color: palette.tabBarActive),
         label: Text(
-          '광고 보고 AI 분석 +$kRewardBonusPerAd 언락 (남은 시청 $adsRemaining회)',
+          loc.todayEntryBonusAdButton(kRewardBonusPerAd, adsRemaining),
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w700,
