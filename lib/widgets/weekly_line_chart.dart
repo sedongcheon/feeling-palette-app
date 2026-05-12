@@ -100,7 +100,7 @@ class WeeklyLineChart extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 4),
-                Text('${info.emoji} ${info.label}',
+                Text('${info.emoji} ${emotionLabel(context, type)}',
                     style: TextStyle(fontSize: 11, color: textColor)),
               ],
             );

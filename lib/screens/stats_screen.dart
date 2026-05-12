@@ -65,7 +65,7 @@ class _StatsScreenState extends State<StatsScreen> {
         .map((t) {
           final info = emotionInfoOf(t);
           return DonutSlice(
-            label: info.label,
+            label: emotionLabel(context, t),
             emoji: info.emoji,
             value: counts[t] ?? 0,
             color: info.color,
@@ -205,7 +205,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 child: Column(
                   children: [
                     for (var i = 0; i < topThree.length; i++)
-                      _topRow(palette, i + 1, topThree[i].key, topThree[i].value,
+                      _topRow(context, palette, i + 1, topThree[i].key, topThree[i].value,
                           totalDays),
                   ],
                 ),
@@ -231,7 +231,7 @@ class _StatsScreenState extends State<StatsScreen> {
                   palette,
                   title: '월간 요약',
                   child: Text(
-                    "이번 달은 $totalDays일(총 $totalEntries개 기록) 중 '${emotionInfoOf(topThree.first.key).label}'을 가장 많이 느꼈어요. "
+                    "이번 달은 $totalDays일(총 $totalEntries개 기록) 중 '${emotionLabel(context, topThree.first.key)}'을 가장 많이 느꼈어요. "
                     "(${topThree.first.value}일, ${(topThree.first.value / totalDays * 100).round()}%)",
                     style: TextStyle(
                         fontSize: 15, height: 24 / 15, color: palette.text),
@@ -278,7 +278,7 @@ class _StatsScreenState extends State<StatsScreen> {
     );
   }
 
-  Widget _topRow(AppPalette palette, int rank, EmotionType type, int count, int total) {
+  Widget _topRow(BuildContext context, AppPalette palette, int rank, EmotionType type, int count, int total) {
     final info = emotionInfoOf(type);
     final percentage = (count / total * 100).round();
     return Padding(
@@ -310,7 +310,7 @@ class _StatsScreenState extends State<StatsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(info.label,
+                Text(emotionLabel(context, type),
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,

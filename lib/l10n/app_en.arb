@@ -1,4 +1,7 @@
 {
   "@@locale": "en",
-  "appTitle": "Feeling Palette"
+
+  "appTitle": "Feeling Palette",
+
+  "emotionLabel": "{type, select, joy{Joy} sadness{Sadness} anger{Anger} anxiety{Anxiety} calm{Calm} excitement{Excitement} other{Unknown}}"
 }

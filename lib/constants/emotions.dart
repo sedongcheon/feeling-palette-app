@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 
 class EmotionInfo {
   final EmotionType key;
-  final String label;
   final String emoji;
   final Color color;
   final String hex;
 
   const EmotionInfo({
     required this.key,
-    required this.label,
     required this.emoji,
     required this.color,
     required this.hex,
@@ -21,42 +20,36 @@ class EmotionInfo {
 const Map<EmotionType, EmotionInfo> kEmotions = {
   EmotionType.joy: EmotionInfo(
     key: EmotionType.joy,
-    label: '기쁨',
     emoji: '😊',
     color: Color(0xFFFFD700),
     hex: '#FFD700',
   ),
   EmotionType.sadness: EmotionInfo(
     key: EmotionType.sadness,
-    label: '슬픔',
     emoji: '😢',
     color: Color(0xFF4A90D9),
     hex: '#4A90D9',
   ),
   EmotionType.anger: EmotionInfo(
     key: EmotionType.anger,
-    label: '분노',
     emoji: '😠',
     color: Color(0xFFE74C3C),
     hex: '#E74C3C',
   ),
   EmotionType.anxiety: EmotionInfo(
     key: EmotionType.anxiety,
-    label: '불안',
     emoji: '😰',
     color: Color(0xFF9B59B6),
     hex: '#9B59B6',
   ),
   EmotionType.calm: EmotionInfo(
     key: EmotionType.calm,
-    label: '평온',
     emoji: '😌',
     color: Color(0xFF2ECC71),
     hex: '#2ECC71',
   ),
   EmotionType.excitement: EmotionInfo(
     key: EmotionType.excitement,
-    label: '설렘',
     emoji: '🥰',
     color: Color(0xFFFF69B4),
     hex: '#FF69B4',
@@ -64,6 +57,9 @@ const Map<EmotionType, EmotionInfo> kEmotions = {
 };
 
 EmotionInfo emotionInfoOf(EmotionType type) => kEmotions[type]!;
+
+String emotionLabel(BuildContext context, EmotionType type) =>
+    AppLocalizations.of(context).emotionLabel(type.name);
 
 Color hexToColor(String hex) {
   final cleaned = hex.replaceAll('#', '');

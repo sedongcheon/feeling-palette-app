@@ -57,7 +57,7 @@ class DiaryDetailCard extends StatelessWidget {
                       Text(primary.emoji, style: const TextStyle(fontSize: 14)),
                       const SizedBox(width: 4),
                       Text(
-                        primary.label,
+                        emotionLabel(context, entry.primaryEmotion),
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,

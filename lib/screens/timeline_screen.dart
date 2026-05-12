@@ -228,7 +228,7 @@ class _TimelineItem extends StatelessWidget {
                                       style: const TextStyle(fontSize: 11)),
                                   const SizedBox(width: 3),
                                   Text(
-                                    primary.label,
+                                    emotionLabel(context, entry.primaryEmotion),
                                     style: TextStyle(
                                         fontSize: 11,
                                         fontWeight: FontWeight.w600,

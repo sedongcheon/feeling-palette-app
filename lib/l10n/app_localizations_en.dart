@@ -10,4 +10,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appTitle => 'Feeling Palette';
+
+  @override
+  String emotionLabel(String type) {
+    String _temp0 = intl.Intl.selectLogic(type, {
+      'joy': 'Joy',
+      'sadness': 'Sadness',
+      'anger': 'Anger',
+      'anxiety': 'Anxiety',
+      'calm': 'Calm',
+      'excitement': 'Excitement',
+      'other': 'Unknown',
+    });
+    return '$_temp0';
+  }
 }

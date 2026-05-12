@@ -99,7 +99,7 @@ class DayAverageCard extends StatelessWidget {
                           style: const TextStyle(fontSize: 18)),
                       const SizedBox(width: 6),
                       Text(
-                        primary.label,
+                        emotionLabel(context, aggregate.primaryEmotion),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -151,7 +151,7 @@ class _BarRow extends StatelessWidget {
         SizedBox(
           width: 30,
           child: Text(
-            info.label,
+            emotionLabel(context, type),
             style: TextStyle(fontSize: 12, color: palette.textSecondary),
           ),
         ),

@@ -103,6 +103,12 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'Feeling Palette'**
   String get appTitle;
+
+  /// 감정 라벨 — EmotionType enum의 name과 매칭
+  ///
+  /// In ko, this message translates to:
+  /// **'{type, select, joy{기쁨} sadness{슬픔} anger{분노} anxiety{불안} calm{평온} excitement{설렘} other{알 수 없음}}'**
+  String emotionLabel(String type);
 }
 
 class _AppLocalizationsDelegate
