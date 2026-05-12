@@ -35,6 +35,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonClose => 'Close';
 
   @override
+  String get commonSave => 'Save';
+
+  @override
+  String get commonDelete => 'Delete';
+
+  @override
   String get backupTitle => 'Backup / Restore';
 
   @override
@@ -246,4 +252,89 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsRestoreNothing => 'No purchases to restore.';
+
+  @override
+  String get todayEntryEditTooltip => 'Edit';
+
+  @override
+  String get todayEntryDeleteTooltip => 'Delete';
+
+  @override
+  String get todayEntryAnalyzing => 'AI is analyzing emotions…';
+
+  @override
+  String todayEntryMaxAnalysisHit(int max) {
+    return 'AI analysis is limited to $max times per entry.';
+  }
+
+  @override
+  String todayEntryDailyLimitHit(int limit) {
+    return 'You\'ve used today\'s AI analysis limit ($limit).';
+  }
+
+  @override
+  String todayEntryAnalysisCompleteMaxed(
+    int max,
+    int dailyUsed,
+    int dailyLimit,
+  ) {
+    return 'Analysis complete! All $max/$max analyses used for this entry. (Today $dailyUsed/$dailyLimit)';
+  }
+
+  @override
+  String todayEntryAnalysisComplete(
+    int used,
+    int max,
+    int remaining,
+    int dailyUsed,
+    int dailyLimit,
+  ) {
+    return 'Analysis complete! ($used/$max used, $remaining remaining · today $dailyUsed/$dailyLimit)';
+  }
+
+  @override
+  String get todayEntryAnalysisErrorTitle => 'Analysis error';
+
+  @override
+  String get todayEntryAnalysisErrorMessage => 'Please try again later.';
+
+  @override
+  String get todayEntryEmptyContent => 'Please enter your diary content.';
+
+  @override
+  String todayEntryAnalysisLocked(int max) {
+    return 'All $max analyses used; the previous result is kept.';
+  }
+
+  @override
+  String get todayEntryDeleteDialogTitle => 'Delete diary';
+
+  @override
+  String get todayEntryDeleteDialogMessage =>
+      'Delete this diary?\nThis cannot be undone.';
+
+  @override
+  String get todayEntryAnalyzeCapHit => 'All analyses used';
+
+  @override
+  String todayEntryBonusAdButton(int bonus, int remaining) {
+    return 'Watch an ad to unlock +$bonus analyses ($remaining left)';
+  }
+
+  @override
+  String get todayEntryDailyLimitButton => 'Today\'s AI analysis limit reached';
+
+  @override
+  String todayEntryAnalyzeButton(int remaining, int max) {
+    return 'AI emotion analysis ($remaining/$max)';
+  }
+
+  @override
+  String todayEntryBonusUnlocked(int bonus) {
+    return '+$bonus analyses unlocked!';
+  }
+
+  @override
+  String get todayEntryBonusAdIncomplete =>
+      'Watch the full ad to receive the reward.';
 }

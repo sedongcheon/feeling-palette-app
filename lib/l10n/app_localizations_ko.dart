@@ -35,6 +35,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get commonClose => '닫기';
 
   @override
+  String get commonSave => '저장';
+
+  @override
+  String get commonDelete => '삭제';
+
+  @override
   String get backupTitle => '백업 / 복원';
 
   @override
@@ -242,4 +248,87 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get settingsRestoreNothing => '복원할 구매 내역이 없어요.';
+
+  @override
+  String get todayEntryEditTooltip => '수정';
+
+  @override
+  String get todayEntryDeleteTooltip => '삭제';
+
+  @override
+  String get todayEntryAnalyzing => 'AI가 감정을 분석하고 있어요...';
+
+  @override
+  String todayEntryMaxAnalysisHit(int max) {
+    return 'AI 분석은 일기당 최대 $max회까지 가능해요.';
+  }
+
+  @override
+  String todayEntryDailyLimitHit(int limit) {
+    return '오늘 AI 분석 한도($limit개)를 모두 사용했어요.';
+  }
+
+  @override
+  String todayEntryAnalysisCompleteMaxed(
+    int max,
+    int dailyUsed,
+    int dailyLimit,
+  ) {
+    return '분석 완료! 이번 일기의 분석 횟수($max/$max)를 모두 사용했어요. (오늘 $dailyUsed/$dailyLimit)';
+  }
+
+  @override
+  String todayEntryAnalysisComplete(
+    int used,
+    int max,
+    int remaining,
+    int dailyUsed,
+    int dailyLimit,
+  ) {
+    return '분석 완료! ($used/$max회 사용, 남은 횟수 $remaining · 오늘 $dailyUsed/$dailyLimit)';
+  }
+
+  @override
+  String get todayEntryAnalysisErrorTitle => '분석 오류';
+
+  @override
+  String get todayEntryAnalysisErrorMessage => '잠시 후 다시 시도해주세요.';
+
+  @override
+  String get todayEntryEmptyContent => '일기 내용을 입력해주세요.';
+
+  @override
+  String todayEntryAnalysisLocked(int max) {
+    return '분석 횟수($max회)를 모두 사용해 이전 분석 결과가 유지돼요.';
+  }
+
+  @override
+  String get todayEntryDeleteDialogTitle => '일기 삭제';
+
+  @override
+  String get todayEntryDeleteDialogMessage => '이 일기를 삭제할까요?\n삭제하면 되돌릴 수 없어요.';
+
+  @override
+  String get todayEntryAnalyzeCapHit => '분석 횟수를 모두 사용했어요';
+
+  @override
+  String todayEntryBonusAdButton(int bonus, int remaining) {
+    return '광고 보고 AI 분석 +$bonus 언락 (남은 시청 $remaining회)';
+  }
+
+  @override
+  String get todayEntryDailyLimitButton => '오늘 AI 분석 한도를 모두 사용했어요';
+
+  @override
+  String todayEntryAnalyzeButton(int remaining, int max) {
+    return 'AI 감정 분석 ($remaining/$max)';
+  }
+
+  @override
+  String todayEntryBonusUnlocked(int bonus) {
+    return 'AI 분석 +$bonus개가 언락되었어요!';
+  }
+
+  @override
+  String get todayEntryBonusAdIncomplete => '광고를 끝까지 시청해야 보상을 받을 수 있어요.';
 }

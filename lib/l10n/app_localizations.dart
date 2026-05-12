@@ -128,6 +128,18 @@ abstract class AppLocalizations {
   /// **'닫기'**
   String get commonClose;
 
+  /// 공통: 저장 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'저장'**
+  String get commonSave;
+
+  /// 공통: 삭제 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'삭제'**
+  String get commonDelete;
+
   /// No description provided for @backupTitle.
   ///
   /// In ko, this message translates to:
@@ -469,6 +481,130 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'복원할 구매 내역이 없어요.'**
   String get settingsRestoreNothing;
+
+  /// No description provided for @todayEntryEditTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'수정'**
+  String get todayEntryEditTooltip;
+
+  /// No description provided for @todayEntryDeleteTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'삭제'**
+  String get todayEntryDeleteTooltip;
+
+  /// No description provided for @todayEntryAnalyzing.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI가 감정을 분석하고 있어요...'**
+  String get todayEntryAnalyzing;
+
+  /// No description provided for @todayEntryMaxAnalysisHit.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 분석은 일기당 최대 {max}회까지 가능해요.'**
+  String todayEntryMaxAnalysisHit(int max);
+
+  /// No description provided for @todayEntryDailyLimitHit.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘 AI 분석 한도({limit}개)를 모두 사용했어요.'**
+  String todayEntryDailyLimitHit(int limit);
+
+  /// No description provided for @todayEntryAnalysisCompleteMaxed.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 완료! 이번 일기의 분석 횟수({max}/{max})를 모두 사용했어요. (오늘 {dailyUsed}/{dailyLimit})'**
+  String todayEntryAnalysisCompleteMaxed(
+    int max,
+    int dailyUsed,
+    int dailyLimit,
+  );
+
+  /// No description provided for @todayEntryAnalysisComplete.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 완료! ({used}/{max}회 사용, 남은 횟수 {remaining} · 오늘 {dailyUsed}/{dailyLimit})'**
+  String todayEntryAnalysisComplete(
+    int used,
+    int max,
+    int remaining,
+    int dailyUsed,
+    int dailyLimit,
+  );
+
+  /// No description provided for @todayEntryAnalysisErrorTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 오류'**
+  String get todayEntryAnalysisErrorTitle;
+
+  /// No description provided for @todayEntryAnalysisErrorMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'잠시 후 다시 시도해주세요.'**
+  String get todayEntryAnalysisErrorMessage;
+
+  /// No description provided for @todayEntryEmptyContent.
+  ///
+  /// In ko, this message translates to:
+  /// **'일기 내용을 입력해주세요.'**
+  String get todayEntryEmptyContent;
+
+  /// No description provided for @todayEntryAnalysisLocked.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 횟수({max}회)를 모두 사용해 이전 분석 결과가 유지돼요.'**
+  String todayEntryAnalysisLocked(int max);
+
+  /// No description provided for @todayEntryDeleteDialogTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'일기 삭제'**
+  String get todayEntryDeleteDialogTitle;
+
+  /// No description provided for @todayEntryDeleteDialogMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 일기를 삭제할까요?\n삭제하면 되돌릴 수 없어요.'**
+  String get todayEntryDeleteDialogMessage;
+
+  /// No description provided for @todayEntryAnalyzeCapHit.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 횟수를 모두 사용했어요'**
+  String get todayEntryAnalyzeCapHit;
+
+  /// No description provided for @todayEntryBonusAdButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 보고 AI 분석 +{bonus} 언락 (남은 시청 {remaining}회)'**
+  String todayEntryBonusAdButton(int bonus, int remaining);
+
+  /// No description provided for @todayEntryDailyLimitButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘 AI 분석 한도를 모두 사용했어요'**
+  String get todayEntryDailyLimitButton;
+
+  /// No description provided for @todayEntryAnalyzeButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 감정 분석 ({remaining}/{max})'**
+  String todayEntryAnalyzeButton(int remaining, int max);
+
+  /// No description provided for @todayEntryBonusUnlocked.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 분석 +{bonus}개가 언락되었어요!'**
+  String todayEntryBonusUnlocked(int bonus);
+
+  /// No description provided for @todayEntryBonusAdIncomplete.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고를 끝까지 시청해야 보상을 받을 수 있어요.'**
+  String get todayEntryBonusAdIncomplete;
 }
 
 class _AppLocalizationsDelegate

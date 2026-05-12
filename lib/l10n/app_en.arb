@@ -8,6 +8,8 @@
   "commonOk": "OK",
   "commonCancel": "Cancel",
   "commonClose": "Close",
+  "commonSave": "Save",
+  "commonDelete": "Delete",
 
   "backupTitle": "Backup / Restore",
   "backupInfoMessage": "Data is stored only on this device.\nUse the options below to move or back up your data.",
@@ -80,5 +82,32 @@
 
   "settingsRestoreButton": "Restore purchases",
   "settingsRestoreSuccess": "Purchases restored.",
-  "settingsRestoreNothing": "No purchases to restore."
+  "settingsRestoreNothing": "No purchases to restore.",
+
+  "todayEntryEditTooltip": "Edit",
+  "todayEntryDeleteTooltip": "Delete",
+  "todayEntryAnalyzing": "AI is analyzing emotions…",
+
+  "todayEntryMaxAnalysisHit": "AI analysis is limited to {max} times per entry.",
+  "todayEntryDailyLimitHit": "You've used today's AI analysis limit ({limit}).",
+  "todayEntryAnalysisCompleteMaxed": "Analysis complete! All {max}/{max} analyses used for this entry. (Today {dailyUsed}/{dailyLimit})",
+  "todayEntryAnalysisComplete": "Analysis complete! ({used}/{max} used, {remaining} remaining · today {dailyUsed}/{dailyLimit})",
+
+  "todayEntryAnalysisErrorTitle": "Analysis error",
+  "todayEntryAnalysisErrorMessage": "Please try again later.",
+
+  "todayEntryEmptyContent": "Please enter your diary content.",
+
+  "todayEntryAnalysisLocked": "All {max} analyses used; the previous result is kept.",
+
+  "todayEntryDeleteDialogTitle": "Delete diary",
+  "todayEntryDeleteDialogMessage": "Delete this diary?\nThis cannot be undone.",
+
+  "todayEntryAnalyzeCapHit": "All analyses used",
+  "todayEntryBonusAdButton": "Watch an ad to unlock +{bonus} analyses ({remaining} left)",
+  "todayEntryDailyLimitButton": "Today's AI analysis limit reached",
+  "todayEntryAnalyzeButton": "AI emotion analysis ({remaining}/{max})",
+
+  "todayEntryBonusUnlocked": "+{bonus} analyses unlocked!",
+  "todayEntryBonusAdIncomplete": "Watch the full ad to receive the reward."
 }

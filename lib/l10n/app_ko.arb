@@ -20,6 +20,10 @@
   "@commonCancel": { "description": "공통: 취소 버튼" },
   "commonClose": "닫기",
   "@commonClose": { "description": "공통: 닫기 버튼" },
+  "commonSave": "저장",
+  "@commonSave": { "description": "공통: 저장 버튼" },
+  "commonDelete": "삭제",
+  "@commonDelete": { "description": "공통: 삭제 버튼" },
 
   "backupTitle": "백업 / 복원",
   "backupInfoMessage": "데이터는 기기에만 저장됩니다.\n다른 기기로 옮기거나 백업하려면 아래 기능을 사용하세요.",
@@ -128,5 +132,72 @@
 
   "settingsRestoreButton": "구매 복원",
   "settingsRestoreSuccess": "구매 내역이 복원되었어요.",
-  "settingsRestoreNothing": "복원할 구매 내역이 없어요."
+  "settingsRestoreNothing": "복원할 구매 내역이 없어요.",
+
+  "todayEntryEditTooltip": "수정",
+  "todayEntryDeleteTooltip": "삭제",
+  "todayEntryAnalyzing": "AI가 감정을 분석하고 있어요...",
+
+  "todayEntryMaxAnalysisHit": "AI 분석은 일기당 최대 {max}회까지 가능해요.",
+  "@todayEntryMaxAnalysisHit": {
+    "placeholders": { "max": { "type": "int" } }
+  },
+  "todayEntryDailyLimitHit": "오늘 AI 분석 한도({limit}개)를 모두 사용했어요.",
+  "@todayEntryDailyLimitHit": {
+    "placeholders": { "limit": { "type": "int" } }
+  },
+  "todayEntryAnalysisCompleteMaxed": "분석 완료! 이번 일기의 분석 횟수({max}/{max})를 모두 사용했어요. (오늘 {dailyUsed}/{dailyLimit})",
+  "@todayEntryAnalysisCompleteMaxed": {
+    "placeholders": {
+      "max": { "type": "int" },
+      "dailyUsed": { "type": "int" },
+      "dailyLimit": { "type": "int" }
+    }
+  },
+  "todayEntryAnalysisComplete": "분석 완료! ({used}/{max}회 사용, 남은 횟수 {remaining} · 오늘 {dailyUsed}/{dailyLimit})",
+  "@todayEntryAnalysisComplete": {
+    "placeholders": {
+      "used": { "type": "int" },
+      "max": { "type": "int" },
+      "remaining": { "type": "int" },
+      "dailyUsed": { "type": "int" },
+      "dailyLimit": { "type": "int" }
+    }
+  },
+
+  "todayEntryAnalysisErrorTitle": "분석 오류",
+  "todayEntryAnalysisErrorMessage": "잠시 후 다시 시도해주세요.",
+
+  "todayEntryEmptyContent": "일기 내용을 입력해주세요.",
+
+  "todayEntryAnalysisLocked": "분석 횟수({max}회)를 모두 사용해 이전 분석 결과가 유지돼요.",
+  "@todayEntryAnalysisLocked": {
+    "placeholders": { "max": { "type": "int" } }
+  },
+
+  "todayEntryDeleteDialogTitle": "일기 삭제",
+  "todayEntryDeleteDialogMessage": "이 일기를 삭제할까요?\n삭제하면 되돌릴 수 없어요.",
+
+  "todayEntryAnalyzeCapHit": "분석 횟수를 모두 사용했어요",
+  "todayEntryBonusAdButton": "광고 보고 AI 분석 +{bonus} 언락 (남은 시청 {remaining}회)",
+  "@todayEntryBonusAdButton": {
+    "placeholders": {
+      "bonus": { "type": "int" },
+      "remaining": { "type": "int" }
+    }
+  },
+  "todayEntryDailyLimitButton": "오늘 AI 분석 한도를 모두 사용했어요",
+  "todayEntryAnalyzeButton": "AI 감정 분석 ({remaining}/{max})",
+  "@todayEntryAnalyzeButton": {
+    "placeholders": {
+      "remaining": { "type": "int" },
+      "max": { "type": "int" }
+    }
+  },
+
+  "todayEntryBonusUnlocked": "AI 분석 +{bonus}개가 언락되었어요!",
+  "@todayEntryBonusUnlocked": {
+    "placeholders": { "bonus": { "type": "int" } }
+  },
+  "todayEntryBonusAdIncomplete": "광고를 끝까지 시청해야 보상을 받을 수 있어요."
 }

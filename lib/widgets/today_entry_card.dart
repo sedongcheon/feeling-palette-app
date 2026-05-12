@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/theme.dart';
+import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import '../providers/diary_provider.dart';
 import '../services/ads_service.dart';
@@ -56,15 +58,14 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
   }
 
   Future<void> _runAnalysis() async {
+    final loc = AppLocalizations.of(context);
     if (!widget.entry.canAnalyze) {
-      _showSnack('AI 분석은 일기당 최대 $kMaxAnalysisCount회까지 가능해요.');
+      _showSnack(loc.todayEntryMaxAnalysisHit(kMaxAnalysisCount));
       return;
     }
     final store = context.read<DiaryProvider>();
     if (widget.entry.analysisCount == 0 && store.dailyAnalysisLimitReached) {
-      _showSnack(
-        '오늘 AI 분석 한도(${store.effectiveDailyLimit}개)를 모두 사용했어요.',
-      );
+      _showSnack(loc.todayEntryDailyLimitHit(store.effectiveDailyLimit));
       return;
     }
     setState(() => _isAnalyzing = true);
@@ -84,29 +85,32 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
       final dailyLimit = store.effectiveDailyLimit;
       _showSnack(
         remaining == 0
-            ? '분석 완료! 이번 일기의 분석 횟수($kMaxAnalysisCount/$kMaxAnalysisCount)를 모두 사용했어요. (오늘 $dailyUsed/$dailyLimit)'
-            : '분석 완료! ($used/$kMaxAnalysisCount회 사용, 남은 횟수 $remaining · 오늘 $dailyUsed/$dailyLimit)',
+            ? loc.todayEntryAnalysisCompleteMaxed(
+                kMaxAnalysisCount, dailyUsed, dailyLimit)
+            : loc.todayEntryAnalysisComplete(
+                used, kMaxAnalysisCount, remaining, dailyUsed, dailyLimit),
       );
       AdsService.instance.onAnalysisCompleted();
     } on DailyAnalysisLimitException {
       if (!mounted) return;
-      _showSnack(
-        '오늘 AI 분석 한도(${store.effectiveDailyLimit}개)를 모두 사용했어요.',
-      );
+      _showSnack(loc.todayEntryDailyLimitHit(store.effectiveDailyLimit));
     } catch (_) {
       if (!mounted) return;
       await showDialog<void>(
         context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text('분석 오류'),
-          content: const Text('잠시 후 다시 시도해주세요.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('확인'),
-            ),
-          ],
-        ),
+        builder: (ctx) {
+          final dialogLoc = AppLocalizations.of(ctx);
+          return AlertDialog(
+            title: Text(dialogLoc.todayEntryAnalysisErrorTitle),
+            content: Text(dialogLoc.todayEntryAnalysisErrorMessage),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(),
+                child: Text(dialogLoc.commonOk),
+              ),
+            ],
+          );
+        },
       );
     } finally {
       if (mounted) setState(() => _isAnalyzing = false);
@@ -114,9 +118,10 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
   }
 
   Future<void> _save() async {
+    final loc = AppLocalizations.of(context);
     final trimmed = _controller.text.trim();
     if (trimmed.isEmpty) {
-      _showSnack('일기 내용을 입력해주세요.');
+      _showSnack(loc.todayEntryEmptyContent);
       return;
     }
     setState(() => _isSaving = true);
@@ -127,7 +132,7 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
       if (!mounted) return;
       setState(() => _isEditing = false);
       if (outcome != null && outcome.analysisLocked) {
-        _showSnack('분석 횟수($kMaxAnalysisCount회)를 모두 사용해 이전 분석 결과가 유지돼요.');
+        _showSnack(loc.todayEntryAnalysisLocked(kMaxAnalysisCount));
       }
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -144,20 +149,24 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
   Future<void> _delete() async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('일기 삭제'),
-        content: const Text('이 일기를 삭제할까요?\n삭제하면 되돌릴 수 없어요.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('취소'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('삭제', style: TextStyle(color: Color(0xFFE74C3C))),
-          ),
-        ],
-      ),
+      builder: (ctx) {
+        final loc = AppLocalizations.of(ctx);
+        return AlertDialog(
+          title: Text(loc.todayEntryDeleteDialogTitle),
+          content: Text(loc.todayEntryDeleteDialogMessage),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: Text(loc.commonCancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: Text(loc.commonDelete,
+                  style: const TextStyle(color: Color(0xFFE74C3C))),
+            ),
+          ],
+        );
+      },
     );
     if (confirmed == true && mounted) {
       await context.read<DiaryProvider>().removeDiary(widget.entry.id);
@@ -167,6 +176,7 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final loc = AppLocalizations.of(context);
     final entry = widget.entry;
     final hasAnalysis = entry.aiComment.isNotEmpty;
     final store = context.watch<DiaryProvider>();
@@ -188,7 +198,7 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
             child: Row(
               children: [
                 Text(
-                  _formatTime(entry.createdAt),
+                  _formatTime(context, entry.createdAt),
                   style: TextStyle(
                     fontSize: 12,
                     color: palette.textSecondary,
@@ -200,14 +210,14 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
                   IconButton(
                     icon: Icon(Icons.edit_outlined,
                         size: 18, color: palette.textSecondary),
-                    tooltip: '수정',
+                    tooltip: loc.todayEntryEditTooltip,
                     onPressed: () => setState(() => _isEditing = true),
                   ),
                 if (!_isEditing)
                   IconButton(
                     icon: const Icon(Icons.delete_outline,
                         size: 18, color: Color(0xFFE74C3C)),
-                    tooltip: '삭제',
+                    tooltip: loc.todayEntryDeleteTooltip,
                     onPressed: _delete,
                   ),
               ],
@@ -216,7 +226,7 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: _isEditing
-                ? _buildEditor(palette)
+                ? _buildEditor(palette, loc)
                 : _buildViewer(palette, entry.content),
           ),
           if (_isAnalyzing)
@@ -235,7 +245,7 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    'AI가 감정을 분석하고 있어요...',
+                    loc.todayEntryAnalyzing,
                     style: TextStyle(
                         fontSize: 13, color: palette.textSecondary),
                   ),
@@ -250,7 +260,7 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
           if (!hasAnalysis && !_isAnalyzing && !_isEditing)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: _buildAnalyzeButton(palette, store, dailyBlocked),
+              child: _buildAnalyzeButton(palette, loc, store, dailyBlocked),
             ),
         ],
       ),
@@ -259,6 +269,7 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
 
   Widget _buildAnalyzeButton(
     AppPalette palette,
+    AppLocalizations loc,
     DiaryProvider store,
     bool dailyBlocked,
   ) {
@@ -267,7 +278,7 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
     if (!entry.canAnalyze) {
       return _analyzeButton(
         palette: palette,
-        label: '분석 횟수를 모두 사용했어요',
+        label: loc.todayEntryAnalyzeCapHit,
         onPressed: null,
       );
     }
@@ -276,8 +287,8 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
     if (dailyBlocked && store.canWatchBonusAd) {
       return _analyzeButton(
         palette: palette,
-        label:
-            '광고 보고 AI 분석 +$kRewardBonusPerAd 언락 (남은 시청 ${store.todayBonusAdsRemaining}회)',
+        label: loc.todayEntryBonusAdButton(
+            kRewardBonusPerAd, store.todayBonusAdsRemaining),
         icon: Icons.card_giftcard_rounded,
         onPressed: _handleBonusUnlock,
       );
@@ -286,14 +297,15 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
     if (dailyBlocked) {
       return _analyzeButton(
         palette: palette,
-        label: '오늘 AI 분석 한도를 모두 사용했어요',
+        label: loc.todayEntryDailyLimitButton,
         onPressed: null,
       );
     }
     // Normal state.
     return _analyzeButton(
       palette: palette,
-      label: 'AI 감정 분석 (${entry.remainingAnalyses}/$kMaxAnalysisCount)',
+      label: loc.todayEntryAnalyzeButton(
+          entry.remainingAnalyses, kMaxAnalysisCount),
       onPressed: _runAnalysis,
     );
   }
@@ -327,21 +339,19 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
   }
 
   Future<void> _handleBonusUnlock() async {
+    final loc = AppLocalizations.of(context);
     final granted = await context.read<DiaryProvider>().watchAdForBonus();
     if (!mounted) return;
     _showSnack(
       granted
-          ? 'AI 분석 +$kRewardBonusPerAd개가 언락되었어요!'
-          : '광고를 끝까지 시청해야 보상을 받을 수 있어요.',
+          ? loc.todayEntryBonusUnlocked(kRewardBonusPerAd)
+          : loc.todayEntryBonusAdIncomplete,
     );
   }
 
-  String _formatTime(int ts) {
+  String _formatTime(BuildContext context, int ts) {
     final d = DateTime.fromMillisecondsSinceEpoch(ts);
-    final hour12 = d.hour == 0 ? 12 : (d.hour > 12 ? d.hour - 12 : d.hour);
-    final period = d.hour < 12 ? '오전' : '오후';
-    final mm = d.minute.toString().padLeft(2, '0');
-    return '$period $hour12:$mm';
+    return DateFormat.jm(AppLocalizations.of(context).localeName).format(d);
   }
 
   Widget _buildViewer(AppPalette palette, String content) {
@@ -351,7 +361,7 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
     );
   }
 
-  Widget _buildEditor(AppPalette palette) {
+  Widget _buildEditor(AppPalette palette, AppLocalizations loc) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -389,7 +399,7 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: const Text('취소'),
+                  child: Text(loc.commonCancel),
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
@@ -413,9 +423,9 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
                             color: Colors.white,
                           ),
                         )
-                      : const Text(
-                          '저장',
-                          style: TextStyle(fontWeight: FontWeight.w700),
+                      : Text(
+                          loc.commonSave,
+                          style: const TextStyle(fontWeight: FontWeight.w700),
                         ),
                 ),
               ],
