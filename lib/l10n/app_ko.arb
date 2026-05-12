@@ -12,5 +12,93 @@
     "placeholders": {
       "type": { "type": "String" }
     }
-  }
+  },
+
+  "commonOk": "확인",
+  "@commonOk": { "description": "공통: 확인 버튼" },
+  "commonCancel": "취소",
+  "@commonCancel": { "description": "공통: 취소 버튼" },
+  "commonClose": "닫기",
+  "@commonClose": { "description": "공통: 닫기 버튼" },
+
+  "backupTitle": "백업 / 복원",
+  "backupInfoMessage": "데이터는 기기에만 저장됩니다.\n다른 기기로 옮기거나 백업하려면 아래 기능을 사용하세요.",
+  "backupSectionFile": "파일로 백업 / 복원",
+
+  "backupDriveUploadTitle": "Drive에 백업",
+  "backupDriveUploadSubtitle": "내 Drive의 앱 전용 폴더에 새 백업 파일을 업로드합니다.",
+  "backupDriveRestoreTitle": "Drive에서 복원",
+  "backupDriveRestoreSubtitle": "저장된 백업 목록에서 골라 복원합니다.",
+
+  "backupFileExportTitle": "파일로 내보내기",
+  "backupFileExportSubtitle": "공유 시트에서 Drive·iCloud·메일 등에 자유롭게 저장합니다.",
+  "backupFileImportTitle": "파일에서 복원",
+  "backupFileImportSubtitle": "기기·Drive·iCloud의 JSON 백업 파일을 선택해서 복원합니다.",
+
+  "backupDriveSignedOutTitle": "로그인 안 됨",
+  "backupDriveSignedOutSubtitle": "Google 계정으로 로그인하면 Drive에 백업할 수 있어요.",
+  "backupDriveSignInButton": "로그인",
+  "backupDriveSignOutButton": "로그아웃",
+
+  "backupRestoreDialogTitle": "복원",
+  "backupRestoreDialogMessage": "백업의 일기를 가져옵니다.\n같은 ID의 일기는 덮어써집니다. 계속할까요?",
+  "backupRestoreDialogConfirm": "복원",
+
+  "backupShareText": "Feeling Palette 일기 백업",
+  "backupShareSubject": "Feeling Palette 백업",
+
+  "backupCancelledStatus": "백업이 취소되었습니다.",
+  "backupCompleteTitle": "백업 완료",
+  "backupSavedMessage": "백업 파일이 저장되었어요.",
+  "backupFailedStatus": "백업 실패: {error}",
+  "@backupFailedStatus": {
+    "placeholders": { "error": { "type": "Object" } }
+  },
+  "backupFileReadError": "파일을 읽을 수 없습니다.",
+
+  "backupRestoreCompleteTitle": "복원 완료",
+  "backupRestoreCompleteMessage": "새로 추가 {inserted}개, 덮어쓰기 {updated}개",
+  "@backupRestoreCompleteMessage": {
+    "placeholders": {
+      "inserted": { "type": "int" },
+      "updated": { "type": "int" }
+    }
+  },
+  "backupRestoreFailedStatus": "복원 실패: {error}",
+  "@backupRestoreFailedStatus": {
+    "placeholders": { "error": { "type": "Object" } }
+  },
+
+  "backupDriveSignInCancelledStatus": "로그인이 취소되었습니다.",
+  "backupDriveSignedInStatus": "{email}(으)로 로그인되었습니다.",
+  "@backupDriveSignedInStatus": {
+    "placeholders": { "email": { "type": "String" } }
+  },
+  "backupDriveSignInFailedStatus": "로그인 실패: {error}",
+  "@backupDriveSignInFailedStatus": {
+    "placeholders": { "error": { "type": "Object" } }
+  },
+  "backupDriveSignedOutStatus": "로그아웃되었습니다.",
+
+  "backupDriveUploadCompleteTitle": "Drive 백업 완료",
+  "backupDriveUploadCompleteMessage": "{filename} 파일로 저장되었어요.",
+  "@backupDriveUploadCompleteMessage": {
+    "placeholders": { "filename": { "type": "String" } }
+  },
+  "backupDriveUploadFailedStatus": "업로드 실패: {error}",
+  "@backupDriveUploadFailedStatus": {
+    "placeholders": { "error": { "type": "Object" } }
+  },
+
+  "backupDriveListFailedStatus": "목록 조회 실패: {error}",
+  "@backupDriveListFailedStatus": {
+    "placeholders": { "error": { "type": "Object" } }
+  },
+  "backupDriveListEmptyStatus": "Drive에 저장된 백업이 없어요.",
+
+  "backupDriveListSheetTitle": "Drive 백업 ({count})",
+  "@backupDriveListSheetTitle": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "backupDriveListNoTime": "시간 정보 없음"
 }

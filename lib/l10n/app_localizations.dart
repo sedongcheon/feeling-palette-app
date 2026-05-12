@@ -109,6 +109,258 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'{type, select, joy{기쁨} sadness{슬픔} anger{분노} anxiety{불안} calm{평온} excitement{설렘} other{알 수 없음}}'**
   String emotionLabel(String type);
+
+  /// 공통: 확인 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'확인'**
+  String get commonOk;
+
+  /// 공통: 취소 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'취소'**
+  String get commonCancel;
+
+  /// 공통: 닫기 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'닫기'**
+  String get commonClose;
+
+  /// No description provided for @backupTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'백업 / 복원'**
+  String get backupTitle;
+
+  /// No description provided for @backupInfoMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'데이터는 기기에만 저장됩니다.\n다른 기기로 옮기거나 백업하려면 아래 기능을 사용하세요.'**
+  String get backupInfoMessage;
+
+  /// No description provided for @backupSectionFile.
+  ///
+  /// In ko, this message translates to:
+  /// **'파일로 백업 / 복원'**
+  String get backupSectionFile;
+
+  /// No description provided for @backupDriveUploadTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Drive에 백업'**
+  String get backupDriveUploadTitle;
+
+  /// No description provided for @backupDriveUploadSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'내 Drive의 앱 전용 폴더에 새 백업 파일을 업로드합니다.'**
+  String get backupDriveUploadSubtitle;
+
+  /// No description provided for @backupDriveRestoreTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Drive에서 복원'**
+  String get backupDriveRestoreTitle;
+
+  /// No description provided for @backupDriveRestoreSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장된 백업 목록에서 골라 복원합니다.'**
+  String get backupDriveRestoreSubtitle;
+
+  /// No description provided for @backupFileExportTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'파일로 내보내기'**
+  String get backupFileExportTitle;
+
+  /// No description provided for @backupFileExportSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'공유 시트에서 Drive·iCloud·메일 등에 자유롭게 저장합니다.'**
+  String get backupFileExportSubtitle;
+
+  /// No description provided for @backupFileImportTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'파일에서 복원'**
+  String get backupFileImportTitle;
+
+  /// No description provided for @backupFileImportSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'기기·Drive·iCloud의 JSON 백업 파일을 선택해서 복원합니다.'**
+  String get backupFileImportSubtitle;
+
+  /// No description provided for @backupDriveSignedOutTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인 안 됨'**
+  String get backupDriveSignedOutTitle;
+
+  /// No description provided for @backupDriveSignedOutSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Google 계정으로 로그인하면 Drive에 백업할 수 있어요.'**
+  String get backupDriveSignedOutSubtitle;
+
+  /// No description provided for @backupDriveSignInButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인'**
+  String get backupDriveSignInButton;
+
+  /// No description provided for @backupDriveSignOutButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그아웃'**
+  String get backupDriveSignOutButton;
+
+  /// No description provided for @backupRestoreDialogTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'복원'**
+  String get backupRestoreDialogTitle;
+
+  /// No description provided for @backupRestoreDialogMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'백업의 일기를 가져옵니다.\n같은 ID의 일기는 덮어써집니다. 계속할까요?'**
+  String get backupRestoreDialogMessage;
+
+  /// No description provided for @backupRestoreDialogConfirm.
+  ///
+  /// In ko, this message translates to:
+  /// **'복원'**
+  String get backupRestoreDialogConfirm;
+
+  /// No description provided for @backupShareText.
+  ///
+  /// In ko, this message translates to:
+  /// **'Feeling Palette 일기 백업'**
+  String get backupShareText;
+
+  /// No description provided for @backupShareSubject.
+  ///
+  /// In ko, this message translates to:
+  /// **'Feeling Palette 백업'**
+  String get backupShareSubject;
+
+  /// No description provided for @backupCancelledStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'백업이 취소되었습니다.'**
+  String get backupCancelledStatus;
+
+  /// No description provided for @backupCompleteTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'백업 완료'**
+  String get backupCompleteTitle;
+
+  /// No description provided for @backupSavedMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'백업 파일이 저장되었어요.'**
+  String get backupSavedMessage;
+
+  /// No description provided for @backupFailedStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'백업 실패: {error}'**
+  String backupFailedStatus(Object error);
+
+  /// No description provided for @backupFileReadError.
+  ///
+  /// In ko, this message translates to:
+  /// **'파일을 읽을 수 없습니다.'**
+  String get backupFileReadError;
+
+  /// No description provided for @backupRestoreCompleteTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'복원 완료'**
+  String get backupRestoreCompleteTitle;
+
+  /// No description provided for @backupRestoreCompleteMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'새로 추가 {inserted}개, 덮어쓰기 {updated}개'**
+  String backupRestoreCompleteMessage(int inserted, int updated);
+
+  /// No description provided for @backupRestoreFailedStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'복원 실패: {error}'**
+  String backupRestoreFailedStatus(Object error);
+
+  /// No description provided for @backupDriveSignInCancelledStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인이 취소되었습니다.'**
+  String get backupDriveSignInCancelledStatus;
+
+  /// No description provided for @backupDriveSignedInStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'{email}(으)로 로그인되었습니다.'**
+  String backupDriveSignedInStatus(String email);
+
+  /// No description provided for @backupDriveSignInFailedStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인 실패: {error}'**
+  String backupDriveSignInFailedStatus(Object error);
+
+  /// No description provided for @backupDriveSignedOutStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그아웃되었습니다.'**
+  String get backupDriveSignedOutStatus;
+
+  /// No description provided for @backupDriveUploadCompleteTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Drive 백업 완료'**
+  String get backupDriveUploadCompleteTitle;
+
+  /// No description provided for @backupDriveUploadCompleteMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'{filename} 파일로 저장되었어요.'**
+  String backupDriveUploadCompleteMessage(String filename);
+
+  /// No description provided for @backupDriveUploadFailedStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'업로드 실패: {error}'**
+  String backupDriveUploadFailedStatus(Object error);
+
+  /// No description provided for @backupDriveListFailedStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'목록 조회 실패: {error}'**
+  String backupDriveListFailedStatus(Object error);
+
+  /// No description provided for @backupDriveListEmptyStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'Drive에 저장된 백업이 없어요.'**
+  String get backupDriveListEmptyStatus;
+
+  /// No description provided for @backupDriveListSheetTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Drive 백업 ({count})'**
+  String backupDriveListSheetTitle(int count);
+
+  /// No description provided for @backupDriveListNoTime.
+  ///
+  /// In ko, this message translates to:
+  /// **'시간 정보 없음'**
+  String get backupDriveListNoTime;
 }
 
 class _AppLocalizationsDelegate

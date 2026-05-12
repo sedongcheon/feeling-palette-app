@@ -3,5 +3,60 @@
 
   "appTitle": "Feeling Palette",
 
-  "emotionLabel": "{type, select, joy{Joy} sadness{Sadness} anger{Anger} anxiety{Anxiety} calm{Calm} excitement{Excitement} other{Unknown}}"
+  "emotionLabel": "{type, select, joy{Joy} sadness{Sadness} anger{Anger} anxiety{Anxiety} calm{Calm} excitement{Excitement} other{Unknown}}",
+
+  "commonOk": "OK",
+  "commonCancel": "Cancel",
+  "commonClose": "Close",
+
+  "backupTitle": "Backup / Restore",
+  "backupInfoMessage": "Data is stored only on this device.\nUse the options below to move or back up your data.",
+  "backupSectionFile": "File backup / restore",
+
+  "backupDriveUploadTitle": "Back up to Drive",
+  "backupDriveUploadSubtitle": "Upload a new backup file to your Drive app folder.",
+  "backupDriveRestoreTitle": "Restore from Drive",
+  "backupDriveRestoreSubtitle": "Pick from your saved backups to restore.",
+
+  "backupFileExportTitle": "Export as file",
+  "backupFileExportSubtitle": "Use the share sheet to save to Drive, iCloud, mail, and more.",
+  "backupFileImportTitle": "Restore from file",
+  "backupFileImportSubtitle": "Pick a JSON backup file from your device, Drive, or iCloud.",
+
+  "backupDriveSignedOutTitle": "Not signed in",
+  "backupDriveSignedOutSubtitle": "Sign in with Google to back up to Drive.",
+  "backupDriveSignInButton": "Sign in",
+  "backupDriveSignOutButton": "Sign out",
+
+  "backupRestoreDialogTitle": "Restore",
+  "backupRestoreDialogMessage": "Diary entries from the backup will be imported.\nEntries with the same ID will be overwritten. Continue?",
+  "backupRestoreDialogConfirm": "Restore",
+
+  "backupShareText": "Feeling Palette diary backup",
+  "backupShareSubject": "Feeling Palette backup",
+
+  "backupCancelledStatus": "Backup was cancelled.",
+  "backupCompleteTitle": "Backup complete",
+  "backupSavedMessage": "The backup file was saved.",
+  "backupFailedStatus": "Backup failed: {error}",
+  "backupFileReadError": "Cannot read the file.",
+
+  "backupRestoreCompleteTitle": "Restore complete",
+  "backupRestoreCompleteMessage": "Added {inserted}, overwritten {updated}",
+  "backupRestoreFailedStatus": "Restore failed: {error}",
+
+  "backupDriveSignInCancelledStatus": "Sign-in was cancelled.",
+  "backupDriveSignedInStatus": "Signed in as {email}.",
+  "backupDriveSignInFailedStatus": "Sign-in failed: {error}",
+  "backupDriveSignedOutStatus": "Signed out.",
+
+  "backupDriveUploadCompleteTitle": "Drive backup complete",
+  "backupDriveUploadCompleteMessage": "Saved as {filename}.",
+  "backupDriveUploadFailedStatus": "Upload failed: {error}",
+
+  "backupDriveListFailedStatus": "Failed to load list: {error}",
+  "backupDriveListEmptyStatus": "No backups saved on Drive.",
+
+  "backupDriveListSheetTitle": "Drive backups ({count})",
+  "backupDriveListNoTime": "No timestamp"
 }
