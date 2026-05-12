@@ -58,5 +58,27 @@
   "backupDriveListEmptyStatus": "No backups saved on Drive.",
 
   "backupDriveListSheetTitle": "Drive backups ({count})",
-  "backupDriveListNoTime": "No timestamp"
+  "backupDriveListNoTime": "No timestamp",
+
+  "settingsTitle": "Settings",
+  "settingsSectionAppLock": "App lock",
+  "settingsSectionPurchase": "Purchase",
+
+  "settingsAutoLockTitle": "Auto-lock",
+  "settingsAutoLockDescription": "After leaving the app, the lock screen returns once this time has passed.",
+  "autoLockDelayLabel": "{seconds, select, 0{Immediately} 5{5 sec} 30{30 sec} 60{1 min} 300{5 min} 600{10 min} other{{seconds} sec}}",
+
+  "settingsRemoveAdsTitle": "Remove ads",
+  "settingsRemoveAdsPurchased": "Purchased — banner and interstitial ads are hidden.",
+  "settingsRemoveAdsDescription": "Use the app without banner or interstitial ads.\n(Reward ads remain available for bonus analyses.)",
+  "settingsRemoveAdsPurchasedButton": "Purchased",
+  "settingsBuyAtPrice": "Buy for {price}",
+  "settingsStoreUnavailable": "Cannot reach the store",
+  "settingsLoadFailedRetry": "Failed to load purchase info · Retry",
+  "settingsLoadingPurchaseInfo": "Loading purchase info…",
+  "settingsPurchaseStartFailed": "Cannot start the purchase right now. Please try again later.",
+
+  "settingsRestoreButton": "Restore purchases",
+  "settingsRestoreSuccess": "Purchases restored.",
+  "settingsRestoreNothing": "No purchases to restore."
 }

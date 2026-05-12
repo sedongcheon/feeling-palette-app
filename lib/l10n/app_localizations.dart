@@ -361,6 +361,114 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'시간 정보 없음'**
   String get backupDriveListNoTime;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'설정'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsSectionAppLock.
+  ///
+  /// In ko, this message translates to:
+  /// **'앱 잠금'**
+  String get settingsSectionAppLock;
+
+  /// No description provided for @settingsSectionPurchase.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매'**
+  String get settingsSectionPurchase;
+
+  /// No description provided for @settingsAutoLockTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'자동 잠금'**
+  String get settingsAutoLockTitle;
+
+  /// No description provided for @settingsAutoLockDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'앱을 벗어난 뒤 이 시간이 지나면 잠금 화면이 다시 뜹니다.'**
+  String get settingsAutoLockDescription;
+
+  /// No description provided for @autoLockDelayLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'{seconds, select, 0{즉시} 5{5초} 30{30초} 60{1분} 300{5분} 600{10분} other{{seconds}초}}'**
+  String autoLockDelayLabel(String seconds);
+
+  /// No description provided for @settingsRemoveAdsTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 제거'**
+  String get settingsRemoveAdsTitle;
+
+  /// No description provided for @settingsRemoveAdsPurchased.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 완료 — 배너와 전면 광고가 표시되지 않아요.'**
+  String get settingsRemoveAdsPurchased;
+
+  /// No description provided for @settingsRemoveAdsDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'배너 · 전면 광고 없이 쾌적하게 사용할 수 있어요.\n(리워드 광고는 보너스 분석 획득에 계속 사용 가능합니다.)'**
+  String get settingsRemoveAdsDescription;
+
+  /// No description provided for @settingsRemoveAdsPurchasedButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 완료'**
+  String get settingsRemoveAdsPurchasedButton;
+
+  /// No description provided for @settingsBuyAtPrice.
+  ///
+  /// In ko, this message translates to:
+  /// **'{price}에 구매하기'**
+  String settingsBuyAtPrice(String price);
+
+  /// No description provided for @settingsStoreUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'스토어에 연결할 수 없어요'**
+  String get settingsStoreUnavailable;
+
+  /// No description provided for @settingsLoadFailedRetry.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 정보를 불러오지 못했어요 · 다시 시도'**
+  String get settingsLoadFailedRetry;
+
+  /// No description provided for @settingsLoadingPurchaseInfo.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 정보 불러오는 중…'**
+  String get settingsLoadingPurchaseInfo;
+
+  /// No description provided for @settingsPurchaseStartFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'지금은 구매를 시작할 수 없어요. 잠시 후 다시 시도해주세요.'**
+  String get settingsPurchaseStartFailed;
+
+  /// No description provided for @settingsRestoreButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 복원'**
+  String get settingsRestoreButton;
+
+  /// No description provided for @settingsRestoreSuccess.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 내역이 복원되었어요.'**
+  String get settingsRestoreSuccess;
+
+  /// No description provided for @settingsRestoreNothing.
+  ///
+  /// In ko, this message translates to:
+  /// **'복원할 구매 내역이 없어요.'**
+  String get settingsRestoreNothing;
 }
 
 class _AppLocalizationsDelegate

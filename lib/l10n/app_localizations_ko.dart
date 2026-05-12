@@ -173,4 +173,73 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get backupDriveListNoTime => '시간 정보 없음';
+
+  @override
+  String get settingsTitle => '설정';
+
+  @override
+  String get settingsSectionAppLock => '앱 잠금';
+
+  @override
+  String get settingsSectionPurchase => '구매';
+
+  @override
+  String get settingsAutoLockTitle => '자동 잠금';
+
+  @override
+  String get settingsAutoLockDescription => '앱을 벗어난 뒤 이 시간이 지나면 잠금 화면이 다시 뜹니다.';
+
+  @override
+  String autoLockDelayLabel(String seconds) {
+    String _temp0 = intl.Intl.selectLogic(seconds, {
+      '0': '즉시',
+      '5': '5초',
+      '30': '30초',
+      '60': '1분',
+      '300': '5분',
+      '600': '10분',
+      'other': '$seconds초',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsRemoveAdsTitle => '광고 제거';
+
+  @override
+  String get settingsRemoveAdsPurchased => '구매 완료 — 배너와 전면 광고가 표시되지 않아요.';
+
+  @override
+  String get settingsRemoveAdsDescription =>
+      '배너 · 전면 광고 없이 쾌적하게 사용할 수 있어요.\n(리워드 광고는 보너스 분석 획득에 계속 사용 가능합니다.)';
+
+  @override
+  String get settingsRemoveAdsPurchasedButton => '구매 완료';
+
+  @override
+  String settingsBuyAtPrice(String price) {
+    return '$price에 구매하기';
+  }
+
+  @override
+  String get settingsStoreUnavailable => '스토어에 연결할 수 없어요';
+
+  @override
+  String get settingsLoadFailedRetry => '구매 정보를 불러오지 못했어요 · 다시 시도';
+
+  @override
+  String get settingsLoadingPurchaseInfo => '구매 정보 불러오는 중…';
+
+  @override
+  String get settingsPurchaseStartFailed =>
+      '지금은 구매를 시작할 수 없어요. 잠시 후 다시 시도해주세요.';
+
+  @override
+  String get settingsRestoreButton => '구매 복원';
+
+  @override
+  String get settingsRestoreSuccess => '구매 내역이 복원되었어요.';
+
+  @override
+  String get settingsRestoreNothing => '복원할 구매 내역이 없어요.';
 }

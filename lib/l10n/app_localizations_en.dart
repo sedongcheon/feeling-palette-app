@@ -175,4 +175,75 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backupDriveListNoTime => 'No timestamp';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsSectionAppLock => 'App lock';
+
+  @override
+  String get settingsSectionPurchase => 'Purchase';
+
+  @override
+  String get settingsAutoLockTitle => 'Auto-lock';
+
+  @override
+  String get settingsAutoLockDescription =>
+      'After leaving the app, the lock screen returns once this time has passed.';
+
+  @override
+  String autoLockDelayLabel(String seconds) {
+    String _temp0 = intl.Intl.selectLogic(seconds, {
+      '0': 'Immediately',
+      '5': '5 sec',
+      '30': '30 sec',
+      '60': '1 min',
+      '300': '5 min',
+      '600': '10 min',
+      'other': '$seconds sec',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get settingsRemoveAdsTitle => 'Remove ads';
+
+  @override
+  String get settingsRemoveAdsPurchased =>
+      'Purchased — banner and interstitial ads are hidden.';
+
+  @override
+  String get settingsRemoveAdsDescription =>
+      'Use the app without banner or interstitial ads.\n(Reward ads remain available for bonus analyses.)';
+
+  @override
+  String get settingsRemoveAdsPurchasedButton => 'Purchased';
+
+  @override
+  String settingsBuyAtPrice(String price) {
+    return 'Buy for $price';
+  }
+
+  @override
+  String get settingsStoreUnavailable => 'Cannot reach the store';
+
+  @override
+  String get settingsLoadFailedRetry => 'Failed to load purchase info · Retry';
+
+  @override
+  String get settingsLoadingPurchaseInfo => 'Loading purchase info…';
+
+  @override
+  String get settingsPurchaseStartFailed =>
+      'Cannot start the purchase right now. Please try again later.';
+
+  @override
+  String get settingsRestoreButton => 'Restore purchases';
+
+  @override
+  String get settingsRestoreSuccess => 'Purchases restored.';
+
+  @override
+  String get settingsRestoreNothing => 'No purchases to restore.';
 }
