@@ -1,0 +1,11 @@
+/* Face ID 잠금 해제 권한 설명 */
+"NSFaceIDUsageDescription" = "앱 잠금 해제에 Face ID를 사용합니다.";
+
+/* 사진 라이브러리 접근 권한 설명 (백업 파일 입출력) */
+"NSPhotoLibraryUsageDescription" = "백업 파일을 선택하거나 저장할 때 사진 라이브러리에 접근합니다.";
+
+/* App Tracking Transparency 설명 */
+"NSUserTrackingUsageDescription" = "맞춤 광고를 제공하기 위해 기기 광고 식별자에 접근합니다. 거부해도 앱의 기본 기능은 모두 사용할 수 있어요.";
+
+/* 앱 이름 (홈스크린 표시명) */
+"CFBundleDisplayName" = "Feeling Palette";

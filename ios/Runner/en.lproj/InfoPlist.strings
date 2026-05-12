@@ -1,0 +1,11 @@
+/* Face ID unlock permission */
+"NSFaceIDUsageDescription" = "Use Face ID to unlock the app.";
+
+/* Photo library access (backup file pick/save) */
+"NSPhotoLibraryUsageDescription" = "Access your photo library to pick or save backup files.";
+
+/* App Tracking Transparency */
+"NSUserTrackingUsageDescription" = "Access your device's advertising identifier to serve personalized ads. The app's core features work even if you decline.";
+
+/* App display name on home screen */
+"CFBundleDisplayName" = "Feeling Palette";

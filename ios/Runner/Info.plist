@@ -12,13 +12,13 @@
 		<string>en</string>
 	</array>
 	<key>NSFaceIDUsageDescription</key>
-	<string>앱 잠금 해제에 Face ID를 사용합니다.</string>
+	<string>Use Face ID to unlock the app.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>백업 파일을 선택하거나 저장할 때 사진 라이브러리에 접근합니다.</string>
+	<string>Access your photo library to pick or save backup files.</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-5457202364123068~2337687639</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>맞춤 광고를 제공하기 위해 기기 광고 식별자에 접근합니다. 거부해도 앱의 기본 기능은 모두 사용할 수 있어요.</string>
+	<string>Access your device's advertising identifier to serve personalized ads. The app's core features work even if you decline.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict><key>SKAdNetworkIdentifier</key><string>cstr6suwn9.skadnetwork</string></dict>
