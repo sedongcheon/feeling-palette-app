@@ -134,5 +134,29 @@
   "statsSummaryFreeRegen": "Regenerate summary (free)",
   "statsSummaryAdCreate": "Watch ad to create AI summary",
   "statsSummaryAdRegen": "Watch ad to regenerate summary",
-  "statsSummaryAllUsed": "This month's summary quota used up"
+  "statsSummaryAllUsed": "This month's summary quota used up",
+
+  "weeklyInsightTitle": "This week's insight",
+  "weeklyInsightCareTitle": "Take a little extra care this week",
+  "weeklyInsightEmptyReady": "We can find patterns from your recent entries.\nShall we create your first insight?",
+  "weeklyInsightEmptyNeedMore": "Once a few more entries are in, we'll share your recent emotional flow.\nKeep writing a little more?",
+  "weeklyInsightCreateFirst": "Create first insight",
+  "weeklyInsightRefresh": "Refresh",
+  "weeklyInsightRefreshable": "Ready to refresh",
+  "weeklyInsightWaitingRefresh": "Waiting for weekly refresh",
+  "weeklyInsightRefreshIn": "Refreshes in {days} days",
+  "weeklyInsightDaysLeft": "{days} days left",
+
+  "weeklyInsightTrendLabel": "{trend, select, up{Up} down{Down} stable{Stable} mixed{Mixed} other{}}",
+
+  "weeklyInsightGenerating": "Generating…",
+  "weeklyInsightAdLabel": "Watch ad: {base}",
+  "weeklyInsightMonthlyLimit": "Monthly quota used up",
+
+  "weeklyInsightCreatedToast": "Created this week's insight.",
+  "weeklyInsightCooldownError": "It's not time to refresh yet.",
+  "weeklyInsightQuotaError": "You've used this month's quota.",
+  "weeklyInsightAdError": "Watch the full ad to generate.",
+  "weeklyInsightNotEnoughData": "Not quite enough entries to find a pattern.",
+  "weeklyInsightGenericError": "Something went wrong while generating."
 }

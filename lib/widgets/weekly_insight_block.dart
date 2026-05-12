@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/theme.dart';
+import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import '../models/weekly_insight.dart';
 import '../providers/diary_provider.dart';
@@ -40,6 +41,7 @@ class _EmptyInsightCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
@@ -57,7 +59,7 @@ class _EmptyInsightCard extends StatelessWidget {
                   size: 18, color: palette.tabBarActive),
               const SizedBox(width: 6),
               Text(
-                '이번 주 인사이트',
+                loc.weeklyInsightTitle,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
@@ -69,8 +71,8 @@ class _EmptyInsightCard extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             hasEnoughData
-                ? '최근 기록에서 패턴을 찾아드릴 수 있어요.\n첫 인사이트를 만들어볼까요?'
-                : '일기가 쌓이면 요즘의 감정 흐름을 먼저 말씀드릴게요.\n일기를 조금 더 써볼까요?',
+                ? loc.weeklyInsightEmptyReady
+                : loc.weeklyInsightEmptyNeedMore,
             style: TextStyle(
               fontSize: 13,
               height: 1.55,
@@ -79,7 +81,7 @@ class _EmptyInsightCard extends StatelessWidget {
           ),
           if (hasEnoughData) ...[
             const SizedBox(height: 12),
-            _GenerateButton(palette: palette, label: '첫 인사이트 만들기'),
+            _GenerateButton(palette: palette, label: loc.weeklyInsightCreateFirst),
           ],
         ],
       ),
@@ -94,6 +96,7 @@ class _InsightCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     final store = context.watch<DiaryProvider>();
     final cooldownElapsed = store.insightCooldownElapsed;
     final daysLeft = store.insightDaysUntilRefresh;
@@ -123,7 +126,9 @@ class _InsightCard extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               Text(
-                insight.careFlag ? '이번 주, 조금 더 챙겨요' : '이번 주 인사이트',
+                insight.careFlag
+                    ? loc.weeklyInsightCareTitle
+                    : loc.weeklyInsightTitle,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
@@ -166,8 +171,8 @@ class _InsightCard extends StatelessWidget {
               const Spacer(),
               Text(
                 cooldownElapsed
-                    ? '새로고침 가능'
-                    : '$daysLeft일 후 갱신',
+                    ? loc.weeklyInsightRefreshable
+                    : loc.weeklyInsightRefreshIn(daysLeft),
                 style: TextStyle(
                   fontSize: 11,
                   color: palette.textSecondary,
@@ -178,8 +183,11 @@ class _InsightCard extends StatelessWidget {
           const SizedBox(height: 10),
           _GenerateButton(
             palette: palette,
-            label: cooldownElapsed ? '새로고침' : '주간 새로고침 대기 중',
-            disabledReasonLabel: cooldownElapsed ? null : '$daysLeft일 남음',
+            label: cooldownElapsed
+                ? loc.weeklyInsightRefresh
+                : loc.weeklyInsightWaitingRefresh,
+            disabledReasonLabel:
+                cooldownElapsed ? null : loc.weeklyInsightDaysLeft(daysLeft),
           ),
         ],
       ),
@@ -194,24 +202,20 @@ class _TrendChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     late final IconData icon;
-    late final String label;
     switch (trend) {
       case InsightTrend.up:
         icon = Icons.trending_up_rounded;
-        label = '상승';
         break;
       case InsightTrend.down:
         icon = Icons.trending_down_rounded;
-        label = '하강';
         break;
       case InsightTrend.stable:
         icon = Icons.horizontal_rule_rounded;
-        label = '안정';
         break;
       case InsightTrend.mixed:
         icon = Icons.compare_arrows_rounded;
-        label = '혼재';
         break;
     }
     return Container(
@@ -226,7 +230,7 @@ class _TrendChip extends StatelessWidget {
           Icon(icon, size: 12, color: accent),
           const SizedBox(width: 3),
           Text(
-            label,
+            loc.weeklyInsightTrendLabel(trend.name),
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w700,
@@ -251,6 +255,7 @@ class _GenerateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     final store = context.watch<DiaryProvider>();
     final monthKey = formatYearMonth(DateTime.now());
     final inFlight = store.isInsightInFlight;
@@ -260,12 +265,12 @@ class _GenerateButton extends StatelessWidget {
     final disabled = !cooldownElapsed || inFlight || (!canFree && !canAd);
 
     final effectiveLabel = inFlight
-        ? '생성 중…'
+        ? loc.weeklyInsightGenerating
         : (!cooldownElapsed
             ? label
             : (canFree
                 ? label
-                : (canAd ? '광고 보고 $label' : '이번 달 한도 소진')));
+                : (canAd ? loc.weeklyInsightAdLabel(label) : loc.weeklyInsightMonthlyLimit)));
 
     return SizedBox(
       width: double.infinity,
@@ -312,6 +317,7 @@ class _GenerateButton extends StatelessWidget {
 
   Future<void> _handleTap(BuildContext context,
       {required bool viaAdOnly}) async {
+    final loc = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     final store = context.read<DiaryProvider>();
     try {
@@ -322,20 +328,20 @@ class _GenerateButton extends StatelessWidget {
       }
       messenger
         ..hideCurrentSnackBar()
-        ..showSnackBar(const SnackBar(
-          content: Text('이번 주 인사이트를 만들었어요.'),
+        ..showSnackBar(SnackBar(
+          content: Text(loc.weeklyInsightCreatedToast),
           behavior: SnackBarBehavior.floating,
         ));
     } on WeeklyInsightCooldownException {
-      _snack(messenger, '아직 새로고침할 시기가 아니에요.');
+      _snack(messenger, loc.weeklyInsightCooldownError);
     } on WeeklyInsightQuotaException {
-      _snack(messenger, '이번 달 한도를 모두 사용했어요.');
+      _snack(messenger, loc.weeklyInsightQuotaError);
     } on WeeklyInsightAdException {
-      _snack(messenger, '광고를 끝까지 시청해야 생성할 수 있어요.');
+      _snack(messenger, loc.weeklyInsightAdError);
     } on WeeklyInsightNotEnoughDataException {
-      _snack(messenger, '패턴을 찾기엔 기록이 조금 부족해요.');
+      _snack(messenger, loc.weeklyInsightNotEnoughData);
     } catch (e) {
-      _snack(messenger, '생성 중 문제가 발생했어요.');
+      _snack(messenger, loc.weeklyInsightGenericError);
     }
   }
 

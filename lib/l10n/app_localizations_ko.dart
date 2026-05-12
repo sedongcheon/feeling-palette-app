@@ -408,4 +408,81 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get statsSummaryAllUsed => '이 달 요약 한도를 모두 사용했어요';
+
+  @override
+  String get weeklyInsightTitle => '이번 주 인사이트';
+
+  @override
+  String get weeklyInsightCareTitle => '이번 주, 조금 더 챙겨요';
+
+  @override
+  String get weeklyInsightEmptyReady =>
+      '최근 기록에서 패턴을 찾아드릴 수 있어요.\n첫 인사이트를 만들어볼까요?';
+
+  @override
+  String get weeklyInsightEmptyNeedMore =>
+      '일기가 쌓이면 요즘의 감정 흐름을 먼저 말씀드릴게요.\n일기를 조금 더 써볼까요?';
+
+  @override
+  String get weeklyInsightCreateFirst => '첫 인사이트 만들기';
+
+  @override
+  String get weeklyInsightRefresh => '새로고침';
+
+  @override
+  String get weeklyInsightRefreshable => '새로고침 가능';
+
+  @override
+  String get weeklyInsightWaitingRefresh => '주간 새로고침 대기 중';
+
+  @override
+  String weeklyInsightRefreshIn(int days) {
+    return '$days일 후 갱신';
+  }
+
+  @override
+  String weeklyInsightDaysLeft(int days) {
+    return '$days일 남음';
+  }
+
+  @override
+  String weeklyInsightTrendLabel(String trend) {
+    String _temp0 = intl.Intl.selectLogic(trend, {
+      'up': '상승',
+      'down': '하강',
+      'stable': '안정',
+      'mixed': '혼재',
+      'other': '',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get weeklyInsightGenerating => '생성 중…';
+
+  @override
+  String weeklyInsightAdLabel(String base) {
+    return '광고 보고 $base';
+  }
+
+  @override
+  String get weeklyInsightMonthlyLimit => '이번 달 한도 소진';
+
+  @override
+  String get weeklyInsightCreatedToast => '이번 주 인사이트를 만들었어요.';
+
+  @override
+  String get weeklyInsightCooldownError => '아직 새로고침할 시기가 아니에요.';
+
+  @override
+  String get weeklyInsightQuotaError => '이번 달 한도를 모두 사용했어요.';
+
+  @override
+  String get weeklyInsightAdError => '광고를 끝까지 시청해야 생성할 수 있어요.';
+
+  @override
+  String get weeklyInsightNotEnoughData => '패턴을 찾기엔 기록이 조금 부족해요.';
+
+  @override
+  String get weeklyInsightGenericError => '생성 중 문제가 발생했어요.';
 }

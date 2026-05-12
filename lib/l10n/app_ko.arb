@@ -249,5 +249,41 @@
   "statsSummaryFreeRegen": "무료로 다시 요약하기",
   "statsSummaryAdCreate": "광고 보고 AI 요약 만들기",
   "statsSummaryAdRegen": "광고 보고 다시 요약하기",
-  "statsSummaryAllUsed": "이 달 요약 한도를 모두 사용했어요"
+  "statsSummaryAllUsed": "이 달 요약 한도를 모두 사용했어요",
+
+  "weeklyInsightTitle": "이번 주 인사이트",
+  "weeklyInsightCareTitle": "이번 주, 조금 더 챙겨요",
+  "weeklyInsightEmptyReady": "최근 기록에서 패턴을 찾아드릴 수 있어요.\n첫 인사이트를 만들어볼까요?",
+  "weeklyInsightEmptyNeedMore": "일기가 쌓이면 요즘의 감정 흐름을 먼저 말씀드릴게요.\n일기를 조금 더 써볼까요?",
+  "weeklyInsightCreateFirst": "첫 인사이트 만들기",
+  "weeklyInsightRefresh": "새로고침",
+  "weeklyInsightRefreshable": "새로고침 가능",
+  "weeklyInsightWaitingRefresh": "주간 새로고침 대기 중",
+  "weeklyInsightRefreshIn": "{days}일 후 갱신",
+  "@weeklyInsightRefreshIn": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "weeklyInsightDaysLeft": "{days}일 남음",
+  "@weeklyInsightDaysLeft": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+
+  "weeklyInsightTrendLabel": "{trend, select, up{상승} down{하강} stable{안정} mixed{혼재} other{}}",
+  "@weeklyInsightTrendLabel": {
+    "placeholders": { "trend": { "type": "String" } }
+  },
+
+  "weeklyInsightGenerating": "생성 중…",
+  "weeklyInsightAdLabel": "광고 보고 {base}",
+  "@weeklyInsightAdLabel": {
+    "placeholders": { "base": { "type": "String" } }
+  },
+  "weeklyInsightMonthlyLimit": "이번 달 한도 소진",
+
+  "weeklyInsightCreatedToast": "이번 주 인사이트를 만들었어요.",
+  "weeklyInsightCooldownError": "아직 새로고침할 시기가 아니에요.",
+  "weeklyInsightQuotaError": "이번 달 한도를 모두 사용했어요.",
+  "weeklyInsightAdError": "광고를 끝까지 시청해야 생성할 수 있어요.",
+  "weeklyInsightNotEnoughData": "패턴을 찾기엔 기록이 조금 부족해요.",
+  "weeklyInsightGenericError": "생성 중 문제가 발생했어요."
 }

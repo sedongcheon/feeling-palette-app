@@ -737,6 +737,126 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'이 달 요약 한도를 모두 사용했어요'**
   String get statsSummaryAllUsed;
+
+  /// No description provided for @weeklyInsightTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'이번 주 인사이트'**
+  String get weeklyInsightTitle;
+
+  /// No description provided for @weeklyInsightCareTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'이번 주, 조금 더 챙겨요'**
+  String get weeklyInsightCareTitle;
+
+  /// No description provided for @weeklyInsightEmptyReady.
+  ///
+  /// In ko, this message translates to:
+  /// **'최근 기록에서 패턴을 찾아드릴 수 있어요.\n첫 인사이트를 만들어볼까요?'**
+  String get weeklyInsightEmptyReady;
+
+  /// No description provided for @weeklyInsightEmptyNeedMore.
+  ///
+  /// In ko, this message translates to:
+  /// **'일기가 쌓이면 요즘의 감정 흐름을 먼저 말씀드릴게요.\n일기를 조금 더 써볼까요?'**
+  String get weeklyInsightEmptyNeedMore;
+
+  /// No description provided for @weeklyInsightCreateFirst.
+  ///
+  /// In ko, this message translates to:
+  /// **'첫 인사이트 만들기'**
+  String get weeklyInsightCreateFirst;
+
+  /// No description provided for @weeklyInsightRefresh.
+  ///
+  /// In ko, this message translates to:
+  /// **'새로고침'**
+  String get weeklyInsightRefresh;
+
+  /// No description provided for @weeklyInsightRefreshable.
+  ///
+  /// In ko, this message translates to:
+  /// **'새로고침 가능'**
+  String get weeklyInsightRefreshable;
+
+  /// No description provided for @weeklyInsightWaitingRefresh.
+  ///
+  /// In ko, this message translates to:
+  /// **'주간 새로고침 대기 중'**
+  String get weeklyInsightWaitingRefresh;
+
+  /// No description provided for @weeklyInsightRefreshIn.
+  ///
+  /// In ko, this message translates to:
+  /// **'{days}일 후 갱신'**
+  String weeklyInsightRefreshIn(int days);
+
+  /// No description provided for @weeklyInsightDaysLeft.
+  ///
+  /// In ko, this message translates to:
+  /// **'{days}일 남음'**
+  String weeklyInsightDaysLeft(int days);
+
+  /// No description provided for @weeklyInsightTrendLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'{trend, select, up{상승} down{하강} stable{안정} mixed{혼재} other{}}'**
+  String weeklyInsightTrendLabel(String trend);
+
+  /// No description provided for @weeklyInsightGenerating.
+  ///
+  /// In ko, this message translates to:
+  /// **'생성 중…'**
+  String get weeklyInsightGenerating;
+
+  /// No description provided for @weeklyInsightAdLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 보고 {base}'**
+  String weeklyInsightAdLabel(String base);
+
+  /// No description provided for @weeklyInsightMonthlyLimit.
+  ///
+  /// In ko, this message translates to:
+  /// **'이번 달 한도 소진'**
+  String get weeklyInsightMonthlyLimit;
+
+  /// No description provided for @weeklyInsightCreatedToast.
+  ///
+  /// In ko, this message translates to:
+  /// **'이번 주 인사이트를 만들었어요.'**
+  String get weeklyInsightCreatedToast;
+
+  /// No description provided for @weeklyInsightCooldownError.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 새로고침할 시기가 아니에요.'**
+  String get weeklyInsightCooldownError;
+
+  /// No description provided for @weeklyInsightQuotaError.
+  ///
+  /// In ko, this message translates to:
+  /// **'이번 달 한도를 모두 사용했어요.'**
+  String get weeklyInsightQuotaError;
+
+  /// No description provided for @weeklyInsightAdError.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고를 끝까지 시청해야 생성할 수 있어요.'**
+  String get weeklyInsightAdError;
+
+  /// No description provided for @weeklyInsightNotEnoughData.
+  ///
+  /// In ko, this message translates to:
+  /// **'패턴을 찾기엔 기록이 조금 부족해요.'**
+  String get weeklyInsightNotEnoughData;
+
+  /// No description provided for @weeklyInsightGenericError.
+  ///
+  /// In ko, this message translates to:
+  /// **'생성 중 문제가 발생했어요.'**
+  String get weeklyInsightGenericError;
 }
 
 class _AppLocalizationsDelegate

@@ -418,4 +418,83 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statsSummaryAllUsed => 'This month\'s summary quota used up';
+
+  @override
+  String get weeklyInsightTitle => 'This week\'s insight';
+
+  @override
+  String get weeklyInsightCareTitle => 'Take a little extra care this week';
+
+  @override
+  String get weeklyInsightEmptyReady =>
+      'We can find patterns from your recent entries.\nShall we create your first insight?';
+
+  @override
+  String get weeklyInsightEmptyNeedMore =>
+      'Once a few more entries are in, we\'ll share your recent emotional flow.\nKeep writing a little more?';
+
+  @override
+  String get weeklyInsightCreateFirst => 'Create first insight';
+
+  @override
+  String get weeklyInsightRefresh => 'Refresh';
+
+  @override
+  String get weeklyInsightRefreshable => 'Ready to refresh';
+
+  @override
+  String get weeklyInsightWaitingRefresh => 'Waiting for weekly refresh';
+
+  @override
+  String weeklyInsightRefreshIn(int days) {
+    return 'Refreshes in $days days';
+  }
+
+  @override
+  String weeklyInsightDaysLeft(int days) {
+    return '$days days left';
+  }
+
+  @override
+  String weeklyInsightTrendLabel(String trend) {
+    String _temp0 = intl.Intl.selectLogic(trend, {
+      'up': 'Up',
+      'down': 'Down',
+      'stable': 'Stable',
+      'mixed': 'Mixed',
+      'other': '',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get weeklyInsightGenerating => 'Generating…';
+
+  @override
+  String weeklyInsightAdLabel(String base) {
+    return 'Watch ad: $base';
+  }
+
+  @override
+  String get weeklyInsightMonthlyLimit => 'Monthly quota used up';
+
+  @override
+  String get weeklyInsightCreatedToast => 'Created this week\'s insight.';
+
+  @override
+  String get weeklyInsightCooldownError => 'It\'s not time to refresh yet.';
+
+  @override
+  String get weeklyInsightQuotaError => 'You\'ve used this month\'s quota.';
+
+  @override
+  String get weeklyInsightAdError => 'Watch the full ad to generate.';
+
+  @override
+  String get weeklyInsightNotEnoughData =>
+      'Not quite enough entries to find a pattern.';
+
+  @override
+  String get weeklyInsightGenericError =>
+      'Something went wrong while generating.';
 }
