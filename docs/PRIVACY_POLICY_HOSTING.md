@@ -50,6 +50,35 @@ https://your-workspace.notion.site/Feeling-Palette-XXXXXXXXXX
 - Git으로 변경 이력 관리
 - 개인 도메인 연결 가능
 
+### 다국어(영문) 페이지 추가
+
+이미 한국어 페이지를 GitHub Pages에 호스팅 중이라면 영문판은 **하위 경로** 방식이 가장 간단:
+
+1. 같은 repo에 `en/index.md` 파일 추가
+2. `docs/PRIVACY_POLICY_EN.md` 내용을 그대로 붙여넣기
+3. 커밋·푸시하면 몇 분 안에 빌드 → URL 자동 생성
+   ```
+   https://sedongcheon.github.io/feelingpalette-privacy/en/
+   ```
+4. 한국어 `index.md` 상단에 영문 페이지 링크 1줄 추가 (선택):
+   ```markdown
+   > [English version](./en/)
+   ```
+5. 영문 `en/index.md` 상단에도 한국어 페이지 링크:
+   ```markdown
+   > [한국어 버전](../)
+   ```
+
+### 등록 (영문 페이지)
+
+| 위치 | URL |
+|------|-----|
+| App Store Connect → English (US) locale → Privacy Policy URL | `https://sedongcheon.github.io/feelingpalette-privacy/en/` |
+| Play Console → English store listing → Privacy policy | (위와 동일) |
+| AdMob 대시보드 | 한국어 페이지만 등록해도 OK (광고 정책은 locale-specific 요구 없음) |
+
+> Apple은 각 locale마다 별도 URL 등록 가능. Google Play는 단일 URL이지만 영문 페이지가 있으면 영문 시장 심사·이용자 신뢰에 유리.
+
 ---
 
 ## 옵션 C: Google Sites
@@ -88,7 +117,14 @@ https://your-workspace.notion.site/Feeling-Palette-XXXXXXXXXX
 ## 정책 수정 시
 
 추후 수정 필요하면:
-1. `docs/PRIVACY_POLICY_KO.md` 먼저 수정 (git에 이력 남김)
-2. 호스팅된 페이지(Notion/GitHub/Google)에도 동일 내용 반영
-3. 본문 상단의 "**최종 수정일**" 날짜 갱신
+1. `docs/PRIVACY_POLICY_KO.md`와 `docs/PRIVACY_POLICY_EN.md` **동시 수정** (parity 유지, git에 이력)
+2. 호스팅된 페이지(Notion/GitHub/Google)의 ko + en **양쪽 모두** 갱신
+3. 본문 상단의 "**최종 수정일 / Last updated**" 날짜 갱신
 4. 큰 변경(새 데이터 수집 등)은 앱 내 고지 및 사전 안내 필요
+
+### parity 체크 항목
+- 발효일 / Effective date
+- 수집 정보 / Data we collect
+- 제3자 서비스 / Third-party services
+- 연락처 / Contact
+- 아동 연령 기준 (KO: 만 14세, EN: 13/16/14 다중 기준)
