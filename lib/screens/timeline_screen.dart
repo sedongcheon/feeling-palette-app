@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/emotions.dart';
 import '../constants/theme.dart';
+import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import '../providers/diary_provider.dart';
 import '../widgets/banner_ad_slot.dart';
@@ -67,6 +69,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final loc = AppLocalizations.of(context);
     final store = context.watch<DiaryProvider>();
     final entries = store.timelineEntries;
 
@@ -76,7 +79,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
         backgroundColor: palette.surface,
         elevation: 0,
         scrolledUnderElevation: 0,
-        title: Text('타임라인',
+        title: Text(loc.timelineTitle,
             style: TextStyle(
                 fontWeight: FontWeight.w700, fontSize: 17, color: palette.text)),
       ),
@@ -92,7 +95,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                         const Text('📋', style: TextStyle(fontSize: 36)),
                         const SizedBox(height: 12),
                         Text(
-                          '작성한 일기가 없어요\n오늘의 감정을 기록해보세요',
+                          loc.timelineEmpty,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 14,
@@ -129,7 +132,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: Text(
-                        '모든 일기를 불러왔어요',
+                        loc.timelineEndReached,
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 12, color: palette.textSecondary),
                       ),
@@ -151,18 +154,17 @@ class _TimelineItem extends StatelessWidget {
   final DiaryEntry entry;
   const _TimelineItem({required this.entry});
 
-  String _formatDateTime() {
+  String _formatDateTime(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+    final locale = loc.localeName;
     final parts = entry.date.split('-');
     final d = DateTime(
         int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
-    const dayNames = ['월', '화', '수', '목', '금', '토', '일'];
-    final datePart =
-        '${int.parse(parts[1])}월 ${int.parse(parts[2])}일 ${dayNames[d.weekday - 1]}요일';
+    final datePart = DateFormat.MMMd(locale).format(d);
+    final dayPart = DateFormat.EEEE(locale).format(d);
     final t = DateTime.fromMillisecondsSinceEpoch(entry.createdAt);
-    final hour12 = t.hour == 0 ? 12 : (t.hour > 12 ? t.hour - 12 : t.hour);
-    final period = t.hour < 12 ? '오전' : '오후';
-    final mm = t.minute.toString().padLeft(2, '0');
-    return '$datePart · $period $hour12:$mm';
+    final timePart = DateFormat.jm(locale).format(t);
+    return '${loc.datePartWithDay(datePart, dayPart)} · $timePart';
   }
 
   @override
@@ -206,7 +208,7 @@ class _TimelineItem extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              _formatDateTime(),
+                              _formatDateTime(context),
                               style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/emotions.dart';
+import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 
 class WeeklyLineChart extends StatelessWidget {
@@ -35,7 +36,7 @@ class WeeklyLineChart extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.all(20),
         child: Text(
-          '2일 이상의 분석 데이터가 있으면 그래프가 표시됩니다',
+          AppLocalizations.of(context).weeklyLineChartHint,
           style: TextStyle(fontSize: 13, color: textColor),
           textAlign: TextAlign.center,
         ),

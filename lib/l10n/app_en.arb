@@ -166,5 +166,52 @@
   "homeTodayEntries": "Today's entries",
   "homeComposerHint": "Write freely about your day and feelings…",
   "homeAddEntryButton": "Add entry",
-  "homeDailyQuotaBadge": "AI analyses {used}/{max}"
+  "homeDailyQuotaBadge": "AI analyses {used}/{max}",
+
+  "mainTabToday": "Today",
+  "mainTabCalendar": "Calendar",
+  "mainTabStats": "Stats",
+  "mainTabTimeline": "Timeline",
+
+  "pinSetupTitle": "Set new password",
+  "pinSetupRepeat": "Please enter it once more",
+  "pinSetupHelp4Digit": "Enter a 4-digit number",
+  "pinSetupHelpRepeat": "Enter the same number to confirm",
+  "pinSetupMismatch": "Passwords don't match. Please set it again.",
+  "pinBiometricTitle": "Use biometric authentication?",
+  "pinBiometricDescription": "Unlock more quickly with fingerprint or Face ID.\nYou can change this anytime in Settings.",
+  "pinBiometricEnable": "Use it",
+  "pinBiometricSkip": "Password only",
+
+  "lockTitle": "Enter password",
+  "lockHelp": "Please enter your 4-digit password",
+  "lockMismatchError": "Passwords don't match",
+  "lockForgotPin": "Forgot your password?",
+  "lockResetTitle": "Reset data",
+  "lockResetMessage": "Your password cannot be recovered, so all data will be deleted.\nReally reset?",
+  "lockResetButton": "Reset",
+  "lockBiometricReason": "Unlock with biometric authentication",
+
+  "timelineTitle": "Timeline",
+  "timelineEmpty": "No diary entries yet.\nRecord today's emotions.",
+  "timelineEndReached": "Loaded all entries",
+
+  "calendarTitle": "Emotion calendar",
+  "calendarTapHint": "Tap a date to see the diary",
+  "calendarNoEntryForDate": "No diary entries on this day",
+
+  "diaryDetailTitle": "Diary detail",
+  "diaryDetailNotFound": "Diary not found",
+
+  "weeklyLineChartHint": "The chart appears when 2+ days of analyzed data are available",
+
+  "dayAverageHeader": "{month}/{day} average",
+  "dayAverageEntryCount": "{count} entries",
+
+  "donutChartDaysUnit": "days",
+
+  "driveBackupFileEntryCount": "{count} entries",
+  "driveBackupDefaultName": "Backup file",
+
+  "datePartWithDay": "{datePart} {dayPart}"
 }

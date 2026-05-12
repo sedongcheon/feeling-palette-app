@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../constants/emotions.dart';
 import '../constants/theme.dart';
+import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import 'emotion_result_card.dart';
 
@@ -12,6 +14,8 @@ class DiaryDetailCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final loc = AppLocalizations.of(context);
+    final locale = loc.localeName;
     final primary = emotionInfoOf(entry.primaryEmotion);
     final hasAnalysis = entry.aiComment.isNotEmpty;
     final entryColor = hexToColor(entry.color);
@@ -19,14 +23,12 @@ class DiaryDetailCard extends StatelessWidget {
     final parts = entry.date.split('-');
     final dateObj =
         DateTime(int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
-    const dayNames = ['월', '화', '수', '목', '금', '토', '일'];
-    final dayName = dayNames[dateObj.weekday - 1];
+    final datePart = DateFormat.MMMd(locale).format(dateObj);
+    final dayPart = DateFormat.EEEE(locale).format(dateObj);
     final t = DateTime.fromMillisecondsSinceEpoch(entry.createdAt);
-    final hour12 = t.hour == 0 ? 12 : (t.hour > 12 ? t.hour - 12 : t.hour);
-    final period = t.hour < 12 ? '오전' : '오후';
-    final mm = t.minute.toString().padLeft(2, '0');
+    final timePart = DateFormat.jm(locale).format(t);
     final dateLabel =
-        '${int.parse(parts[1])}월 ${int.parse(parts[2])}일 $dayName요일 · $period $hour12:$mm';
+        '${loc.datePartWithDay(datePart, dayPart)} · $timePart';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

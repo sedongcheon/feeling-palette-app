@@ -4,6 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../constants/emotions.dart';
 import '../constants/theme.dart';
+import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import '../providers/diary_provider.dart';
 import '../widgets/banner_ad_slot.dart';
@@ -45,6 +46,7 @@ class CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final loc = AppLocalizations.of(context);
     final isDark = context.isDark;
     final store = context.watch<DiaryProvider>();
 
@@ -67,7 +69,7 @@ class CalendarScreenState extends State<CalendarScreen> {
         backgroundColor: palette.surface,
         elevation: 0,
         scrolledUnderElevation: 0,
-        title: Text('감정 캘린더',
+        title: Text(loc.calendarTitle,
             style: TextStyle(
                 fontWeight: FontWeight.w700, fontSize: 17, color: palette.text)),
       ),
@@ -87,7 +89,7 @@ class CalendarScreenState extends State<CalendarScreen> {
               ),
               padding: const EdgeInsets.only(bottom: 8),
               child: TableCalendar<DiaryEntry>(
-                locale: 'ko_KR',
+                locale: loc.localeName,
                 firstDay: DateTime.utc(2000, 1, 1),
                 lastDay: DateTime.utc(2100, 12, 31),
                 focusedDay: _focusedDay,
@@ -219,10 +221,11 @@ class CalendarScreenState extends State<CalendarScreen> {
         ],
       );
     }
+    final loc = AppLocalizations.of(context);
     final emoji = _selectedDay == null ? '👆' : '📝';
     final text = _selectedDay == null
-        ? '날짜를 탭하면 일기를 볼 수 있어요'
-        : '이 날은 일기를 작성하지 않았어요';
+        ? loc.calendarTapHint
+        : loc.calendarNoEntryForDate;
     return Container(
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(

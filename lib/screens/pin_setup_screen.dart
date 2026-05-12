@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/theme.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../services/auth_service.dart';
 import '../widgets/pin_pad.dart';
@@ -58,7 +59,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
           _current = '';
           _firstPin = '';
           _step = _Step.enter;
-          _error = '비밀번호가 일치하지 않아요. 다시 설정해주세요.';
+          _error = AppLocalizations.of(context).pinSetupMismatch;
         });
         return;
       }
@@ -93,12 +94,12 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
   }
 
   Widget _buildPinEntry(AppPalette palette) {
-    final title = _step == _Step.enter
-        ? '새 비밀번호 설정'
-        : '다시 한 번 입력해주세요';
+    final loc = AppLocalizations.of(context);
+    final title =
+        _step == _Step.enter ? loc.pinSetupTitle : loc.pinSetupRepeat;
     final subtitle = _step == _Step.enter
-        ? '4자리 숫자를 입력해주세요'
-        : '확인을 위해 같은 번호를 입력해주세요';
+        ? loc.pinSetupHelp4Digit
+        : loc.pinSetupHelpRepeat;
 
     return Column(
       children: [
@@ -137,6 +138,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
   }
 
   Widget _buildBiometricChoice(AppPalette palette) {
+    final loc = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -149,7 +151,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            '생체인증을 사용할까요?',
+            loc.pinBiometricTitle,
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w800,
@@ -158,7 +160,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
           ),
           const SizedBox(height: 12),
           Text(
-            '지문/페이스ID로 더 빠르게 잠금을 해제할 수 있어요.\n설정에서 언제든 바꿀 수 있어요.',
+            loc.pinBiometricDescription,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14,
@@ -178,9 +180,9 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
                   borderRadius: BorderRadius.circular(14),
                 ),
               ),
-              child: const Text(
-                '사용할게요',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+              child: Text(
+                loc.pinBiometricEnable,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
               ),
             ),
           ),
@@ -191,7 +193,7 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
             child: TextButton(
               onPressed: _submitting ? null : () => _finish(enableBiometric: false),
               child: Text(
-                '비밀번호만 쓸게요',
+                loc.pinBiometricSkip,
                 style: TextStyle(
                   fontSize: 15,
                   color: palette.textSecondary,

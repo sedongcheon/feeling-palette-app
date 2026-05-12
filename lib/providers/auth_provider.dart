@@ -80,11 +80,13 @@ class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
     return ok;
   }
 
-  Future<bool> authenticateBiometric() async {
+  Future<bool> authenticateBiometric({required String localizedReason}) async {
     if (!_biometricEnabled) return false;
     _isAuthenticatingBiometric = true;
     try {
-      final ok = await _service.authenticateWithBiometric();
+      final ok = await _service.authenticateWithBiometric(
+        localizedReason: localizedReason,
+      );
       if (ok) {
         _stage = AuthStage.unlocked;
         notifyListeners();

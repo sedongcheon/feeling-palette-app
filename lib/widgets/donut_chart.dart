@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../constants/theme.dart';
+import '../l10n/app_localizations.dart';
 
 class DonutSlice {
   final String label;
@@ -65,7 +66,7 @@ class DonutChart extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 0),
                 child: Text(
-                  '일',
+                  AppLocalizations.of(context).donutChartDaysUnit,
                   style: TextStyle(
                     fontSize: 12,
                     color: palette.textSecondary,

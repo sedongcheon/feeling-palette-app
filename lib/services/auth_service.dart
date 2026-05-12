@@ -87,10 +87,10 @@ class AuthService {
     }
   }
 
-  Future<bool> authenticateWithBiometric() async {
+  Future<bool> authenticateWithBiometric({required String localizedReason}) async {
     try {
       return await _localAuth.authenticate(
-        localizedReason: '생체인증으로 잠금을 해제합니다',
+        localizedReason: localizedReason,
         options: const AuthenticationOptions(
           biometricOnly: true,
           stickyAuth: true,

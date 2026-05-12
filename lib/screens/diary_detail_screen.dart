@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/theme.dart';
 import '../db/diary_dao.dart';
+import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import '../widgets/diary_detail_card.dart';
 
@@ -32,6 +33,7 @@ class _DiaryDetailScreenState extends State<DiaryDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: palette.background,
       appBar: AppBar(
@@ -40,7 +42,7 @@ class _DiaryDetailScreenState extends State<DiaryDetailScreen> {
         scrolledUnderElevation: 0,
         leading: TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text('닫기',
+          child: Text(loc.commonClose,
               style: TextStyle(
                   color: palette.tabBarActive,
                   fontSize: 16,
@@ -48,7 +50,7 @@ class _DiaryDetailScreenState extends State<DiaryDetailScreen> {
         ),
         leadingWidth: 64,
         title: Text(
-          '일기 상세',
+          loc.diaryDetailTitle,
           style: TextStyle(
               fontSize: 17, fontWeight: FontWeight.w700, color: palette.text),
         ),
@@ -66,7 +68,7 @@ class _DiaryDetailScreenState extends State<DiaryDetailScreen> {
                   ? Padding(
                       padding: const EdgeInsets.only(top: 40),
                       child: Text(
-                        '일기를 찾을 수 없어요',
+                        loc.diaryDetailNotFound,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 15, color: palette.textSecondary),

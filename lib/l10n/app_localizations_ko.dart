@@ -510,4 +510,121 @@ class AppLocalizationsKo extends AppLocalizations {
   String homeDailyQuotaBadge(int used, int max) {
     return 'AI 분석 $used/$max';
   }
+
+  @override
+  String get mainTabToday => '오늘';
+
+  @override
+  String get mainTabCalendar => '캘린더';
+
+  @override
+  String get mainTabStats => '통계';
+
+  @override
+  String get mainTabTimeline => '타임라인';
+
+  @override
+  String get pinSetupTitle => '새 비밀번호 설정';
+
+  @override
+  String get pinSetupRepeat => '다시 한 번 입력해주세요';
+
+  @override
+  String get pinSetupHelp4Digit => '4자리 숫자를 입력해주세요';
+
+  @override
+  String get pinSetupHelpRepeat => '확인을 위해 같은 번호를 입력해주세요';
+
+  @override
+  String get pinSetupMismatch => '비밀번호가 일치하지 않아요. 다시 설정해주세요.';
+
+  @override
+  String get pinBiometricTitle => '생체인증을 사용할까요?';
+
+  @override
+  String get pinBiometricDescription =>
+      '지문/페이스ID로 더 빠르게 잠금을 해제할 수 있어요.\n설정에서 언제든 바꿀 수 있어요.';
+
+  @override
+  String get pinBiometricEnable => '사용할게요';
+
+  @override
+  String get pinBiometricSkip => '비밀번호만 쓸게요';
+
+  @override
+  String get lockTitle => '비밀번호 입력';
+
+  @override
+  String get lockHelp => '4자리 비밀번호를 입력해주세요';
+
+  @override
+  String get lockMismatchError => '비밀번호가 일치하지 않아요';
+
+  @override
+  String get lockForgotPin => '비밀번호를 잊으셨나요?';
+
+  @override
+  String get lockResetTitle => '데이터 초기화';
+
+  @override
+  String get lockResetMessage => '비밀번호를 복구할 수 없어 모든 데이터가 삭제됩니다.\n정말 초기화할까요?';
+
+  @override
+  String get lockResetButton => '초기화';
+
+  @override
+  String get lockBiometricReason => '생체인증으로 잠금을 해제합니다';
+
+  @override
+  String get timelineTitle => '타임라인';
+
+  @override
+  String get timelineEmpty => '작성한 일기가 없어요\n오늘의 감정을 기록해보세요';
+
+  @override
+  String get timelineEndReached => '모든 일기를 불러왔어요';
+
+  @override
+  String get calendarTitle => '감정 캘린더';
+
+  @override
+  String get calendarTapHint => '날짜를 탭하면 일기를 볼 수 있어요';
+
+  @override
+  String get calendarNoEntryForDate => '이 날은 일기를 작성하지 않았어요';
+
+  @override
+  String get diaryDetailTitle => '일기 상세';
+
+  @override
+  String get diaryDetailNotFound => '일기를 찾을 수 없어요';
+
+  @override
+  String get weeklyLineChartHint => '2일 이상의 분석 데이터가 있으면 그래프가 표시됩니다';
+
+  @override
+  String dayAverageHeader(int month, int day) {
+    return '$month월 $day일 평균';
+  }
+
+  @override
+  String dayAverageEntryCount(int count) {
+    return '$count개 기록';
+  }
+
+  @override
+  String get donutChartDaysUnit => '일';
+
+  @override
+  String driveBackupFileEntryCount(int count) {
+    return '$count개 일기';
+  }
+
+  @override
+  String get driveBackupDefaultName => '백업 파일';
+
+  @override
+  String datePartWithDay(String datePart, String dayPart) {
+    return '$datePart $dayPart';
+  }
 }

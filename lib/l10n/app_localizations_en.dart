@@ -522,4 +522,124 @@ class AppLocalizationsEn extends AppLocalizations {
   String homeDailyQuotaBadge(int used, int max) {
     return 'AI analyses $used/$max';
   }
+
+  @override
+  String get mainTabToday => 'Today';
+
+  @override
+  String get mainTabCalendar => 'Calendar';
+
+  @override
+  String get mainTabStats => 'Stats';
+
+  @override
+  String get mainTabTimeline => 'Timeline';
+
+  @override
+  String get pinSetupTitle => 'Set new password';
+
+  @override
+  String get pinSetupRepeat => 'Please enter it once more';
+
+  @override
+  String get pinSetupHelp4Digit => 'Enter a 4-digit number';
+
+  @override
+  String get pinSetupHelpRepeat => 'Enter the same number to confirm';
+
+  @override
+  String get pinSetupMismatch => 'Passwords don\'t match. Please set it again.';
+
+  @override
+  String get pinBiometricTitle => 'Use biometric authentication?';
+
+  @override
+  String get pinBiometricDescription =>
+      'Unlock more quickly with fingerprint or Face ID.\nYou can change this anytime in Settings.';
+
+  @override
+  String get pinBiometricEnable => 'Use it';
+
+  @override
+  String get pinBiometricSkip => 'Password only';
+
+  @override
+  String get lockTitle => 'Enter password';
+
+  @override
+  String get lockHelp => 'Please enter your 4-digit password';
+
+  @override
+  String get lockMismatchError => 'Passwords don\'t match';
+
+  @override
+  String get lockForgotPin => 'Forgot your password?';
+
+  @override
+  String get lockResetTitle => 'Reset data';
+
+  @override
+  String get lockResetMessage =>
+      'Your password cannot be recovered, so all data will be deleted.\nReally reset?';
+
+  @override
+  String get lockResetButton => 'Reset';
+
+  @override
+  String get lockBiometricReason => 'Unlock with biometric authentication';
+
+  @override
+  String get timelineTitle => 'Timeline';
+
+  @override
+  String get timelineEmpty =>
+      'No diary entries yet.\nRecord today\'s emotions.';
+
+  @override
+  String get timelineEndReached => 'Loaded all entries';
+
+  @override
+  String get calendarTitle => 'Emotion calendar';
+
+  @override
+  String get calendarTapHint => 'Tap a date to see the diary';
+
+  @override
+  String get calendarNoEntryForDate => 'No diary entries on this day';
+
+  @override
+  String get diaryDetailTitle => 'Diary detail';
+
+  @override
+  String get diaryDetailNotFound => 'Diary not found';
+
+  @override
+  String get weeklyLineChartHint =>
+      'The chart appears when 2+ days of analyzed data are available';
+
+  @override
+  String dayAverageHeader(int month, int day) {
+    return '$month/$day average';
+  }
+
+  @override
+  String dayAverageEntryCount(int count) {
+    return '$count entries';
+  }
+
+  @override
+  String get donutChartDaysUnit => 'days';
+
+  @override
+  String driveBackupFileEntryCount(int count) {
+    return '$count entries';
+  }
+
+  @override
+  String get driveBackupDefaultName => 'Backup file';
+
+  @override
+  String datePartWithDay(String datePart, String dayPart) {
+    return '$datePart $dayPart';
+  }
 }

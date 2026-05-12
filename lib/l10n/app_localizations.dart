@@ -899,6 +899,222 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'AI 분석 {used}/{max}'**
   String homeDailyQuotaBadge(int used, int max);
+
+  /// No description provided for @mainTabToday.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘'**
+  String get mainTabToday;
+
+  /// No description provided for @mainTabCalendar.
+  ///
+  /// In ko, this message translates to:
+  /// **'캘린더'**
+  String get mainTabCalendar;
+
+  /// No description provided for @mainTabStats.
+  ///
+  /// In ko, this message translates to:
+  /// **'통계'**
+  String get mainTabStats;
+
+  /// No description provided for @mainTabTimeline.
+  ///
+  /// In ko, this message translates to:
+  /// **'타임라인'**
+  String get mainTabTimeline;
+
+  /// No description provided for @pinSetupTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 비밀번호 설정'**
+  String get pinSetupTitle;
+
+  /// No description provided for @pinSetupRepeat.
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 한 번 입력해주세요'**
+  String get pinSetupRepeat;
+
+  /// No description provided for @pinSetupHelp4Digit.
+  ///
+  /// In ko, this message translates to:
+  /// **'4자리 숫자를 입력해주세요'**
+  String get pinSetupHelp4Digit;
+
+  /// No description provided for @pinSetupHelpRepeat.
+  ///
+  /// In ko, this message translates to:
+  /// **'확인을 위해 같은 번호를 입력해주세요'**
+  String get pinSetupHelpRepeat;
+
+  /// No description provided for @pinSetupMismatch.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호가 일치하지 않아요. 다시 설정해주세요.'**
+  String get pinSetupMismatch;
+
+  /// No description provided for @pinBiometricTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'생체인증을 사용할까요?'**
+  String get pinBiometricTitle;
+
+  /// No description provided for @pinBiometricDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'지문/페이스ID로 더 빠르게 잠금을 해제할 수 있어요.\n설정에서 언제든 바꿀 수 있어요.'**
+  String get pinBiometricDescription;
+
+  /// No description provided for @pinBiometricEnable.
+  ///
+  /// In ko, this message translates to:
+  /// **'사용할게요'**
+  String get pinBiometricEnable;
+
+  /// No description provided for @pinBiometricSkip.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호만 쓸게요'**
+  String get pinBiometricSkip;
+
+  /// No description provided for @lockTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호 입력'**
+  String get lockTitle;
+
+  /// No description provided for @lockHelp.
+  ///
+  /// In ko, this message translates to:
+  /// **'4자리 비밀번호를 입력해주세요'**
+  String get lockHelp;
+
+  /// No description provided for @lockMismatchError.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호가 일치하지 않아요'**
+  String get lockMismatchError;
+
+  /// No description provided for @lockForgotPin.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호를 잊으셨나요?'**
+  String get lockForgotPin;
+
+  /// No description provided for @lockResetTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'데이터 초기화'**
+  String get lockResetTitle;
+
+  /// No description provided for @lockResetMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호를 복구할 수 없어 모든 데이터가 삭제됩니다.\n정말 초기화할까요?'**
+  String get lockResetMessage;
+
+  /// No description provided for @lockResetButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'초기화'**
+  String get lockResetButton;
+
+  /// No description provided for @lockBiometricReason.
+  ///
+  /// In ko, this message translates to:
+  /// **'생체인증으로 잠금을 해제합니다'**
+  String get lockBiometricReason;
+
+  /// No description provided for @timelineTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'타임라인'**
+  String get timelineTitle;
+
+  /// No description provided for @timelineEmpty.
+  ///
+  /// In ko, this message translates to:
+  /// **'작성한 일기가 없어요\n오늘의 감정을 기록해보세요'**
+  String get timelineEmpty;
+
+  /// No description provided for @timelineEndReached.
+  ///
+  /// In ko, this message translates to:
+  /// **'모든 일기를 불러왔어요'**
+  String get timelineEndReached;
+
+  /// No description provided for @calendarTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'감정 캘린더'**
+  String get calendarTitle;
+
+  /// No description provided for @calendarTapHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'날짜를 탭하면 일기를 볼 수 있어요'**
+  String get calendarTapHint;
+
+  /// No description provided for @calendarNoEntryForDate.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 날은 일기를 작성하지 않았어요'**
+  String get calendarNoEntryForDate;
+
+  /// No description provided for @diaryDetailTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'일기 상세'**
+  String get diaryDetailTitle;
+
+  /// No description provided for @diaryDetailNotFound.
+  ///
+  /// In ko, this message translates to:
+  /// **'일기를 찾을 수 없어요'**
+  String get diaryDetailNotFound;
+
+  /// No description provided for @weeklyLineChartHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'2일 이상의 분석 데이터가 있으면 그래프가 표시됩니다'**
+  String get weeklyLineChartHint;
+
+  /// No description provided for @dayAverageHeader.
+  ///
+  /// In ko, this message translates to:
+  /// **'{month}월 {day}일 평균'**
+  String dayAverageHeader(int month, int day);
+
+  /// No description provided for @dayAverageEntryCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개 기록'**
+  String dayAverageEntryCount(int count);
+
+  /// No description provided for @donutChartDaysUnit.
+  ///
+  /// In ko, this message translates to:
+  /// **'일'**
+  String get donutChartDaysUnit;
+
+  /// No description provided for @driveBackupFileEntryCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개 일기'**
+  String driveBackupFileEntryCount(int count);
+
+  /// No description provided for @driveBackupDefaultName.
+  ///
+  /// In ko, this message translates to:
+  /// **'백업 파일'**
+  String get driveBackupDefaultName;
+
+  /// ko: '5월 12일 월요일' 형태로 결합. en: 동일 포맷, 공백 결합.
+  ///
+  /// In ko, this message translates to:
+  /// **'{datePart} {dayPart}'**
+  String datePartWithDay(String datePart, String dayPart);
 }
 
 class _AppLocalizationsDelegate

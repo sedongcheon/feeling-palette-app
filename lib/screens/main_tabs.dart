@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/theme.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/diary_provider.dart';
 import 'calendar_screen.dart';
 import 'home_screen.dart';
@@ -28,12 +29,12 @@ class _MainTabsState extends State<MainTabs> {
     const TimelineScreen(),
   ];
 
-  static const _items = <_TabItem>[
-    _TabItem(icon: Icons.edit_note_rounded, label: '오늘'),
-    _TabItem(icon: Icons.calendar_month_rounded, label: '캘린더'),
-    _TabItem(icon: Icons.bubble_chart_rounded, label: '통계'),
-    _TabItem(icon: Icons.auto_stories_rounded, label: '타임라인'),
-  ];
+  List<_TabItem> _buildItems(AppLocalizations loc) => [
+        _TabItem(icon: Icons.edit_note_rounded, label: loc.mainTabToday),
+        _TabItem(icon: Icons.calendar_month_rounded, label: loc.mainTabCalendar),
+        _TabItem(icon: Icons.bubble_chart_rounded, label: loc.mainTabStats),
+        _TabItem(icon: Icons.auto_stories_rounded, label: loc.mainTabTimeline),
+      ];
 
   void _handleTap(int i) {
     if (i == _index) return;
@@ -59,12 +60,13 @@ class _MainTabsState extends State<MainTabs> {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final loc = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: palette.background,
       body: IndexedStack(index: _index, children: _tabs),
       bottomNavigationBar: _CutieBottomBar(
         index: _index,
-        items: _items,
+        items: _buildItems(loc),
         palette: palette,
         onTap: _handleTap,
       ),

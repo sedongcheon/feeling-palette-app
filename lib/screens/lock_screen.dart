@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/theme.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/pin_pad.dart';
 
@@ -29,7 +30,9 @@ class _LockScreenState extends State<LockScreen> {
     _biometricAttempted = true;
     final auth = context.read<AuthProvider>();
     if (!auth.biometricEnabled) return;
-    await auth.authenticateBiometric();
+    await auth.authenticateBiometric(
+      localizedReason: AppLocalizations.of(context).lockBiometricReason,
+    );
   }
 
   Future<void> _onChanged(String value) async {
@@ -44,7 +47,7 @@ class _LockScreenState extends State<LockScreen> {
     if (!ok) {
       setState(() {
         _current = '';
-        _error = '비밀번호가 일치하지 않아요';
+        _error = AppLocalizations.of(context).lockMismatchError;
         _checking = false;
       });
     }
@@ -53,25 +56,26 @@ class _LockScreenState extends State<LockScreen> {
   Future<void> _confirmReset() async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('데이터 초기화'),
-        content: const Text(
-          '비밀번호를 복구할 수 없어 모든 데이터가 삭제됩니다.\n정말 초기화할까요?',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('취소'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text(
-              '초기화',
-              style: TextStyle(color: Color(0xFFE74C3C)),
+      builder: (ctx) {
+        final loc = AppLocalizations.of(ctx);
+        return AlertDialog(
+          title: Text(loc.lockResetTitle),
+          content: Text(loc.lockResetMessage),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: Text(loc.commonCancel),
             ),
-          ),
-        ],
-      ),
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: Text(
+                loc.lockResetButton,
+                style: const TextStyle(color: Color(0xFFE74C3C)),
+              ),
+            ),
+          ],
+        );
+      },
     );
     if (confirmed == true && mounted) {
       await context.read<AuthProvider>().resetAllData();
@@ -81,6 +85,7 @@ class _LockScreenState extends State<LockScreen> {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final loc = AppLocalizations.of(context);
     final auth = context.watch<AuthProvider>();
     return Scaffold(
       backgroundColor: palette.background,
@@ -95,7 +100,7 @@ class _LockScreenState extends State<LockScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              '비밀번호 입력',
+              loc.lockTitle,
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w800,
@@ -104,7 +109,7 @@ class _LockScreenState extends State<LockScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              '4자리 비밀번호를 입력해주세요',
+              loc.lockHelp,
               style: TextStyle(
                 fontSize: 14,
                 color: palette.textSecondary,
@@ -123,8 +128,11 @@ class _LockScreenState extends State<LockScreen> {
                           size: 32,
                           color: palette.tabBarActive,
                         ),
-                        onPressed: () =>
-                            context.read<AuthProvider>().authenticateBiometric(),
+                        onPressed: () => context
+                            .read<AuthProvider>()
+                            .authenticateBiometric(
+                              localizedReason: loc.lockBiometricReason,
+                            ),
                       ),
                     )
                   : null,
@@ -133,7 +141,7 @@ class _LockScreenState extends State<LockScreen> {
             TextButton(
               onPressed: _confirmReset,
               child: Text(
-                '비밀번호를 잊으셨나요?',
+                loc.lockForgotPin,
                 style: TextStyle(
                   fontSize: 13,
                   color: palette.textSecondary,

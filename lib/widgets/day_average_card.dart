@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/emotions.dart';
 import '../constants/theme.dart';
+import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 
 class DayAverageCard extends StatelessWidget {
@@ -12,6 +13,7 @@ class DayAverageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final loc = AppLocalizations.of(context);
     final primary = emotionInfoOf(aggregate.primaryEmotion);
     final color = hexToColor(aggregate.color);
 
@@ -24,7 +26,7 @@ class DayAverageCard extends StatelessWidget {
 
     final parts = aggregate.date.split('-');
     final dateLabel =
-        '${int.parse(parts[1])}월 ${int.parse(parts[2])}일 평균';
+        loc.dayAverageHeader(int.parse(parts[1]), int.parse(parts[2]));
 
     return Container(
       decoration: BoxDecoration(
@@ -69,7 +71,7 @@ class DayAverageCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    '${aggregate.analyzedCount}개 기록',
+                    loc.dayAverageEntryCount(aggregate.analyzedCount),
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w700,

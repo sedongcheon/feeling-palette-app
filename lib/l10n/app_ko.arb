@@ -306,5 +306,71 @@
       "used": { "type": "int" },
       "max": { "type": "int" }
     }
+  },
+
+  "mainTabToday": "오늘",
+  "mainTabCalendar": "캘린더",
+  "mainTabStats": "통계",
+  "mainTabTimeline": "타임라인",
+
+  "pinSetupTitle": "새 비밀번호 설정",
+  "pinSetupRepeat": "다시 한 번 입력해주세요",
+  "pinSetupHelp4Digit": "4자리 숫자를 입력해주세요",
+  "pinSetupHelpRepeat": "확인을 위해 같은 번호를 입력해주세요",
+  "pinSetupMismatch": "비밀번호가 일치하지 않아요. 다시 설정해주세요.",
+  "pinBiometricTitle": "생체인증을 사용할까요?",
+  "pinBiometricDescription": "지문/페이스ID로 더 빠르게 잠금을 해제할 수 있어요.\n설정에서 언제든 바꿀 수 있어요.",
+  "pinBiometricEnable": "사용할게요",
+  "pinBiometricSkip": "비밀번호만 쓸게요",
+
+  "lockTitle": "비밀번호 입력",
+  "lockHelp": "4자리 비밀번호를 입력해주세요",
+  "lockMismatchError": "비밀번호가 일치하지 않아요",
+  "lockForgotPin": "비밀번호를 잊으셨나요?",
+  "lockResetTitle": "데이터 초기화",
+  "lockResetMessage": "비밀번호를 복구할 수 없어 모든 데이터가 삭제됩니다.\n정말 초기화할까요?",
+  "lockResetButton": "초기화",
+  "lockBiometricReason": "생체인증으로 잠금을 해제합니다",
+
+  "timelineTitle": "타임라인",
+  "timelineEmpty": "작성한 일기가 없어요\n오늘의 감정을 기록해보세요",
+  "timelineEndReached": "모든 일기를 불러왔어요",
+
+  "calendarTitle": "감정 캘린더",
+  "calendarTapHint": "날짜를 탭하면 일기를 볼 수 있어요",
+  "calendarNoEntryForDate": "이 날은 일기를 작성하지 않았어요",
+
+  "diaryDetailTitle": "일기 상세",
+  "diaryDetailNotFound": "일기를 찾을 수 없어요",
+
+  "weeklyLineChartHint": "2일 이상의 분석 데이터가 있으면 그래프가 표시됩니다",
+
+  "dayAverageHeader": "{month}월 {day}일 평균",
+  "@dayAverageHeader": {
+    "placeholders": {
+      "month": { "type": "int" },
+      "day": { "type": "int" }
+    }
+  },
+  "dayAverageEntryCount": "{count}개 기록",
+  "@dayAverageEntryCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "donutChartDaysUnit": "일",
+
+  "driveBackupFileEntryCount": "{count}개 일기",
+  "@driveBackupFileEntryCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "driveBackupDefaultName": "백업 파일",
+
+  "datePartWithDay": "{datePart} {dayPart}",
+  "@datePartWithDay": {
+    "description": "ko: '5월 12일 월요일' 형태로 결합. en: 동일 포맷, 공백 결합.",
+    "placeholders": {
+      "datePart": { "type": "String" },
+      "dayPart": { "type": "String" }
+    }
   }
 }
