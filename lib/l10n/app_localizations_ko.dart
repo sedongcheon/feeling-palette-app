@@ -331,4 +331,81 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get todayEntryBonusAdIncomplete => '광고를 끝까지 시청해야 보상을 받을 수 있어요.';
+
+  @override
+  String get commonTryAgainLater => '잠시 후 다시 시도해주세요.';
+
+  @override
+  String get statsTitle => '감정 통계';
+
+  @override
+  String get statsEmpty => '이 달에는 아직 분석된 일기가 없어요\n일기를 작성하면 감정 통계를 볼 수 있어요';
+
+  @override
+  String get statsDistributionTitle => '감정 분포 (하루 평균 기준)';
+
+  @override
+  String get statsTop3Title => '이 달의 감정 Top 3';
+
+  @override
+  String get statsTrendTitle => '감정 변화';
+
+  @override
+  String get statsMonthSummaryTitle => '월간 요약';
+
+  @override
+  String get statsMonthAiSummaryTitle => '월간 AI 요약';
+
+  @override
+  String statsDistributionRow(int days, int percent) {
+    return '$days일 ($percent%)';
+  }
+
+  @override
+  String statsTopRowCount(int count) {
+    return '$count일';
+  }
+
+  @override
+  String statsMonthSummaryText(
+    int totalDays,
+    int totalEntries,
+    String emotion,
+    int days,
+    int percent,
+  ) {
+    return '이번 달은 $totalDays일(총 $totalEntries개 기록) 중 \'$emotion\'을 가장 많이 느꼈어요. ($days일, $percent%)';
+  }
+
+  @override
+  String get statsSummaryErrorTitle => '요약 생성 실패';
+
+  @override
+  String get statsSummaryAdIncomplete => '광고 시청이 완료되지 않아 요약을 만들지 못했어요.';
+
+  @override
+  String get statsSummaryQuotaHit => '오늘 요약 한도를 모두 사용했어요. 내일 다시 이용해주세요.';
+
+  @override
+  String get statsSummaryNotEnoughData => '이번 달 분석된 일기가 없어 요약할 내용이 부족해요.';
+
+  @override
+  String statsSummaryQuotaBadge(int available, int budget, int entriesToNext) {
+    return '이 달 요약 $available/$budget 남음 · 일기 $entriesToNext개 더 쓰면 +1회 충전';
+  }
+
+  @override
+  String get statsSummaryFreeCreate => '무료로 AI 요약 만들기';
+
+  @override
+  String get statsSummaryFreeRegen => '무료로 다시 요약하기';
+
+  @override
+  String get statsSummaryAdCreate => '광고 보고 AI 요약 만들기';
+
+  @override
+  String get statsSummaryAdRegen => '광고 보고 다시 요약하기';
+
+  @override
+  String get statsSummaryAllUsed => '이 달 요약 한도를 모두 사용했어요';
 }

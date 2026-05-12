@@ -109,5 +109,30 @@
   "todayEntryAnalyzeButton": "AI emotion analysis ({remaining}/{max})",
 
   "todayEntryBonusUnlocked": "+{bonus} analyses unlocked!",
-  "todayEntryBonusAdIncomplete": "Watch the full ad to receive the reward."
+  "todayEntryBonusAdIncomplete": "Watch the full ad to receive the reward.",
+
+  "commonTryAgainLater": "Please try again later.",
+
+  "statsTitle": "Emotion stats",
+  "statsEmpty": "No analyzed diaries yet this month.\nWrite a diary entry to see emotion stats.",
+  "statsDistributionTitle": "Emotion distribution (daily average)",
+  "statsTop3Title": "Top 3 emotions this month",
+  "statsTrendTitle": "Emotion trend",
+  "statsMonthSummaryTitle": "Monthly summary",
+  "statsMonthAiSummaryTitle": "Monthly AI summary",
+
+  "statsDistributionRow": "{days} days ({percent}%)",
+  "statsTopRowCount": "{count} days",
+  "statsMonthSummaryText": "Across {totalDays} days ({totalEntries} entries total) this month, '{emotion}' was felt most. ({days} days, {percent}%)",
+
+  "statsSummaryErrorTitle": "Summary generation failed",
+  "statsSummaryAdIncomplete": "Ad viewing was not completed, so the summary couldn't be created.",
+  "statsSummaryQuotaHit": "You've used today's summary quota. Please try again tomorrow.",
+  "statsSummaryNotEnoughData": "No analyzed diaries this month — not enough content to summarize.",
+  "statsSummaryQuotaBadge": "{available}/{budget} summaries left this month · {entriesToNext} more diaries to earn +1",
+  "statsSummaryFreeCreate": "Create AI summary (free)",
+  "statsSummaryFreeRegen": "Regenerate summary (free)",
+  "statsSummaryAdCreate": "Watch ad to create AI summary",
+  "statsSummaryAdRegen": "Watch ad to regenerate summary",
+  "statsSummaryAllUsed": "This month's summary quota used up"
 }

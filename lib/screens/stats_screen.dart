@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/emotions.dart';
 import '../constants/theme.dart';
+import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import '../models/month_summary.dart';
 import '../providers/diary_provider.dart';
@@ -46,6 +48,7 @@ class _StatsScreenState extends State<StatsScreen> {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final loc = AppLocalizations.of(context);
     final store = context.watch<DiaryProvider>();
 
     final byDate = groupEntriesByDate(store.monthEntries);
@@ -82,7 +85,8 @@ class _StatsScreenState extends State<StatsScreen> {
     final totalDays = aggregates.length;
     final totalEntries = store.monthEntries.length;
     final hasData = totalDays > 0;
-    final monthLabel = '${_currentMonth.year}년 ${_currentMonth.month}월';
+    final monthLabel =
+        DateFormat.yMMMM(loc.localeName).format(_currentMonth);
 
     return Scaffold(
       backgroundColor: palette.background,
@@ -90,7 +94,7 @@ class _StatsScreenState extends State<StatsScreen> {
         backgroundColor: palette.surface,
         elevation: 0,
         scrolledUnderElevation: 0,
-        title: Text('감정 통계',
+        title: Text(loc.statsTitle,
             style: TextStyle(
                 fontWeight: FontWeight.w700, fontSize: 17, color: palette.text)),
       ),
@@ -145,7 +149,7 @@ class _StatsScreenState extends State<StatsScreen> {
                     const Text('📊', style: TextStyle(fontSize: 36)),
                     const SizedBox(height: 12),
                     Text(
-                      '이 달에는 아직 분석된 일기가 없어요\n일기를 작성하면 감정 통계를 볼 수 있어요',
+                      loc.statsEmpty,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 14, height: 22 / 14, color: palette.textSecondary),
@@ -156,7 +160,7 @@ class _StatsScreenState extends State<StatsScreen> {
             else ...[
               _section(
                 palette,
-                title: '감정 분포 (하루 평균 기준)',
+                title: loc.statsDistributionTitle,
                 child: Column(
                   children: [
                     Center(child: DonutChart(data: donutData, size: 150)),
@@ -186,7 +190,8 @@ class _StatsScreenState extends State<StatsScreen> {
                                 ),
                               ),
                               Text(
-                                '${d.value}일 (${(d.value / totalDays * 100).round()}%)',
+                                loc.statsDistributionRow(
+                                    d.value, (d.value / totalDays * 100).round()),
                                 style: TextStyle(
                                     fontSize: 12, color: palette.textSecondary),
                               ),
@@ -201,7 +206,7 @@ class _StatsScreenState extends State<StatsScreen> {
               ),
               _section(
                 palette,
-                title: '이 달의 감정 Top 3',
+                title: loc.statsTop3Title,
                 child: Column(
                   children: [
                     for (var i = 0; i < topThree.length; i++)
@@ -212,7 +217,7 @@ class _StatsScreenState extends State<StatsScreen> {
               ),
               _section(
                 palette,
-                title: '감정 변화',
+                title: loc.statsTrendTitle,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     return WeeklyLineChart(
@@ -229,17 +234,22 @@ class _StatsScreenState extends State<StatsScreen> {
               if (topThree.isNotEmpty)
                 _section(
                   palette,
-                  title: '월간 요약',
+                  title: loc.statsMonthSummaryTitle,
                   child: Text(
-                    "이번 달은 $totalDays일(총 $totalEntries개 기록) 중 '${emotionLabel(context, topThree.first.key)}'을 가장 많이 느꼈어요. "
-                    "(${topThree.first.value}일, ${(topThree.first.value / totalDays * 100).round()}%)",
+                    loc.statsMonthSummaryText(
+                      totalDays,
+                      totalEntries,
+                      emotionLabel(context, topThree.first.key),
+                      topThree.first.value,
+                      (topThree.first.value / totalDays * 100).round(),
+                    ),
                     style: TextStyle(
                         fontSize: 15, height: 24 / 15, color: palette.text),
                   ),
                 ),
               _section(
                 palette,
-                title: '월간 AI 요약',
+                title: loc.statsMonthAiSummaryTitle,
                 child: _MonthAiSummaryBlock(
                   monthKey: formatYearMonth(_currentMonth),
                   entries: store.monthEntries,
@@ -279,6 +289,7 @@ class _StatsScreenState extends State<StatsScreen> {
   }
 
   Widget _topRow(BuildContext context, AppPalette palette, int rank, EmotionType type, int count, int total) {
+    final loc = AppLocalizations.of(context);
     final info = emotionInfoOf(type);
     final percentage = (count / total * 100).round();
     return Padding(
@@ -340,7 +351,7 @@ class _StatsScreenState extends State<StatsScreen> {
           const SizedBox(width: 10),
           SizedBox(
             width: 36,
-            child: Text('$count일',
+            child: Text(loc.statsTopRowCount(count),
                 textAlign: TextAlign.right,
                 style: TextStyle(
                     fontSize: 14, fontWeight: FontWeight.w700, color: info.color)),
@@ -366,16 +377,19 @@ class _MonthAiSummaryBlock extends StatelessWidget {
     if (!context.mounted) return;
     showDialog<void>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('요약 생성 실패'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('확인'),
-          ),
-        ],
-      ),
+      builder: (ctx) {
+        final loc = AppLocalizations.of(ctx);
+        return AlertDialog(
+          title: Text(loc.statsSummaryErrorTitle),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: Text(loc.commonOk),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -383,6 +397,7 @@ class _MonthAiSummaryBlock extends StatelessWidget {
     BuildContext context, {
     required bool viaAd,
   }) async {
+    final loc = AppLocalizations.of(context);
     final store = context.read<DiaryProvider>();
     String? errorMessage;
     try {
@@ -398,11 +413,11 @@ class _MonthAiSummaryBlock extends StatelessWidget {
         );
       }
     } on MonthSummaryAdException {
-      errorMessage = '광고 시청이 완료되지 않아 요약을 만들지 못했어요.';
+      errorMessage = loc.statsSummaryAdIncomplete;
     } on MonthSummaryQuotaException {
-      errorMessage = '오늘 요약 한도를 모두 사용했어요. 내일 다시 이용해주세요.';
+      errorMessage = loc.statsSummaryQuotaHit;
     } catch (_) {
-      errorMessage = '잠시 후 다시 시도해주세요.';
+      errorMessage = loc.commonTryAgainLater;
     }
     if (errorMessage != null && context.mounted) {
       _showError(context, errorMessage);
@@ -412,6 +427,7 @@ class _MonthAiSummaryBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final loc = AppLocalizations.of(context);
     final store = context.watch<DiaryProvider>();
     final summary = store.summaryFor(monthKey);
     final inFlight = store.isSummaryInFlight;
@@ -423,7 +439,7 @@ class _MonthAiSummaryBlock extends StatelessWidget {
 
     if (!_hasEnoughData && summary == null) {
       return Text(
-        '이번 달 분석된 일기가 없어 요약할 내용이 부족해요.',
+        loc.statsSummaryNotEnoughData,
         style: TextStyle(fontSize: 14, color: palette.textSecondary),
       );
     }
@@ -435,6 +451,7 @@ class _MonthAiSummaryBlock extends StatelessWidget {
         if (summary != null) const SizedBox(height: 12),
         _quotaBadge(
           palette,
+          loc,
           available: available,
           budget: budget,
           entriesToNext: entriesToNext,
@@ -443,6 +460,7 @@ class _MonthAiSummaryBlock extends StatelessWidget {
         _actionButton(
           context: context,
           palette: palette,
+          loc: loc,
           summary: summary,
           inFlight: inFlight,
           available: available,
@@ -460,7 +478,8 @@ class _MonthAiSummaryBlock extends StatelessWidget {
   }
 
   Widget _quotaBadge(
-    AppPalette palette, {
+    AppPalette palette,
+    AppLocalizations loc, {
     required int available,
     required int budget,
     required int entriesToNext,
@@ -472,7 +491,7 @@ class _MonthAiSummaryBlock extends StatelessWidget {
         const SizedBox(width: 4),
         Expanded(
           child: Text(
-            '이 달 요약 $available/$budget 남음 · 일기 $entriesToNext개 더 쓰면 +1회 충전',
+            loc.statsSummaryQuotaBadge(available, budget, entriesToNext),
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w600,
@@ -487,6 +506,7 @@ class _MonthAiSummaryBlock extends StatelessWidget {
   Widget _actionButton({
     required BuildContext context,
     required AppPalette palette,
+    required AppLocalizations loc,
     required MonthSummary? summary,
     required bool inFlight,
     required int available,
@@ -509,7 +529,9 @@ class _MonthAiSummaryBlock extends StatelessWidget {
     }
 
     if (available > 0) {
-      final label = summary == null ? '무료로 AI 요약 만들기' : '무료로 다시 요약하기';
+      final label = summary == null
+          ? loc.statsSummaryFreeCreate
+          : loc.statsSummaryFreeRegen;
       return SizedBox(
         height: 44,
         child: ElevatedButton.icon(
@@ -528,8 +550,8 @@ class _MonthAiSummaryBlock extends StatelessWidget {
 
     if (canAd) {
       final label = summary == null
-          ? '광고 보고 AI 요약 만들기'
-          : '광고 보고 다시 요약하기';
+          ? loc.statsSummaryAdCreate
+          : loc.statsSummaryAdRegen;
       return SizedBox(
         height: 44,
         child: ElevatedButton.icon(
@@ -550,7 +572,7 @@ class _MonthAiSummaryBlock extends StatelessWidget {
       height: 44,
       child: Center(
         child: Text(
-          '이 달 요약 한도를 모두 사용했어요',
+          loc.statsSummaryAllUsed,
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w600,

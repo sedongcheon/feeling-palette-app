@@ -605,6 +605,138 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'광고를 끝까지 시청해야 보상을 받을 수 있어요.'**
   String get todayEntryBonusAdIncomplete;
+
+  /// No description provided for @commonTryAgainLater.
+  ///
+  /// In ko, this message translates to:
+  /// **'잠시 후 다시 시도해주세요.'**
+  String get commonTryAgainLater;
+
+  /// No description provided for @statsTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'감정 통계'**
+  String get statsTitle;
+
+  /// No description provided for @statsEmpty.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 달에는 아직 분석된 일기가 없어요\n일기를 작성하면 감정 통계를 볼 수 있어요'**
+  String get statsEmpty;
+
+  /// No description provided for @statsDistributionTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'감정 분포 (하루 평균 기준)'**
+  String get statsDistributionTitle;
+
+  /// No description provided for @statsTop3Title.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 달의 감정 Top 3'**
+  String get statsTop3Title;
+
+  /// No description provided for @statsTrendTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'감정 변화'**
+  String get statsTrendTitle;
+
+  /// No description provided for @statsMonthSummaryTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'월간 요약'**
+  String get statsMonthSummaryTitle;
+
+  /// No description provided for @statsMonthAiSummaryTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'월간 AI 요약'**
+  String get statsMonthAiSummaryTitle;
+
+  /// No description provided for @statsDistributionRow.
+  ///
+  /// In ko, this message translates to:
+  /// **'{days}일 ({percent}%)'**
+  String statsDistributionRow(int days, int percent);
+
+  /// No description provided for @statsTopRowCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}일'**
+  String statsTopRowCount(int count);
+
+  /// No description provided for @statsMonthSummaryText.
+  ///
+  /// In ko, this message translates to:
+  /// **'이번 달은 {totalDays}일(총 {totalEntries}개 기록) 중 \'{emotion}\'을 가장 많이 느꼈어요. ({days}일, {percent}%)'**
+  String statsMonthSummaryText(
+    int totalDays,
+    int totalEntries,
+    String emotion,
+    int days,
+    int percent,
+  );
+
+  /// No description provided for @statsSummaryErrorTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'요약 생성 실패'**
+  String get statsSummaryErrorTitle;
+
+  /// No description provided for @statsSummaryAdIncomplete.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 시청이 완료되지 않아 요약을 만들지 못했어요.'**
+  String get statsSummaryAdIncomplete;
+
+  /// No description provided for @statsSummaryQuotaHit.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘 요약 한도를 모두 사용했어요. 내일 다시 이용해주세요.'**
+  String get statsSummaryQuotaHit;
+
+  /// No description provided for @statsSummaryNotEnoughData.
+  ///
+  /// In ko, this message translates to:
+  /// **'이번 달 분석된 일기가 없어 요약할 내용이 부족해요.'**
+  String get statsSummaryNotEnoughData;
+
+  /// No description provided for @statsSummaryQuotaBadge.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 달 요약 {available}/{budget} 남음 · 일기 {entriesToNext}개 더 쓰면 +1회 충전'**
+  String statsSummaryQuotaBadge(int available, int budget, int entriesToNext);
+
+  /// No description provided for @statsSummaryFreeCreate.
+  ///
+  /// In ko, this message translates to:
+  /// **'무료로 AI 요약 만들기'**
+  String get statsSummaryFreeCreate;
+
+  /// No description provided for @statsSummaryFreeRegen.
+  ///
+  /// In ko, this message translates to:
+  /// **'무료로 다시 요약하기'**
+  String get statsSummaryFreeRegen;
+
+  /// No description provided for @statsSummaryAdCreate.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 보고 AI 요약 만들기'**
+  String get statsSummaryAdCreate;
+
+  /// No description provided for @statsSummaryAdRegen.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 보고 다시 요약하기'**
+  String get statsSummaryAdRegen;
+
+  /// No description provided for @statsSummaryAllUsed.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 달 요약 한도를 모두 사용했어요'**
+  String get statsSummaryAllUsed;
 }
 
 class _AppLocalizationsDelegate

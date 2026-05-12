@@ -199,5 +199,55 @@
   "@todayEntryBonusUnlocked": {
     "placeholders": { "bonus": { "type": "int" } }
   },
-  "todayEntryBonusAdIncomplete": "광고를 끝까지 시청해야 보상을 받을 수 있어요."
+  "todayEntryBonusAdIncomplete": "광고를 끝까지 시청해야 보상을 받을 수 있어요.",
+
+  "commonTryAgainLater": "잠시 후 다시 시도해주세요.",
+
+  "statsTitle": "감정 통계",
+  "statsEmpty": "이 달에는 아직 분석된 일기가 없어요\n일기를 작성하면 감정 통계를 볼 수 있어요",
+  "statsDistributionTitle": "감정 분포 (하루 평균 기준)",
+  "statsTop3Title": "이 달의 감정 Top 3",
+  "statsTrendTitle": "감정 변화",
+  "statsMonthSummaryTitle": "월간 요약",
+  "statsMonthAiSummaryTitle": "월간 AI 요약",
+
+  "statsDistributionRow": "{days}일 ({percent}%)",
+  "@statsDistributionRow": {
+    "placeholders": {
+      "days": { "type": "int" },
+      "percent": { "type": "int" }
+    }
+  },
+  "statsTopRowCount": "{count}일",
+  "@statsTopRowCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "statsMonthSummaryText": "이번 달은 {totalDays}일(총 {totalEntries}개 기록) 중 '{emotion}'을 가장 많이 느꼈어요. ({days}일, {percent}%)",
+  "@statsMonthSummaryText": {
+    "placeholders": {
+      "totalDays": { "type": "int" },
+      "totalEntries": { "type": "int" },
+      "emotion": { "type": "String" },
+      "days": { "type": "int" },
+      "percent": { "type": "int" }
+    }
+  },
+
+  "statsSummaryErrorTitle": "요약 생성 실패",
+  "statsSummaryAdIncomplete": "광고 시청이 완료되지 않아 요약을 만들지 못했어요.",
+  "statsSummaryQuotaHit": "오늘 요약 한도를 모두 사용했어요. 내일 다시 이용해주세요.",
+  "statsSummaryNotEnoughData": "이번 달 분석된 일기가 없어 요약할 내용이 부족해요.",
+  "statsSummaryQuotaBadge": "이 달 요약 {available}/{budget} 남음 · 일기 {entriesToNext}개 더 쓰면 +1회 충전",
+  "@statsSummaryQuotaBadge": {
+    "placeholders": {
+      "available": { "type": "int" },
+      "budget": { "type": "int" },
+      "entriesToNext": { "type": "int" }
+    }
+  },
+  "statsSummaryFreeCreate": "무료로 AI 요약 만들기",
+  "statsSummaryFreeRegen": "무료로 다시 요약하기",
+  "statsSummaryAdCreate": "광고 보고 AI 요약 만들기",
+  "statsSummaryAdRegen": "광고 보고 다시 요약하기",
+  "statsSummaryAllUsed": "이 달 요약 한도를 모두 사용했어요"
 }

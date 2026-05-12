@@ -337,4 +337,85 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get todayEntryBonusAdIncomplete =>
       'Watch the full ad to receive the reward.';
+
+  @override
+  String get commonTryAgainLater => 'Please try again later.';
+
+  @override
+  String get statsTitle => 'Emotion stats';
+
+  @override
+  String get statsEmpty =>
+      'No analyzed diaries yet this month.\nWrite a diary entry to see emotion stats.';
+
+  @override
+  String get statsDistributionTitle => 'Emotion distribution (daily average)';
+
+  @override
+  String get statsTop3Title => 'Top 3 emotions this month';
+
+  @override
+  String get statsTrendTitle => 'Emotion trend';
+
+  @override
+  String get statsMonthSummaryTitle => 'Monthly summary';
+
+  @override
+  String get statsMonthAiSummaryTitle => 'Monthly AI summary';
+
+  @override
+  String statsDistributionRow(int days, int percent) {
+    return '$days days ($percent%)';
+  }
+
+  @override
+  String statsTopRowCount(int count) {
+    return '$count days';
+  }
+
+  @override
+  String statsMonthSummaryText(
+    int totalDays,
+    int totalEntries,
+    String emotion,
+    int days,
+    int percent,
+  ) {
+    return 'Across $totalDays days ($totalEntries entries total) this month, \'$emotion\' was felt most. ($days days, $percent%)';
+  }
+
+  @override
+  String get statsSummaryErrorTitle => 'Summary generation failed';
+
+  @override
+  String get statsSummaryAdIncomplete =>
+      'Ad viewing was not completed, so the summary couldn\'t be created.';
+
+  @override
+  String get statsSummaryQuotaHit =>
+      'You\'ve used today\'s summary quota. Please try again tomorrow.';
+
+  @override
+  String get statsSummaryNotEnoughData =>
+      'No analyzed diaries this month — not enough content to summarize.';
+
+  @override
+  String statsSummaryQuotaBadge(int available, int budget, int entriesToNext) {
+    return '$available/$budget summaries left this month · $entriesToNext more diaries to earn +1';
+  }
+
+  @override
+  String get statsSummaryFreeCreate => 'Create AI summary (free)';
+
+  @override
+  String get statsSummaryFreeRegen => 'Regenerate summary (free)';
+
+  @override
+  String get statsSummaryAdCreate => 'Watch ad to create AI summary';
+
+  @override
+  String get statsSummaryAdRegen => 'Watch ad to regenerate summary';
+
+  @override
+  String get statsSummaryAllUsed => 'This month\'s summary quota used up';
 }
