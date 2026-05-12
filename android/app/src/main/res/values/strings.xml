@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 앱 이름. 시스템 언어와 무관하게 브랜드명 통일. 한국어 변형이 필요해지면
+         res/values-ko/strings.xml에 같은 키로 override. -->
+    <string name="app_name">Feeling Palette</string>
+</resources>
