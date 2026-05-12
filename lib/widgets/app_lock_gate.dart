@@ -23,8 +23,14 @@ class AppLockGate extends StatefulWidget {
 class _AppLockGateState extends State<AppLockGate> {
   AuthStage? _previousStage;
 
+  // QA용 디버그 토글. --dart-define=QA_BYPASS_AUTH=true 일 때만 잠금 우회.
+  // const fromEnvironment는 release 빌드에서 기본 false라 prod에 영향 없음.
+  static const bool _qaBypass =
+      bool.fromEnvironment('QA_BYPASS_AUTH');
+
   @override
   Widget build(BuildContext context) {
+    if (_qaBypass) return const MainTabs();
     final palette = context.palette;
     final stage = context.watch<AuthProvider>().stage;
 
