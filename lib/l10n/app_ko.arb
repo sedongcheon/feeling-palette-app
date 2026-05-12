@@ -1,0 +1,7 @@
+{
+  "@@locale": "ko",
+  "appTitle": "Feeling Palette",
+  "@appTitle": {
+    "description": "앱 타이틀 (MaterialApp title)"
+  }
+}

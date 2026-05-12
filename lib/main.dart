@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
+import 'l10n/app_localizations.dart';
 import 'constants/theme.dart';
 import 'db/database.dart';
 import 'providers/auth_provider.dart';
@@ -63,17 +64,18 @@ class FeelingPaletteApp extends StatelessWidget {
             value: PremiumService.instance),
       ],
       child: MaterialApp(
-        title: 'Feeling Palette',
+        onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
         debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.system,
         theme: buildLightTheme(),
         darkTheme: buildDarkTheme(),
         localizationsDelegates: const [
+          AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [Locale('ko', 'KR'), Locale('en', 'US')],
+        supportedLocales: AppLocalizations.supportedLocales,
         builder: (context, child) {
           final isDark = Theme.of(context).brightness == Brightness.dark;
           // Android 15+ SDK 35: setStatusBarColor/setNavigationBarColor가
