@@ -19,6 +19,7 @@ class TimelineScreen extends StatefulWidget {
 
 class _TimelineScreenState extends State<TimelineScreen> {
   static const int _pageSize = 20;
+  static const int _adInterval = 3;
 
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
@@ -83,69 +84,73 @@ class _TimelineScreenState extends State<TimelineScreen> {
             style: TextStyle(
                 fontWeight: FontWeight.w700, fontSize: 17, color: palette.text)),
       ),
-      body: Column(children: [
-        Expanded(
-          child: entries.isEmpty
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 80),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text('📋', style: TextStyle(fontSize: 36)),
-                        const SizedBox(height: 12),
-                        Text(
-                          loc.timelineEmpty,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 14,
-                              height: 22 / 14,
-                              color: palette.textSecondary),
-                        ),
-                      ],
+      body: entries.isEmpty
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 80),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('📋', style: TextStyle(fontSize: 36)),
+                    const SizedBox(height: 12),
+                    Text(
+                      loc.timelineEmpty,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 14,
+                          height: 22 / 14,
+                          color: palette.textSecondary),
                     ),
-                  ),
-                )
-              : ListView.separated(
-              controller: _scrollController,
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
-              itemCount: entries.length + 1,
-              separatorBuilder: (_, _) => const SizedBox(height: 10),
-              itemBuilder: (context, index) {
-                if (index == entries.length) {
-                  if (_isLoading) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Center(
-                        child: SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: palette.tabBarActive,
+                  ],
+                ),
+              ),
+            )
+          : Builder(builder: (context) {
+              final adCount = entries.length ~/ _adInterval;
+              final lastIndex = entries.length + adCount;
+              return ListView.separated(
+                controller: _scrollController,
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
+                itemCount: lastIndex + 1,
+                separatorBuilder: (_, _) => const SizedBox(height: 10),
+                itemBuilder: (context, index) {
+                  if (index == lastIndex) {
+                    if (_isLoading) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Center(
+                          child: SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: palette.tabBarActive,
+                            ),
                           ),
                         ),
-                      ),
-                    );
+                      );
+                    }
+                    if (!_hasMore && entries.isNotEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Text(
+                          loc.timelineEndReached,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 12, color: palette.textSecondary),
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
                   }
-                  if (!_hasMore && entries.isNotEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text(
-                        loc.timelineEndReached,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 12, color: palette.textSecondary),
-                      ),
-                    );
+                  // 일기 3개마다 광고 1개 (index 3, 7, 11, ...)
+                  if ((index + 1) % (_adInterval + 1) == 0) {
+                    return const Center(child: BannerAdSlot());
                   }
-                  return const SizedBox.shrink();
-                }
-                    return _TimelineItem(entry: entries[index]);
-                  },
-                ),
-        ),
-        const BannerAdSlot(),
-      ]),
+                  final entryIndex = index - (index ~/ (_adInterval + 1));
+                  return _TimelineItem(entry: entries[entryIndex]);
+                },
+              );
+            }),
     );
   }
 }

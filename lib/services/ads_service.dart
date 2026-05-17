@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/ad_ids.dart';
 import 'consent_service.dart';
@@ -21,12 +22,13 @@ class AdsService extends ChangeNotifier {
   AdsService._();
   static final AdsService instance = AdsService._();
 
-  // Throttle config — balanced policy. 세션당 최대 3회, 90초 쿨다운, 분석 3번마다.
-  // 보상 광고를 본 직후의 분석은 카운터에서 제외해(_skipNextAnalysisInterstitial)
+  // Throttle config — 분석 3번 누적마다 광고. 90초 쿨다운으로 연쇄 방지.
+  // 카운터는 SharedPreferences에 영속화되어 세션을 넘어 누적된다.
+  // 보상 광고 직후의 분석은 카운터에서 제외해(_skipNextAnalysisInterstitial)
   // 한 번에 두 광고가 연달아 뜨는 일을 방지한다.
   static const int kInterstitialEveryNAnalyses = 3;
-  static const int kInterstitialSessionCap = 3;
   static const Duration kInterstitialCooldown = Duration(seconds: 90);
+  static const String _kAnalysisCountKey = 'ads_analysis_count';
 
   bool _initialized = false;
   bool _adFree = false;
@@ -37,8 +39,7 @@ class AdsService extends ChangeNotifier {
   RewardedAd? _rewardedAd;
   bool _rewardedLoading = false;
 
-  int _sessionInterstitialShown = 0;
-  int _sessionAnalysisCount = 0;
+  int _analysisCount = 0;
   DateTime? _lastInterstitialShownAt;
   // 직전에 보상 광고를 봐서 보너스 분석을 받은 사용자에게는 다음 분석 1회를
   // 자동 광고 카운터에서 제외한다. 보상 광고 + 전면 광고가 연달아 뜨는 부담 방지.
@@ -59,6 +60,8 @@ class AdsService extends ChangeNotifier {
       if (kDebugMode) debugPrint('[Ads] Consent denies ad requests; skipping init.');
       return;
     }
+    final prefs = await SharedPreferences.getInstance();
+    _analysisCount = prefs.getInt(_kAnalysisCountKey) ?? 0;
     await MobileAds.instance.initialize();
     if (AdIds.testDeviceIds.isNotEmpty) {
       await MobileAds.instance.updateRequestConfiguration(
@@ -138,14 +141,12 @@ class AdsService extends ChangeNotifier {
 
   /// Shows an interstitial **if** all conditions pass:
   ///   - not ad-free, SDK initialized
-  ///   - session cap not reached
   ///   - cooldown elapsed since last show
   ///   - an ad is preloaded
   ///
   /// Returns `true` when the ad was shown. Preloads the next one on dismiss.
   Future<bool> maybeShowInterstitial() async {
     if (_adFree || !_initialized) return false;
-    if (_sessionInterstitialShown >= kInterstitialSessionCap) return false;
     final last = _lastInterstitialShownAt;
     if (last != null &&
         DateTime.now().difference(last) < kInterstitialCooldown) {
@@ -169,14 +170,13 @@ class AdsService extends ChangeNotifier {
       },
     );
     await ad.show();
-    _sessionInterstitialShown++;
     _lastInterstitialShownAt = DateTime.now();
     return true;
   }
 
-  /// Call right after a successful AI analysis. Tracks session count and
-  /// fires an interstitial on every [kInterstitialEveryNAnalyses]-th success
-  /// (subject to session cap and cooldown).
+  /// Call right after a successful AI analysis. Tracks lifetime count
+  /// (persisted via SharedPreferences) and fires an interstitial on every
+  /// [kInterstitialEveryNAnalyses]-th success (subject to cooldown).
   ///
   /// 보상 광고 직후의 분석은 _skipNextAnalysisInterstitial 플래그가 켜져 있어
   /// 카운트도 증가시키지 않고 광고 트리거도 하지 않는다.
@@ -185,10 +185,16 @@ class AdsService extends ChangeNotifier {
       _skipNextAnalysisInterstitial = false;
       return;
     }
-    _sessionAnalysisCount++;
-    if (_sessionAnalysisCount % kInterstitialEveryNAnalyses == 0) {
+    _analysisCount++;
+    unawaited(_persistAnalysisCount());
+    if (_analysisCount % kInterstitialEveryNAnalyses == 0) {
       unawaited(maybeShowInterstitial());
     }
+  }
+
+  Future<void> _persistAnalysisCount() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_kAnalysisCountKey, _analysisCount);
   }
 
   // ---------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 name: feeling_palette
 description: "AI 감정일기 앱 - Feeling Palette"
 publish_to: 'none'
-version: 1.0.1+12
+version: 1.0.3+14
 
 environment:
   sdk: ^3.11.4
@@ -26,6 +26,7 @@ dependencies:
   googleapis: ^13.2.0
   extension_google_sign_in_as_googleapis_auth: ^2.0.12
   flutter_secure_storage: ^9.2.2
+  shared_preferences: ^2.3.2
   local_auth: ^2.3.0
   crypto: ^3.0.5
   google_mobile_ads: ^5.2.0
