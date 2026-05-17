@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io' show Platform;
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -95,15 +94,9 @@ class DiaryProvider extends ChangeNotifier {
   int get todayBonusAdsShown => _todayBonusAdsShown;
   int get todayBonusAdsRemaining =>
       (kRewardMaxAdsPerDay - _todayBonusAdsShown).clamp(0, kRewardMaxAdsPerDay);
-  // iOS는 보상형 광고로 한도를 늘릴 수 없으므로(canWatchBonusAd 참고) 무료 한도
-  // 자체를 8개로 상향. Android는 기본 3 + 광고 시청으로 추가 (최대 8).
   int get effectiveDailyLimit =>
-      (Platform.isIOS ? 8 : kMaxDailyAnalyzedEntries) + _todayBonusAnalyses;
-  // iOS는 App Store 리뷰 환경에서 보상형 광고가 안정적으로 재생되지 않아
-  // 리뷰어가 보상을 받지 못한다고 판단해 거절. Android는 그대로 노출.
-  // (iOS Apple Paid Apps Agreement 활성화/사업자등록 후 재평가 예정)
-  bool get canWatchBonusAd =>
-      !Platform.isIOS && _todayBonusAdsShown < kRewardMaxAdsPerDay;
+      kMaxDailyAnalyzedEntries + _todayBonusAnalyses;
+  bool get canWatchBonusAd => _todayBonusAdsShown < kRewardMaxAdsPerDay;
 
   bool get dailyAnalysisLimitReached =>
       todayAnalyzedCount >= effectiveDailyLimit;
@@ -125,9 +118,8 @@ class DiaryProvider extends ChangeNotifier {
 
   /// Total budget (base + entry-driven refills + ad unlocks) for [monthKey]
   /// given the current number of diary entries in that month.
-  /// iOS는 광고 시청으로 한도를 늘릴 수 없으므로 base를 8로 상향.
   int budgetForMonth(String monthKey, int entryCount) =>
-      (Platform.isIOS ? 8 : kMonthSummaryBaseRegens) +
+      kMonthSummaryBaseRegens +
       refillsEarnedForEntryCount(entryCount) +
       adsUsedForMonth(monthKey);
 
@@ -143,7 +135,6 @@ class DiaryProvider extends ChangeNotifier {
       availableRegensForMonth(monthKey, entryCount) > 0;
 
   bool canWatchAdForMonth(String monthKey) =>
-      !Platform.isIOS &&
       adsUsedForMonth(monthKey) < kMonthSummaryMaxAdsPerMonth;
 
   /// Number of additional entries needed before the next +1 refill lands.
@@ -166,10 +157,8 @@ class DiaryProvider extends ChangeNotifier {
   int insightAdsUsedForMonth(String monthKey) =>
       _insightAdByMonth[monthKey] ?? 0;
 
-  // iOS는 광고로 추가 못 받으므로 base 5로 상향. Android는 그대로.
   int insightBudgetForMonth(String monthKey) =>
-      (Platform.isIOS ? 5 : kWeeklyInsightBaseRegens) +
-      insightAdsUsedForMonth(monthKey);
+      kWeeklyInsightBaseRegens + insightAdsUsedForMonth(monthKey);
 
   int availableInsightsForMonth(String monthKey) {
     final remaining =
@@ -181,7 +170,6 @@ class DiaryProvider extends ChangeNotifier {
       availableInsightsForMonth(monthKey) > 0;
 
   bool canWatchAdForInsight(String monthKey) =>
-      !Platform.isIOS &&
       insightAdsUsedForMonth(monthKey) < kWeeklyInsightMaxAdsPerMonth;
 
   /// Whether the cooldown since the last generated insight has elapsed.
@@ -277,6 +265,7 @@ class DiaryProvider extends ChangeNotifier {
   Future<MonthSummary> generateSummaryWithFreeSlot({
     required String monthKey,
     required List<DiaryEntry> entries,
+    required String locale,
   }) async {
     if (!canRegenFreeForMonth(monthKey, entries.length)) {
       throw MonthSummaryQuotaException();
@@ -284,6 +273,7 @@ class DiaryProvider extends ChangeNotifier {
     return _runSummary(
       monthKey: monthKey,
       entries: entries,
+      locale: locale,
       viaAd: false,
     );
   }
@@ -295,6 +285,7 @@ class DiaryProvider extends ChangeNotifier {
   Future<MonthSummary> generateSummaryViaAd({
     required String monthKey,
     required List<DiaryEntry> entries,
+    required String locale,
   }) async {
     if (!canWatchAdForMonth(monthKey)) {
       throw MonthSummaryQuotaException();
@@ -306,6 +297,7 @@ class DiaryProvider extends ChangeNotifier {
     return _runSummary(
       monthKey: monthKey,
       entries: entries,
+      locale: locale,
       viaAd: true,
     );
   }
@@ -313,6 +305,7 @@ class DiaryProvider extends ChangeNotifier {
   Future<MonthSummary> _runSummary({
     required String monthKey,
     required List<DiaryEntry> entries,
+    required String locale,
     required bool viaAd,
   }) async {
     if (_summaryInFlight) {
@@ -324,6 +317,7 @@ class DiaryProvider extends ChangeNotifier {
       final resp = await _monthSummaryService.summarize(
         yearMonth: monthKey,
         entries: entries,
+        locale: locale,
       );
       final prev = _monthSummaries[monthKey];
       final now = DateTime.now().millisecondsSinceEpoch;
@@ -390,14 +384,16 @@ class DiaryProvider extends ChangeNotifier {
   /// Throws [WeeklyInsightQuotaException] if no free slot,
   /// [WeeklyInsightCooldownException] if the 7-day cooldown is still active,
   /// or [WeeklyInsightNotEnoughDataException] if the user has too few entries.
-  Future<WeeklyInsight> generateInsightWithFreeSlot() async {
+  Future<WeeklyInsight> generateInsightWithFreeSlot({
+    required String locale,
+  }) async {
     final monthKey = formatYearMonth(DateTime.now());
     await _loadInsightMonth(monthKey);
     if (!insightCooldownElapsed) throw WeeklyInsightCooldownException();
     if (!canGenerateInsightFree(monthKey)) {
       throw WeeklyInsightQuotaException();
     }
-    return _runInsight(viaAd: false);
+    return _runInsight(viaAd: false, locale: locale);
   }
 
   /// Generate an insight by spending a rewarded ad unlock for the current
@@ -405,7 +401,9 @@ class DiaryProvider extends ChangeNotifier {
   /// reached, [WeeklyInsightAdException] if the ad did not reward,
   /// [WeeklyInsightCooldownException] if the cooldown is still active, or
   /// [WeeklyInsightNotEnoughDataException] if the user has too few entries.
-  Future<WeeklyInsight> generateInsightViaAd() async {
+  Future<WeeklyInsight> generateInsightViaAd({
+    required String locale,
+  }) async {
     final monthKey = formatYearMonth(DateTime.now());
     await _loadInsightMonth(monthKey);
     if (!insightCooldownElapsed) throw WeeklyInsightCooldownException();
@@ -414,10 +412,13 @@ class DiaryProvider extends ChangeNotifier {
     }
     final earned = await AdsService.instance.showRewarded();
     if (!earned) throw WeeklyInsightAdException();
-    return _runInsight(viaAd: true);
+    return _runInsight(viaAd: true, locale: locale);
   }
 
-  Future<WeeklyInsight> _runInsight({required bool viaAd}) async {
+  Future<WeeklyInsight> _runInsight({
+    required bool viaAd,
+    required String locale,
+  }) async {
     if (_insightInFlight) {
       throw StateError('이미 인사이트를 생성 중입니다.');
     }
@@ -433,6 +434,7 @@ class DiaryProvider extends ChangeNotifier {
       final resp = await _weeklyInsightService.generate(
         anchorDate: today,
         entries: entries,
+        locale: locale,
       );
       final prevRegen = _insightRegenByMonth[monthKey] ?? 0;
       final prevAd = _insightAdByMonth[monthKey] ?? 0;

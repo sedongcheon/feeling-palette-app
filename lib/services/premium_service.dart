@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -10,6 +11,7 @@ import 'ads_service.dart';
 ///
 /// Product ID: [kRemoveAdsProductId] — must match the store listing in both
 /// App Store Connect (iOS) and Google Play Console (Android).
+/// iOS는 `remove_ads`가 팀 내 다른 앱에 reserved 되어 있어 namespaced ID 사용.
 ///
 /// Persists the purchased-flag locally in secure storage so the ad-free
 /// experience is available before the store returns restore info on launch.
@@ -19,7 +21,8 @@ class PremiumService extends ChangeNotifier {
   PremiumService._();
   static final PremiumService instance = PremiumService._();
 
-  static const String kRemoveAdsProductId = 'remove_ads';
+  static String get kRemoveAdsProductId =>
+      Platform.isIOS ? 'com.feelingpalette.remove_ads' : 'remove_ads';
   static const String _kIsPremiumKey = 'is_premium';
 
   static const _storage = FlutterSecureStorage(

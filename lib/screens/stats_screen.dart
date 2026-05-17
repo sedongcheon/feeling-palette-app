@@ -8,6 +8,7 @@ import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import '../models/month_summary.dart';
 import '../providers/diary_provider.dart';
+import '../services/api_locale.dart';
 import '../widgets/banner_ad_slot.dart';
 import '../widgets/donut_chart.dart';
 import '../widgets/weekly_line_chart.dart';
@@ -401,15 +402,18 @@ class _MonthAiSummaryBlock extends StatelessWidget {
     final store = context.read<DiaryProvider>();
     String? errorMessage;
     try {
+      final locale = apiLocaleOf(context);
       if (viaAd) {
         await store.generateSummaryViaAd(
           monthKey: monthKey,
           entries: entries,
+          locale: locale,
         );
       } else {
         await store.generateSummaryWithFreeSlot(
           monthKey: monthKey,
           entries: entries,
+          locale: locale,
         );
       }
     } on MonthSummaryAdException {

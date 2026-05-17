@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'firebase_options.dart';
-import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,13 +39,8 @@ Future<void> main() async {
     return true;
   };
   await AppDatabase.instance.database;
-  // IAP 상품 정보 사전 로드. iOS는 Apple Paid Apps Agreement 미완성으로
-  // production에서 IAP가 작동하지 않아 UI도 숨겨둔 상태(settings_screen 참고).
-  // 사업자등록 후 다시 활성화 예정이므로 iOS에서는 init도 스킵해 불필요한 에러
-  // 로그를 막는다. Android는 정상 동작.
-  if (!Platform.isIOS) {
-    unawaited(PremiumService.instance.initialize());
-  }
+  // IAP 상품 정보 사전 로드. iOS/Android 모두 활성화.
+  unawaited(PremiumService.instance.initialize());
   runApp(const FeelingPaletteApp());
 }
 

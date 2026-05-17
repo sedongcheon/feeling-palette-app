@@ -36,10 +36,12 @@ class WeeklyInsightService {
   Future<WeeklyInsightApiResponse> generate({
     required String anchorDate,
     required List<DiaryEntry> entries,
+    required String locale,
   }) async {
     final uri = Uri.parse('$_apiBaseUrl/api/insights/weekly');
     final payload = {
       'anchor_date': anchorDate,
+      'locale': locale,
       'entries': entries
           .map((e) => {
                 'date': e.date,

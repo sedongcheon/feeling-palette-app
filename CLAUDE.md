@@ -24,8 +24,9 @@ API 키는 `.env.json`에서 주입 — 하드코딩 금지.
 API: `https://feeling-api-aws.sedoli.co.kr`
 
 ## 플랫폼 특이사항
-- **iOS**: Apple Paid Apps Agreement 미완료 → IAP/보상광고 비활성화.
-  `main.dart`에서 `PremiumService.initialize()` 스킵. UI는 settings_screen 참고.
+- **iOS / Android**: IAP·광고 모두 동일하게 활성화 (`PremiumService.initialize()`,
+  `AdsService.initialize()` 양 플랫폼 호출). 한때 iOS만 Apple Paid Apps Agreement
+  미완료로 IAP 분기 비활성화했지만 현재는 가드 제거됨.
 - **Android 15 SDK 35**: edge-to-edge 필수. `SystemUiOverlayStyle`에서
   statusBar/navigationBar 색상 필드 비워둠 (deprecated 회피).
 - **Samsung 기기**: secure storage 무한 로딩 이슈 → `_init` 5s,

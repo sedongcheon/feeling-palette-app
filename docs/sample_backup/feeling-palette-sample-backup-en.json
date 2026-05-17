@@ -1,0 +1,179 @@
+{
+  "app": "feeling_palette",
+  "schema_version": 1,
+  "exported_at": "2026-05-17T16:04:43.416612+09:00",
+  "count": 9,
+  "entries": [
+    {
+      "id": "73ead544-010f-4a9f-a4c7-6de6ae7f3245",
+      "date": "2026-05-11",
+      "content": "Walked through the park at sunrise. Quiet streets, calm mind. Found myself smiling for no reason.",
+      "primary_emotion": "calm",
+      "emotions": {
+        "joy": 35,
+        "sadness": 10,
+        "anger": 0,
+        "anxiety": 15,
+        "calm": 85,
+        "excitement": 20
+      },
+      "ai_comment": "Mornings like this are quietly precious. The stillness you found today can carry you through the week.",
+      "color": "#8FD8C6",
+      "created_at": 1778452200000,
+      "updated_at": 1778452200000,
+      "analysis_count": 1
+    },
+    {
+      "id": "d1a84d21-6bfb-4a00-b82e-37d9322b886c",
+      "date": "2026-05-12",
+      "content": "Caught up with an old friend after ages. We talked over coffee and lost track of time. Felt so light afterwards.",
+      "primary_emotion": "joy",
+      "emotions": {
+        "joy": 90,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 10,
+        "calm": 55,
+        "excitement": 75
+      },
+      "ai_comment": "Time with people who really see you is its own kind of medicine. Hold onto this feeling.",
+      "color": "#FFD166",
+      "created_at": 1778583000000,
+      "updated_at": 1778583000000,
+      "analysis_count": 1
+    },
+    {
+      "id": "54a5b8db-1579-45f7-a860-def20165da31",
+      "date": "2026-05-13",
+      "content": "Heavy thoughts all day. Couldn't shake the feeling that I'm falling behind. Didn't feel like doing much.",
+      "primary_emotion": "sadness",
+      "emotions": {
+        "joy": 10,
+        "sadness": 80,
+        "anger": 15,
+        "anxiety": 55,
+        "calm": 20,
+        "excitement": 5
+      },
+      "ai_comment": "Some days the weight just settles. You don't have to fix it tonight — rest is also forward motion.",
+      "color": "#6B8EFF",
+      "created_at": 1778677800000,
+      "updated_at": 1778677800000,
+      "analysis_count": 1
+    },
+    {
+      "id": "c6ed6756-a1c0-4c9b-ada8-d8051798b45b",
+      "date": "2026-05-14",
+      "content": "Started planning next month's trip. Looked up cafes and routes. Already buzzing with anticipation.",
+      "primary_emotion": "excitement",
+      "emotions": {
+        "joy": 70,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 20,
+        "calm": 30,
+        "excitement": 92
+      },
+      "ai_comment": "Anticipation is half the joy of any trip. Let yourself enjoy the planning.",
+      "color": "#FF9CAB",
+      "created_at": 1778760000000,
+      "updated_at": 1778760000000,
+      "analysis_count": 1
+    },
+    {
+      "id": "f0cb08dc-701e-43aa-9453-b66640e7ec0a",
+      "date": "2026-05-15",
+      "content": "Long day at work. Three deadlines stacked up. The sunset on the way home helped a little, but I'm drained.",
+      "primary_emotion": "anxiety",
+      "emotions": {
+        "joy": 15,
+        "sadness": 25,
+        "anger": 20,
+        "anxiety": 78,
+        "calm": 15,
+        "excitement": 10
+      },
+      "ai_comment": "Days like this ask a lot of you. Try to leave the work behind for tonight and let yourself just be tired.",
+      "color": "#A89FD4",
+      "created_at": 1778855400000,
+      "updated_at": 1778855400000,
+      "analysis_count": 1
+    },
+    {
+      "id": "d82d208a-f0a1-4964-b799-d11048e8ee6a",
+      "date": "2026-05-16",
+      "content": "Quiet Saturday. Cooked dinner slowly, lit a candle, finished a book chapter. Today felt enough.",
+      "primary_emotion": "calm",
+      "emotions": {
+        "joy": 50,
+        "sadness": 10,
+        "anger": 0,
+        "anxiety": 15,
+        "calm": 80,
+        "excitement": 25
+      },
+      "ai_comment": "Slow evenings have their own quiet richness. 'Enough' is sometimes the most honest word for a good day.",
+      "color": "#8FD8C6",
+      "created_at": 1778933700000,
+      "updated_at": 1778933700000,
+      "analysis_count": 1
+    },
+    {
+      "id": "d159836b-91dc-408c-9ead-e8369bf11adb",
+      "date": "2026-05-17",
+      "content": "Woke up to a perfect breeze through the window. Coffee tasted better than usual. Small joys, but they count.",
+      "primary_emotion": "joy",
+      "emotions": {
+        "joy": 75,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 12,
+        "calm": 60,
+        "excitement": 40
+      },
+      "ai_comment": "Noticing small joys is a real skill. The morning gave you something kind — let it set the tone.",
+      "color": "#FFD166",
+      "created_at": 1778973600000,
+      "updated_at": 1778973600000,
+      "analysis_count": 1
+    },
+    {
+      "id": "18e6897c-cdd8-4d12-be3d-cb8e1044d64a",
+      "date": "2026-05-17",
+      "content": "Spent the afternoon reading in the cafe. The light through the window felt soft and the city sounds blurred.",
+      "primary_emotion": "calm",
+      "emotions": {
+        "joy": 45,
+        "sadness": 8,
+        "anger": 0,
+        "anxiety": 18,
+        "calm": 82,
+        "excitement": 30
+      },
+      "ai_comment": "An unhurried afternoon to yourself is a small act of care. Keep these quiet pockets in your week.",
+      "color": "#8FD8C6",
+      "created_at": 1778996700000,
+      "updated_at": 1778996700000,
+      "analysis_count": 1
+    },
+    {
+      "id": "2c17b175-c9d2-4fcd-9bf8-0f1a6dfe7ee8",
+      "date": "2026-05-17",
+      "content": "Met friends for an evening film. We laughed through most of it. The whole way home, the city felt full of life.",
+      "primary_emotion": "excitement",
+      "emotions": {
+        "joy": 80,
+        "sadness": 5,
+        "anger": 0,
+        "anxiety": 10,
+        "calm": 35,
+        "excitement": 88
+      },
+      "ai_comment": "Shared laughter has a way of making the city feel like home. A bright end to the day — you earned it.",
+      "color": "#FF9CAB",
+      "created_at": 1779025800000,
+      "updated_at": 1779025800000,
+      "analysis_count": 1
+    }
+  ]
+}

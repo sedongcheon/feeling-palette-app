@@ -6,6 +6,7 @@ import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import '../models/weekly_insight.dart';
 import '../providers/diary_provider.dart';
+import '../services/api_locale.dart';
 
 /// Home-screen card that shows the most recently generated weekly insight
 /// and provides entry points to generate a new one (free quota or rewarded
@@ -321,10 +322,11 @@ class _GenerateButton extends StatelessWidget {
     final messenger = ScaffoldMessenger.of(context);
     final store = context.read<DiaryProvider>();
     try {
+      final locale = apiLocaleOf(context);
       if (viaAdOnly) {
-        await store.generateInsightViaAd();
+        await store.generateInsightViaAd(locale: locale);
       } else {
-        await store.generateInsightWithFreeSlot();
+        await store.generateInsightWithFreeSlot(locale: locale);
       }
       messenger
         ..hideCurrentSnackBar()

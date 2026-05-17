@@ -22,13 +22,16 @@ class AnalysisResult {
 }
 
 class EmotionAnalyzer {
-  Future<AnalysisResult> analyze(String content) async {
+  Future<AnalysisResult> analyze(
+    String content, {
+    required String locale,
+  }) async {
     final uri = Uri.parse('$_apiBaseUrl/api/diary/analyze');
 
     final response = await http.post(
       uri,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'content': content}),
+      body: jsonEncode({'content': content, 'locale': locale}),
     );
 
     if (response.statusCode < 200 || response.statusCode >= 300) {

@@ -7,6 +7,7 @@ import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import '../providers/diary_provider.dart';
 import '../services/ads_service.dart';
+import '../services/api_locale.dart';
 import '../services/emotion_analyzer.dart';
 import 'emotion_result_card.dart';
 
@@ -70,7 +71,10 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
     }
     setState(() => _isAnalyzing = true);
     try {
-      final result = await widget.analyzer.analyze(widget.entry.content);
+      final result = await widget.analyzer.analyze(
+        widget.entry.content,
+        locale: apiLocaleOf(context),
+      );
       final updated = await store.applyAnalysis(
         id: widget.entry.id,
         primaryEmotion: result.primaryEmotion,

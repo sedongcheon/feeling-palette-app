@@ -28,10 +28,12 @@ class MonthSummaryService {
   Future<MonthSummaryResponse> summarize({
     required String yearMonth,
     required List<DiaryEntry> entries,
+    required String locale,
   }) async {
     final uri = Uri.parse('$_apiBaseUrl/api/month/summarize');
     final payload = {
       'year_month': yearMonth,
+      'locale': locale,
       'entries': entries
           .map((e) => {
                 'date': e.date,

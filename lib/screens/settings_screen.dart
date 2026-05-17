@@ -1,5 +1,3 @@
-import 'dart:io' show Platform;
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,19 +53,12 @@ class SettingsScreen extends StatelessWidget {
             _sectionLabel(palette, loc.settingsSectionAppLock),
             const SizedBox(height: 8),
             const _AutoLockDelayTile(),
-            // iOS 한정으로 IAP 섹션 숨김. Apple Paid Apps Agreement에 필요한
-            // 한국 사업자등록 / 세금 정보가 미완성 상태라 IAP가 production에서
-            // 로드 실패 → 리뷰어가 "구매 정보 로딩 실패" 화면을 봐서 거절됨.
-            // 사업자등록 진행 후 다시 활성화 예정. Android는 Google Play Billing
-            // 으로 정상 동작 중이라 그대로 노출.
-            if (!Platform.isIOS) ...[
-              const SizedBox(height: 24),
-              _sectionLabel(palette, loc.settingsSectionPurchase),
-              const SizedBox(height: 8),
-              const _RemoveAdsCard(),
-              const SizedBox(height: 12),
-              const _RestorePurchasesTile(),
-            ],
+            const SizedBox(height: 24),
+            _sectionLabel(palette, loc.settingsSectionPurchase),
+            const SizedBox(height: 8),
+            const _RemoveAdsCard(),
+            const SizedBox(height: 12),
+            const _RestorePurchasesTile(),
           ],
         ),
       ),
