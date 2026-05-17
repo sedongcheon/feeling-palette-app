@@ -110,6 +110,14 @@
   "settingsSectionAppLock": "앱 잠금",
   "settingsSectionPurchase": "구매",
 
+  "settingsAppLockToggleTitle": "앱 잠금 사용",
+  "settingsAppLockToggleDescriptionOff": "PIN과 지문으로 일기를 보호합니다",
+  "settingsAppLockToggleDescriptionOn": "PIN과 지문 인증으로 보호 중",
+  "settingsAppLockDisableTitle": "앱 잠금을 해제하시겠어요?",
+  "settingsAppLockDisableBody": "PIN과 지문 설정이 삭제됩니다. 일기 데이터는 그대로 유지돼요.",
+  "settingsAppLockDisableConfirm": "해제",
+  "settingsAppLockDisableCancel": "취소",
+
   "settingsAutoLockTitle": "자동 잠금",
   "settingsAutoLockDescription": "앱을 벗어난 뒤 이 시간이 지나면 잠금 화면이 다시 뜹니다.",
   "autoLockDelayLabel": "{seconds, select, 0{즉시} 5{5초} 30{30초} 60{1분} 300{5분} 600{10분} other{{seconds}초}}",

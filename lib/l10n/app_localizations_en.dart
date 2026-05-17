@@ -192,6 +192,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsSectionPurchase => 'Purchase';
 
   @override
+  String get settingsAppLockToggleTitle => 'Use app lock';
+
+  @override
+  String get settingsAppLockToggleDescriptionOff =>
+      'Protect your journal with a PIN and biometrics';
+
+  @override
+  String get settingsAppLockToggleDescriptionOn =>
+      'Protected with PIN and biometrics';
+
+  @override
+  String get settingsAppLockDisableTitle => 'Disable app lock?';
+
+  @override
+  String get settingsAppLockDisableBody =>
+      'Your PIN and biometric settings will be removed. Journal entries remain untouched.';
+
+  @override
+  String get settingsAppLockDisableConfirm => 'Disable';
+
+  @override
+  String get settingsAppLockDisableCancel => 'Cancel';
+
+  @override
   String get settingsAutoLockTitle => 'Auto-lock';
 
   @override

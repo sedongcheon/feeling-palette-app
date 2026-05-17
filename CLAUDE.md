@@ -46,6 +46,9 @@ API: `https://feeling-api-aws.sedoli.co.kr`
 - `GOOGLE_DRIVE_SETUP.md` — Drive 백업 설정
 
 ## Gotchas
+- 앱 잠금은 옵션. 신규 사용자는 PIN 없이 바로 진입하고 Settings → "앱 잠금 사용"에서
+  켜야 PinSetupScreen 진입. PIN 존재 여부 = 잠금 활성 여부 (별도 키 없음).
+  Play Console이 잠금 우회 정보 없이도 검토할 수 있게 한 설계.
 - `flutter build ipa` 전 Xcode에서 Team 한 번 지정 필요 (인증서 생성).
 - 시크릿(`.env.json`, `*.jks`, `*.p12`, `key.properties`) gitignore 등록됨.
 - 빌드 번호 증가 시 `pubspec.yaml` `version:` 필드 (`X.Y.Z+빌드` 형식).

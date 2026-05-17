@@ -6,7 +6,6 @@ import '../providers/auth_provider.dart';
 import '../providers/diary_provider.dart';
 import '../screens/lock_screen.dart';
 import '../screens/main_tabs.dart';
-import '../screens/pin_setup_screen.dart';
 import '../services/ads_service.dart';
 import '../services/consent_service.dart';
 import '../services/premium_service.dart';
@@ -56,7 +55,10 @@ class _AppLockGateState extends State<AppLockGate> {
           body: const Center(child: CircularProgressIndicator()),
         );
       case AuthStage.needsSetup:
-        return const PinSetupScreen();
+        // 신규 사용자는 잠금 기본 OFF로 unlocked로 진입. needsSetup은 secure storage
+        // 실패 같은 예외 경로에서만 도달. 안전상 MainTabs로 폴백해 사용자가
+        // 갇히는 일을 막는다.
+        return const MainTabs();
       case AuthStage.locked:
         return const LockScreen();
       case AuthStage.unlocked:

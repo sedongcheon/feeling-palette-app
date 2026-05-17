@@ -66,6 +66,14 @@
   "settingsSectionAppLock": "App lock",
   "settingsSectionPurchase": "Purchase",
 
+  "settingsAppLockToggleTitle": "Use app lock",
+  "settingsAppLockToggleDescriptionOff": "Protect your journal with a PIN and biometrics",
+  "settingsAppLockToggleDescriptionOn": "Protected with PIN and biometrics",
+  "settingsAppLockDisableTitle": "Disable app lock?",
+  "settingsAppLockDisableBody": "Your PIN and biometric settings will be removed. Journal entries remain untouched.",
+  "settingsAppLockDisableConfirm": "Disable",
+  "settingsAppLockDisableCancel": "Cancel",
+
   "settingsAutoLockTitle": "Auto-lock",
   "settingsAutoLockDescription": "After leaving the app, the lock screen returns once this time has passed.",
   "autoLockDelayLabel": "{seconds, select, 0{Immediately} 5{5 sec} 30{30 sec} 60{1 min} 300{5 min} 600{10 min} other{{seconds} sec}}",

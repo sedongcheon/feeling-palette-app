@@ -14,6 +14,7 @@ class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
   final AuthService _service;
 
   AuthStage _stage = AuthStage.loading;
+  bool _hasPin = false;
   bool _biometricEnabled = false;
   bool _biometricAvailable = false;
   bool _isAuthenticatingBiometric = false;
@@ -22,6 +23,7 @@ class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
 
   AuthStage get stage => _stage;
   bool get isUnlocked => _stage == AuthStage.unlocked;
+  bool get hasPin => _hasPin;
   bool get biometricEnabled => _biometricEnabled;
   bool get biometricAvailable => _biometricAvailable;
   int get autoLockDelaySeconds => _autoLockDelaySecs;
@@ -33,20 +35,21 @@ class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
     try {
       await _loadAll().timeout(const Duration(seconds: 5));
     } catch (_) {
+      _hasPin = false;
       _biometricAvailable = false;
       _biometricEnabled = false;
       _autoLockDelaySecs = AuthService.defaultAutoLockDelaySeconds;
-      _stage = AuthStage.needsSetup;
+      _stage = AuthStage.unlocked;
       notifyListeners();
     }
   }
 
   Future<void> _loadAll() async {
-    final hasPin = await _service.hasPin();
+    _hasPin = await _service.hasPin();
     _biometricAvailable = await _service.canUseBiometric();
     _biometricEnabled = await _service.biometricEnabled();
     _autoLockDelaySecs = await _service.getAutoLockDelaySeconds();
-    _stage = hasPin ? AuthStage.locked : AuthStage.needsSetup;
+    _stage = _hasPin ? AuthStage.locked : AuthStage.unlocked;
     notifyListeners();
   }
 
@@ -65,8 +68,20 @@ class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
     final canBio = await _service.canUseBiometric();
     final enabled = enableBiometric && canBio;
     await _service.setBiometricEnabled(enabled);
+    _hasPin = true;
     _biometricAvailable = canBio;
     _biometricEnabled = enabled;
+    _stage = AuthStage.unlocked;
+    notifyListeners();
+  }
+
+  /// Removes PIN & biometric settings so the app no longer requires unlock.
+  /// Diary data and autoLockDelay preference are kept. Used by the
+  /// "Use app lock" toggle in Settings when the user turns it off.
+  Future<void> disableLock() async {
+    await _service.clearPin();
+    _hasPin = false;
+    _biometricEnabled = false;
     _stage = AuthStage.unlocked;
     notifyListeners();
   }
@@ -98,7 +113,9 @@ class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   void lock() {
-    if (_stage == AuthStage.unlocked) {
+    // PIN이 설정돼 있을 때만 잠금. 잠금 옵션 OFF 사용자는 백그라운드 복귀 시에도
+    // unlocked 유지 (LockScreen에서 PIN 입력 못 하니까 갇히는 걸 방지).
+    if (_stage == AuthStage.unlocked && _hasPin) {
       _stage = AuthStage.locked;
       notifyListeners();
     }
@@ -107,10 +124,11 @@ class AuthProvider extends ChangeNotifier with WidgetsBindingObserver {
   Future<void> resetAllData() async {
     await _service.clearAll();
     await AppDatabase.instance.wipe();
+    _hasPin = false;
     _biometricEnabled = false;
     _autoLockDelaySecs = AuthService.defaultAutoLockDelaySeconds;
     _backgroundedAt = null;
-    _stage = AuthStage.needsSetup;
+    _stage = AuthStage.unlocked;
     notifyListeners();
   }
 

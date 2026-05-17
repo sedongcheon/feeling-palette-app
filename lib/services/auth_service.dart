@@ -122,6 +122,14 @@ class AuthService {
     await _storage.delete(key: _autoLockDelayKey);
   }
 
+  /// Removes PIN/biometric settings but keeps autoLockDelay preference.
+  /// Used when the user disables app lock from Settings.
+  Future<void> clearPin() async {
+    await _storage.delete(key: _pinHashKey);
+    await _storage.delete(key: _pinSaltKey);
+    await _storage.delete(key: _biometricEnabledKey);
+  }
+
   String _generateSalt() {
     final rng = Random.secure();
     final bytes = List<int>.generate(16, (_) => rng.nextInt(256));

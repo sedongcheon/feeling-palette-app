@@ -190,6 +190,28 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsSectionPurchase => '구매';
 
   @override
+  String get settingsAppLockToggleTitle => '앱 잠금 사용';
+
+  @override
+  String get settingsAppLockToggleDescriptionOff => 'PIN과 지문으로 일기를 보호합니다';
+
+  @override
+  String get settingsAppLockToggleDescriptionOn => 'PIN과 지문 인증으로 보호 중';
+
+  @override
+  String get settingsAppLockDisableTitle => '앱 잠금을 해제하시겠어요?';
+
+  @override
+  String get settingsAppLockDisableBody =>
+      'PIN과 지문 설정이 삭제됩니다. 일기 데이터는 그대로 유지돼요.';
+
+  @override
+  String get settingsAppLockDisableConfirm => '해제';
+
+  @override
+  String get settingsAppLockDisableCancel => '취소';
+
+  @override
   String get settingsAutoLockTitle => '자동 잠금';
 
   @override

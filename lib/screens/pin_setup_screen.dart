@@ -74,10 +74,16 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
   Future<void> _finish({required bool enableBiometric}) async {
     if (_submitting) return;
     setState(() => _submitting = true);
+    final nav = Navigator.of(context);
     await context.read<AuthProvider>().completeSetup(
           pin: _firstPin,
           enableBiometric: enableBiometric,
         );
+    // 설정에서 push로 진입한 경우: pop으로 Settings 복귀.
+    // (root에 직접 표시된 경우는 canPop=false이므로 stage 변화로 자동 전환됨)
+    if (mounted && nav.canPop()) {
+      nav.pop();
+    }
   }
 
   @override

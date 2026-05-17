@@ -5,6 +5,7 @@ import '../constants/theme.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../services/premium_service.dart';
+import 'pin_setup_screen.dart';
 
 const _autoLockOptionSeconds = <int>[0, 5, 30, 60, 300, 600];
 
@@ -52,7 +53,11 @@ class SettingsScreen extends StatelessWidget {
           children: [
             _sectionLabel(palette, loc.settingsSectionAppLock),
             const SizedBox(height: 8),
-            const _AutoLockDelayTile(),
+            const _AppLockToggleTile(),
+            if (context.watch<AuthProvider>().hasPin) ...[
+              const SizedBox(height: 8),
+              const _AutoLockDelayTile(),
+            ],
             const SizedBox(height: 24),
             _sectionLabel(palette, loc.settingsSectionPurchase),
             const SizedBox(height: 8),
@@ -370,6 +375,102 @@ class _RestorePurchasesTileState extends State<_RestorePurchasesTile> {
                     color: palette.tabBarActive,
                   ),
                 ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AppLockToggleTile extends StatelessWidget {
+  const _AppLockToggleTile();
+
+  Future<void> _onTap(BuildContext context, bool currentlyOn) async {
+    final auth = context.read<AuthProvider>();
+    final loc = AppLocalizations.of(context);
+    if (currentlyOn) {
+      final ok = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text(loc.settingsAppLockDisableTitle),
+          content: Text(loc.settingsAppLockDisableBody),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: Text(loc.settingsAppLockDisableCancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: Text(loc.settingsAppLockDisableConfirm),
+            ),
+          ],
+        ),
+      );
+      if (ok == true) {
+        await auth.disableLock();
+      }
+    } else {
+      await Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => const PinSetupScreen()),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    final loc = AppLocalizations.of(context);
+    final hasPin = context.watch<AuthProvider>().hasPin;
+    return Material(
+      color: palette.surface,
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: () => _onTap(context, hasPin),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            border: Border.all(color: palette.border),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                Icons.lock_outline_rounded,
+                color: palette.textSecondary,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      loc.settingsAppLockToggleTitle,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: palette.text,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      hasPin
+                          ? loc.settingsAppLockToggleDescriptionOn
+                          : loc.settingsAppLockToggleDescriptionOff,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: palette.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Switch.adaptive(
+                value: hasPin,
+                onChanged: (_) => _onTap(context, hasPin),
+                activeThumbColor: palette.tabBarActive,
+              ),
             ],
           ),
         ),

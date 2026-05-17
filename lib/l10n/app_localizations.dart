@@ -392,6 +392,48 @@ abstract class AppLocalizations {
   /// **'구매'**
   String get settingsSectionPurchase;
 
+  /// No description provided for @settingsAppLockToggleTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'앱 잠금 사용'**
+  String get settingsAppLockToggleTitle;
+
+  /// No description provided for @settingsAppLockToggleDescriptionOff.
+  ///
+  /// In ko, this message translates to:
+  /// **'PIN과 지문으로 일기를 보호합니다'**
+  String get settingsAppLockToggleDescriptionOff;
+
+  /// No description provided for @settingsAppLockToggleDescriptionOn.
+  ///
+  /// In ko, this message translates to:
+  /// **'PIN과 지문 인증으로 보호 중'**
+  String get settingsAppLockToggleDescriptionOn;
+
+  /// No description provided for @settingsAppLockDisableTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'앱 잠금을 해제하시겠어요?'**
+  String get settingsAppLockDisableTitle;
+
+  /// No description provided for @settingsAppLockDisableBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'PIN과 지문 설정이 삭제됩니다. 일기 데이터는 그대로 유지돼요.'**
+  String get settingsAppLockDisableBody;
+
+  /// No description provided for @settingsAppLockDisableConfirm.
+  ///
+  /// In ko, this message translates to:
+  /// **'해제'**
+  String get settingsAppLockDisableConfirm;
+
+  /// No description provided for @settingsAppLockDisableCancel.
+  ///
+  /// In ko, this message translates to:
+  /// **'취소'**
+  String get settingsAppLockDisableCancel;
+
   /// No description provided for @settingsAutoLockTitle.
   ///
   /// In ko, this message translates to:
