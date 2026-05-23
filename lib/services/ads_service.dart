@@ -7,6 +7,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/ad_ids.dart';
 import 'consent_service.dart';
 
+/// 보상 광고 한 회 시청 시도의 결과.
+///
+/// caller는 outcome별로 다른 사용자 메시지를 보여줘야 한다.
+/// 특히 [notReady]와 [dismissedEarly]는 사용자 경험상 명확히 구분되어야 한다 —
+/// "광고를 안 봤다"가 아니라 "광고가 안 떴다"는 retry 가능한 상태이고,
+/// 사용자에게 "광고 준비 중" 메시지가 적절하다.
+enum RewardedOutcome {
+  /// 광고가 아직 로드 안 됨. 잠시 후 재시도하면 됨.
+  /// preload가 fail했거나 호출 시점에 in-flight였던 경우.
+  notReady,
+
+  /// SDK가 광고 표시를 거부 (fullScreen 권한 등). 드물다.
+  failed,
+
+  /// 광고는 표시됐지만 사용자가 보상 임계점 전에 닫음.
+  dismissedEarly,
+
+  /// 사용자가 광고를 끝까지 봐서 보상을 받음.
+  earned,
+}
+
 /// Central hub for all ad interactions.
 ///
 /// Responsibilities:
@@ -224,31 +245,39 @@ class AdsService extends ChangeNotifier {
     );
   }
 
-  /// Shows the rewarded ad. Returns `true` if the user earned the reward
-  /// (watched to the threshold), `false` if dismissed early, not ready, or
-  /// failed to show. Business logic (e.g., `+3` analyses) is applied by the
-  /// caller when this returns `true`.
-  Future<bool> showRewarded() async {
-    if (!_initialized) return false;
+  /// Shows the rewarded ad. Returns [RewardedOutcome] indicating one of four
+  /// distinct states. Business logic (e.g., `+3` analyses) is applied by the
+  /// caller only when this returns [RewardedOutcome.earned].
+  ///
+  /// Critical: [RewardedOutcome.notReady] (광고가 안 뜸) must be distinguished
+  /// from [RewardedOutcome.dismissedEarly] (광고는 뜸, 사용자가 일찍 닫음) so
+  /// the UI can surface "광고 준비 중" instead of "광고 시청 안 함".
+  Future<RewardedOutcome> showRewarded() async {
+    if (!_initialized) return RewardedOutcome.notReady;
     final ad = _rewardedAd;
     if (ad == null) {
       preloadRewarded();
-      return false;
+      return RewardedOutcome.notReady;
     }
     _rewardedAd = null;
-    final completer = Completer<bool>();
+    final completer = Completer<RewardedOutcome>();
     var earned = false;
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (ad) {
         ad.dispose();
         preloadRewarded();
-        if (!completer.isCompleted) completer.complete(earned);
+        if (!completer.isCompleted) {
+          completer.complete(
+              earned ? RewardedOutcome.earned : RewardedOutcome.dismissedEarly);
+        }
       },
       onAdFailedToShowFullScreenContent: (ad, err) {
         ad.dispose();
         preloadRewarded();
         if (kDebugMode) debugPrint('[Ads] Rewarded show failed: $err');
-        if (!completer.isCompleted) completer.complete(false);
+        if (!completer.isCompleted) {
+          completer.complete(RewardedOutcome.failed);
+        }
       },
     );
     await ad.show(

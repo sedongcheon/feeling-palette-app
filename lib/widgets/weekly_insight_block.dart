@@ -338,6 +338,8 @@ class _GenerateButton extends StatelessWidget {
       _snack(messenger, loc.weeklyInsightCooldownError);
     } on WeeklyInsightQuotaException {
       _snack(messenger, loc.weeklyInsightQuotaError);
+    } on RewardedAdNotReadyException {
+      _snack(messenger, loc.adsNotReadyMessage);
     } on WeeklyInsightAdException {
       _snack(messenger, loc.weeklyInsightAdError);
     } on WeeklyInsightNotEnoughDataException {

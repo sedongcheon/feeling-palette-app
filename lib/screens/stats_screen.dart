@@ -416,6 +416,9 @@ class _MonthAiSummaryBlock extends StatelessWidget {
           locale: locale,
         );
       }
+    } on RewardedAdNotReadyException {
+      // 광고가 안 떴음 — "광고 시청 안 함"과는 구분된 retry 가능 상태.
+      errorMessage = loc.adsNotReadyMessage;
     } on MonthSummaryAdException {
       errorMessage = loc.statsSummaryAdIncomplete;
     } on MonthSummaryQuotaException {

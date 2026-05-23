@@ -355,6 +355,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get todayEntryBonusAdIncomplete => '광고를 끝까지 시청해야 보상을 받을 수 있어요.';
 
   @override
+  String get adsNotReadyMessage => '광고를 준비 중이에요. 잠시 후 다시 시도해주세요.';
+
+  @override
+  String get adsNotReadyButton => '광고 준비 중…';
+
+  @override
   String get commonTryAgainLater => '잠시 후 다시 시도해주세요.';
 
   @override

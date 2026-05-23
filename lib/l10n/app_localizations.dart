@@ -648,6 +648,18 @@ abstract class AppLocalizations {
   /// **'광고를 끝까지 시청해야 보상을 받을 수 있어요.'**
   String get todayEntryBonusAdIncomplete;
 
+  /// No description provided for @adsNotReadyMessage.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고를 준비 중이에요. 잠시 후 다시 시도해주세요.'**
+  String get adsNotReadyMessage;
+
+  /// No description provided for @adsNotReadyButton.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 준비 중…'**
+  String get adsNotReadyButton;
+
   /// No description provided for @commonTryAgainLater.
   ///
   /// In ko, this message translates to:

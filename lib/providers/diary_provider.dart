@@ -221,18 +221,19 @@ class DiaryProvider extends ChangeNotifier {
   }
 
   /// Shows a rewarded ad and, if the user earns the reward, grants
-  /// [kRewardBonusPerAd] extra analyses for today. Returns whether the
-  /// bonus was granted.
-  Future<bool> watchAdForBonus() async {
+  /// [kRewardBonusPerAd] extra analyses for today. Returns the
+  /// [RewardedOutcome] so the caller can show a different message for
+  /// "광고 준비 중" (notReady) vs "광고 끝까지 시청 필요" (dismissedEarly).
+  Future<RewardedOutcome> watchAdForBonus() async {
     await loadDailyBonus();
-    if (!canWatchBonusAd) return false;
-    final earned = await AdsService.instance.showRewarded();
-    if (!earned) return false;
+    if (!canWatchBonusAd) return RewardedOutcome.notReady;
+    final outcome = await AdsService.instance.showRewarded();
+    if (outcome != RewardedOutcome.earned) return outcome;
     _todayBonusAnalyses += kRewardBonusPerAd;
     _todayBonusAdsShown += 1;
     await _persistBonus();
     notifyListeners();
-    return true;
+    return outcome;
   }
 
   Future<void> _persistBonus() async {
@@ -279,9 +280,12 @@ class DiaryProvider extends ChangeNotifier {
   }
 
   /// Shows a rewarded ad; on reward, calls the server and records an ad
-  /// unlock for [monthKey]. Throws [MonthSummaryQuotaException] if the
-  /// per-month ad cap is reached, or [MonthSummaryAdException] if the ad
-  /// did not reward.
+  /// unlock for [monthKey]. Throws:
+  ///   - [MonthSummaryQuotaException]: per-month ad cap reached.
+  ///   - [RewardedAdNotReadyException]: 광고가 안 떴음 (preload 안 됨 / SDK 실패).
+  ///     사용자에게 "광고 준비 중" 메시지를 보여주고 retry 안내.
+  ///   - [MonthSummaryAdException]: 광고는 떴지만 사용자가 보상 임계점 전에
+  ///     닫음.
   Future<MonthSummary> generateSummaryViaAd({
     required String monthKey,
     required List<DiaryEntry> entries,
@@ -290,9 +294,15 @@ class DiaryProvider extends ChangeNotifier {
     if (!canWatchAdForMonth(monthKey)) {
       throw MonthSummaryQuotaException();
     }
-    final earned = await AdsService.instance.showRewarded();
-    if (!earned) {
-      throw MonthSummaryAdException();
+    final outcome = await AdsService.instance.showRewarded();
+    switch (outcome) {
+      case RewardedOutcome.earned:
+        break;
+      case RewardedOutcome.notReady:
+      case RewardedOutcome.failed:
+        throw RewardedAdNotReadyException();
+      case RewardedOutcome.dismissedEarly:
+        throw MonthSummaryAdException();
     }
     return _runSummary(
       monthKey: monthKey,
@@ -397,10 +407,12 @@ class DiaryProvider extends ChangeNotifier {
   }
 
   /// Generate an insight by spending a rewarded ad unlock for the current
-  /// month. Throws [WeeklyInsightQuotaException] if the per-month ad cap is
-  /// reached, [WeeklyInsightAdException] if the ad did not reward,
-  /// [WeeklyInsightCooldownException] if the cooldown is still active, or
-  /// [WeeklyInsightNotEnoughDataException] if the user has too few entries.
+  /// month. Throws:
+  ///   - [WeeklyInsightQuotaException]: per-month ad cap reached.
+  ///   - [WeeklyInsightCooldownException]: 7-day cooldown still active.
+  ///   - [WeeklyInsightNotEnoughDataException]: too few entries.
+  ///   - [RewardedAdNotReadyException]: 광고가 안 떴음 → "광고 준비 중" 메시지.
+  ///   - [WeeklyInsightAdException]: 광고는 떴지만 보상 임계점 전 닫음.
   Future<WeeklyInsight> generateInsightViaAd({
     required String locale,
   }) async {
@@ -410,8 +422,16 @@ class DiaryProvider extends ChangeNotifier {
     if (!canWatchAdForInsight(monthKey)) {
       throw WeeklyInsightQuotaException();
     }
-    final earned = await AdsService.instance.showRewarded();
-    if (!earned) throw WeeklyInsightAdException();
+    final outcome = await AdsService.instance.showRewarded();
+    switch (outcome) {
+      case RewardedOutcome.earned:
+        break;
+      case RewardedOutcome.notReady:
+      case RewardedOutcome.failed:
+        throw RewardedAdNotReadyException();
+      case RewardedOutcome.dismissedEarly:
+        throw WeeklyInsightAdException();
+    }
     return _runInsight(viaAd: true, locale: locale);
   }
 
@@ -654,4 +674,13 @@ class WeeklyInsightCooldownException implements Exception {
 class WeeklyInsightNotEnoughDataException implements Exception {
   @override
   String toString() => 'WeeklyInsightNotEnoughDataException';
+}
+
+/// 보상 광고가 아직 로드되지 않았거나 표시 자체에 실패한 경우. 사용자에게는
+/// "광고 준비 중" 메시지를 보여주고 잠시 후 재시도를 안내해야 한다.
+/// "광고 끝까지 시청 안 함"과는 의미가 다르다 (MonthSummaryAdException /
+/// WeeklyInsightAdException 등이 그 경우).
+class RewardedAdNotReadyException implements Exception {
+  @override
+  String toString() => 'RewardedAdNotReadyException';
 }

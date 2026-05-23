@@ -344,13 +344,16 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
 
   Future<void> _handleBonusUnlock() async {
     final loc = AppLocalizations.of(context);
-    final granted = await context.read<DiaryProvider>().watchAdForBonus();
+    final outcome = await context.read<DiaryProvider>().watchAdForBonus();
     if (!mounted) return;
-    _showSnack(
-      granted
-          ? loc.todayEntryBonusUnlocked(kRewardBonusPerAd)
-          : loc.todayEntryBonusAdIncomplete,
-    );
+    final message = switch (outcome) {
+      RewardedOutcome.earned => loc.todayEntryBonusUnlocked(kRewardBonusPerAd),
+      RewardedOutcome.dismissedEarly => loc.todayEntryBonusAdIncomplete,
+      RewardedOutcome.notReady ||
+      RewardedOutcome.failed =>
+        loc.adsNotReadyMessage,
+    };
+    _showSnack(message);
   }
 
   String _formatTime(BuildContext context, int ts) {

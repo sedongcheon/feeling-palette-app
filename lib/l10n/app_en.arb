@@ -118,6 +118,8 @@
 
   "todayEntryBonusUnlocked": "+{bonus} analyses unlocked!",
   "todayEntryBonusAdIncomplete": "Watch the full ad to receive the reward.",
+  "adsNotReadyMessage": "Preparing the ad. Please try again in a moment.",
+  "adsNotReadyButton": "Loading ad…",
 
   "commonTryAgainLater": "Please try again later.",
 

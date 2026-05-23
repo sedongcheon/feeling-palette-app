@@ -6,6 +6,7 @@ import '../constants/theme.dart';
 import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import '../providers/diary_provider.dart';
+import '../services/ads_service.dart';
 import '../services/emotion_analyzer.dart';
 import '../widgets/today_entry_card.dart';
 import '../widgets/weekly_insight_block.dart';
@@ -59,16 +60,19 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _handleBonusUnlock(BuildContext context) async {
     final loc = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
-    final granted = await context.read<DiaryProvider>().watchAdForBonus();
+    final outcome = await context.read<DiaryProvider>().watchAdForBonus();
     if (!mounted) return;
+    final message = switch (outcome) {
+      RewardedOutcome.earned => loc.todayEntryBonusUnlocked(kRewardBonusPerAd),
+      RewardedOutcome.dismissedEarly => loc.todayEntryBonusAdIncomplete,
+      RewardedOutcome.notReady ||
+      RewardedOutcome.failed =>
+        loc.adsNotReadyMessage,
+    };
     messenger
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(
-        content: Text(
-          granted
-              ? loc.todayEntryBonusUnlocked(kRewardBonusPerAd)
-              : loc.todayEntryBonusAdIncomplete,
-        ),
+        content: Text(message),
         behavior: SnackBarBehavior.floating,
       ));
   }

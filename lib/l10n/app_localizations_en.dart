@@ -363,6 +363,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Watch the full ad to receive the reward.';
 
   @override
+  String get adsNotReadyMessage =>
+      'Preparing the ad. Please try again in a moment.';
+
+  @override
+  String get adsNotReadyButton => 'Loading ad…';
+
+  @override
   String get commonTryAgainLater => 'Please try again later.';
 
   @override
