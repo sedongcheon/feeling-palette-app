@@ -13,14 +13,18 @@ domain: ads
 ## User stories
 
 1. 무료 사용자가 타임라인을 스크롤하면 N개 일기마다 inline 광고 1개를 본다.
-2. 무료 사용자가 일기 상세 또는 통계로 이동할 때 가끔 interstitial 광고가
-   뜬다 (사용자 액션 직후가 아닌, 자연스러운 멈춤 지점에).
-3. 프리미엄 사용자는 광고를 보지 않는다.
+2. 무료 사용자는 AI 분석을 3회(`kInterstitialEveryNAnalyses`) 누적할 때마다
+   전면(interstitial) 광고를 1번 본다. 단 직전 노출 후 90초
+   (`kInterstitialCooldown`) 안엔 다시 안 뜬다. 텍스트 일기와 음성 일기는
+   같은 카운터를 공유한다.
+3. 무료 사용자는 일일 분석 한도(3건)에 도달하면 보상(rewarded) 광고를
+   봐서 보너스 분석을 받을 수 있다 (최대 5건/일).
+4. 프리미엄 사용자는 배너/전면 광고를 보지 않는다 (보상 광고는 계속 사용
+   가능).
 
 ## Out of scope
 
-- 보상형 광고 (Reward) — 향후 옵션.
-- 네이티브 광고 — 현재는 배너/inline + interstitial.
+- 네이티브 광고 — 현재는 배너/inline + interstitial + rewarded.
 
 ## Acceptance
 
@@ -39,6 +43,28 @@ domain: ads
 ## 분기 정책
 
 - iOS·Android 동일하게 활성화 (`docs/design-docs/core-beliefs.md` #8).
+
+## 전면 광고 트리거 정책
+
+`lib/services/ads_service.dart` 기준. UI는 직접 트리거 안 함 — service가
+카운트 + 쿨다운 + preload를 캡슐화한다.
+
+| 항목 | 값 | 근거 |
+|---|---|---|
+| 주기 | AI 분석 3회마다 1번 시도 | `kInterstitialEveryNAnalyses` |
+| 쿨다운 | 직전 노출 후 90초 안엔 skip | `kInterstitialCooldown` |
+| 카운터 영속화 | `SharedPreferences['ads_analysis_count']` (lifetime 누적) | — |
+| 보상 광고 직후 분석 | 카운트도 안 늘리고 광고도 안 뜸 | `_skipNextAnalysisInterstitial` |
+| Preload | 1개 사전 로드, dismiss 후 자동 재 preload | `preloadInterstitial` |
+| Prerequisite | UMP consent + SDK initialized + 비-프리미엄 | `initialize` / `setAdFree` |
+
+**호출 위치 (`onAnalysisCompleted()`)**:
+
+- 텍스트 일기 분석 성공 → `widgets/today_entry_card.dart`
+- 음성 일기 분석 성공 → `screens/voice_analysis_result_screen.dart`
+
+새 도메인이 AI 분석을 추가하면 동일 패턴으로 `onAnalysisCompleted()`를
+호출해 카운터에 합류시킨다.
 
 ## Non-functional
 

@@ -7,6 +7,7 @@ import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import '../models/voice_journal.dart';
 import '../providers/diary_provider.dart';
+import '../services/ads_service.dart';
 
 /// 음성 일기 분석 결과 화면. dominant emotion + 색상 원 + 공감 메시지 +
 /// 테마 칩을 보여주고, "기록 보관"으로 [DiaryEntry]를 저장(source: voice)
@@ -55,6 +56,10 @@ class _VoiceAnalysisResultScreenState
         color: widget.response.suggestedColorHex,
         bypassDailyQuota: true,
       );
+      // 텍스트 일기 분석과 동일하게 전면 광고 카운터를 증가시킨다
+      // (3건 누적마다 90s 쿨다운으로 노출). 음성과 텍스트가 같은 풀을
+      // 공유하므로 음성으로만 사용해도 광고가 정상 노출된다.
+      AdsService.instance.onAnalysisCompleted();
       if (!mounted) return;
       setState(() {
         _saved = true;
