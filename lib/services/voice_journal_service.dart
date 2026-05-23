@@ -10,7 +10,10 @@ import '../models/voice_journal.dart';
 import 'user_hash_service.dart';
 
 const String _apiBaseUrl = 'https://feeling-api-aws.sedoli.co.kr';
-const Duration _httpTimeout = Duration(seconds: 10);
+// AWS의 LLM 분석이 가끔 느리게 응답해서(Galaxy S22 Android 16 실기기 검증
+// 중 10s 초과 보고) 여유를 둔 값. 사용자 가시 동작이 멈춘 것처럼 보이지
+// 않도록 EditScreen은 로딩 spinner를 표시한다.
+const Duration _httpTimeout = Duration(seconds: 20);
 
 /// 음성 일기 분석 흐름의 service 계층.
 ///
