@@ -2,9 +2,10 @@
 slug: voice-journal
 title: 음성 일기 + AI 코칭 플로우 추가 (v1 안전 추가)
 owner: implementer
-status: in-progress
+status: completed
 created: 2026-05-23
 last_verified: 2026-05-23
+closed: 2026-05-23
 related: [../../product-specs/voice-journal.md, ../../product-specs/diary.md, ../../product-specs/emotion-analysis.md]
 ---
 
