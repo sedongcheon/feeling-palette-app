@@ -197,6 +197,10 @@ class _VoiceRecordingScreenState extends State<VoiceRecordingScreen> {
 
     return Scaffold(
       backgroundColor: palette.background,
+      // 이 화면은 TextField가 없어 키보드를 띄울 일이 없다. EditScreen에서
+      // TextField focus 상태로 "다시 말하기"를 눌러 push될 때 IME inset이
+      // 잠시 적용되어 Column이 overflow하는 frame이 보이는 것을 막는다.
+      resizeToAvoidBottomInset: false,
       appBar: _appBar(palette, loc),
       body: SafeArea(
         child: Padding(

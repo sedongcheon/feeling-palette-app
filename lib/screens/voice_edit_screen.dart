@@ -36,6 +36,9 @@ class _VoiceEditScreenState extends State<VoiceEditScreen> {
   }
 
   Future<void> _reRecord() async {
+    // TextField에 focus가 있으면 IME가 떠 있는 상태로 다음 화면이 push되어
+    // RecordingScreen의 Column이 한 frame 동안 overflow한다. 미리 내림.
+    FocusScope.of(context).unfocus();
     await Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => const VoiceRecordingScreen()),
     );
