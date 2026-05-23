@@ -43,9 +43,10 @@ Future<void> main() async {
   // iOS Keychain의 default group이 앱 삭제 후에도 보너스 카운터를 잔존
   // 시켜 quota max가 6/9 같이 stale하게 보이는 케이스를 차단.
   // SharedPreferences marker로 신규 install을 감지해 bonus_* 키만 정리.
-  // DiaryProvider.loadDailyBonus()가 잔존 데이터를 읽기 전에 끝나야
-  // 하므로 await (보통 100ms 이내).
-  await InstallMarkerService.cleanupOnFirstInstall();
+  // 어떤 native 호출이 hang해도 부트가 막히지 않도록 unawaited + 내부
+  // timeout. 첫 부트 직후 잠시 race가 있어 quota max가 한 frame
+  // stale하게 보일 수는 있으나 사용자 가시 영향 미미.
+  unawaited(InstallMarkerService.cleanupOnFirstInstall());
   // IAP 상품 정보 사전 로드. iOS/Android 모두 활성화.
   unawaited(PremiumService.instance.initialize());
   runApp(const FeelingPaletteApp());

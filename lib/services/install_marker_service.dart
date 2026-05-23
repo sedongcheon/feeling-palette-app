@@ -22,23 +22,37 @@ class InstallMarkerService {
   );
 
   /// 첫 부트 시 호출. 이미 마커가 있으면 no-op (단발성).
+  ///
+  /// 어떤 단계에서 hang하더라도 부트가 막히면 안 되므로 각 호출에 짧은
+  /// timeout. 실패 시 silently skip — 다음 부트에 재시도.
   static Future<void> cleanupOnFirstInstall() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool(_markerKey) == true) return;
-
-    // 신규 install 또는 마커 없는 기존 install. 보너스 키만 삭제.
     try {
-      final all = await _storage.readAll();
-      for (final key in all.keys) {
-        if (key.startsWith(_bonusKeyPrefix)) {
-          await _storage.delete(key: key);
-        }
-      }
-    } catch (_) {
-      // secure storage read 실패는 무시. marker만 설정해서 다음 부트에
-      // 재시도 안 되도록.
-    }
+      final prefs = await SharedPreferences.getInstance()
+          .timeout(const Duration(seconds: 2));
+      if (prefs.getBool(_markerKey) == true) return;
 
-    await prefs.setBool(_markerKey, true);
+      // 신규 install 또는 마커 없는 기존 install. 보너스 키만 삭제.
+      try {
+        final all =
+            await _storage.readAll().timeout(const Duration(seconds: 3));
+        for (final key in all.keys) {
+          if (key.startsWith(_bonusKeyPrefix)) {
+            await _storage
+                .delete(key: key)
+                .timeout(const Duration(seconds: 2));
+          }
+        }
+      } catch (_) {
+        // secure storage 작업 실패는 무시. marker만 설정해 다음 부트에
+        // readAll로 hang하지 않도록.
+      }
+
+      await prefs
+          .setBool(_markerKey, true)
+          .timeout(const Duration(seconds: 2));
+    } catch (_) {
+      // SharedPreferences 자체가 hang하면 이번 부트는 cleanup 포기.
+      // 다음 부트에 다시 시도.
+    }
   }
 }
