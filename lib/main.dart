@@ -15,6 +15,7 @@ import 'db/database.dart';
 import 'providers/auth_provider.dart';
 import 'providers/diary_provider.dart';
 import 'services/ads_service.dart';
+import 'services/install_marker_service.dart';
 import 'services/premium_service.dart';
 import 'widgets/app_lock_gate.dart';
 
@@ -39,6 +40,12 @@ Future<void> main() async {
     return true;
   };
   await AppDatabase.instance.database;
+  // iOS Keychain의 default group이 앱 삭제 후에도 보너스 카운터를 잔존
+  // 시켜 quota max가 6/9 같이 stale하게 보이는 케이스를 차단.
+  // SharedPreferences marker로 신규 install을 감지해 bonus_* 키만 정리.
+  // DiaryProvider.loadDailyBonus()가 잔존 데이터를 읽기 전에 끝나야
+  // 하므로 await (보통 100ms 이내).
+  await InstallMarkerService.cleanupOnFirstInstall();
   // IAP 상품 정보 사전 로드. iOS/Android 모두 활성화.
   unawaited(PremiumService.instance.initialize());
   runApp(const FeelingPaletteApp());
