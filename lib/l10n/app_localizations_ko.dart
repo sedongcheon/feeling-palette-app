@@ -655,4 +655,89 @@ class AppLocalizationsKo extends AppLocalizations {
   String datePartWithDay(String datePart, String dayPart) {
     return '$datePart $dayPart';
   }
+
+  @override
+  String get voiceJournalMicEntryTooltip => '음성으로 일기 쓰기';
+
+  @override
+  String get voiceJournalRecordingTitle => '음성 일기';
+
+  @override
+  String get voiceJournalEditTitle => '내용 확인';
+
+  @override
+  String get voiceJournalResultTitle => '감정 분석';
+
+  @override
+  String get voiceJournalTapToStart => '탭하여 녹음을 시작하세요';
+
+  @override
+  String get voiceJournalRecordingHint => '마음에 떠오르는 대로 말해 보세요';
+
+  @override
+  String get voiceJournalMaxDuration => '최대 3분까지 녹음할 수 있어요';
+
+  @override
+  String get voiceJournalCancelButton => '취소';
+
+  @override
+  String get voiceJournalPermissionDeniedTitle => '마이크 권한이 필요해요';
+
+  @override
+  String get voiceJournalPermissionDeniedBody =>
+      '음성 일기를 사용하려면 설정에서 마이크와 음성 인식 권한을 허용해주세요.';
+
+  @override
+  String get voiceJournalSttFailed => '음성을 인식하지 못했어요. 직접 입력해도 됩니다.';
+
+  @override
+  String get voiceJournalEditHint => '들은 내용이 정확한지 확인하고 자유롭게 다듬어 보세요.';
+
+  @override
+  String get voiceJournalReRecord => '다시 말하기';
+
+  @override
+  String get voiceJournalAnalyzeButton => '이 일기로 분석받기';
+
+  @override
+  String get voiceJournalAnalyzeFailed => '분석에 실패했어요. 잠시 후 다시 시도해주세요.';
+
+  @override
+  String get voiceJournalDailyLimitReached =>
+      '오늘의 분석 한도에 도달했어요. 홈 화면에서 보상 광고로 추가 분석을 받을 수 있어요.';
+
+  @override
+  String get voiceJournalAnonymizationNote =>
+      '전화번호, 이메일 같은 민감 정보는 자동으로 가려서 전송돼요.';
+
+  @override
+  String voiceJournalAutoStopWarning(int seconds) {
+    return '$seconds초 후 자동으로 종료돼요';
+  }
+
+  @override
+  String get voiceJournalResultEmpathy => '오늘의 마음에게';
+
+  @override
+  String get voiceJournalResultThemes => '이야기의 주제';
+
+  @override
+  String voiceJournalColorReasoning(String emotion) {
+    String _temp0 = intl.Intl.selectLogic(emotion, {
+      'joy': '기쁨은 따뜻한 노란빛으로 표현했어요.',
+      'sadness': '슬픔은 깊은 푸른빛으로 표현했어요.',
+      'anger': '분노는 강렬한 빨간빛으로 표현했어요.',
+      'anxiety': '불안은 차분한 보랏빛으로 표현했어요.',
+      'calm': '평온은 잔잔한 초록빛으로 표현했어요.',
+      'excitement': '설렘은 부드러운 핑크빛으로 표현했어요.',
+      'other': '대표 색상이에요.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get voiceJournalKeepAsEntry => '기록 보관';
+
+  @override
+  String get voiceJournalBackHome => '처음으로';
 }

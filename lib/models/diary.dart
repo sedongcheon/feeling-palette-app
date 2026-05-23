@@ -2,6 +2,18 @@ import 'dart:convert';
 
 enum EmotionType { joy, sadness, anger, anxiety, calm, excitement }
 
+/// 일기 작성 방식. 'text'는 기존 텍스트 입력, 'voice'는 음성 → STT → 편집
+/// 플로우(exec-plan 002-voice-journal). 캘린더/타임라인/통계는 둘을
+/// 구분 없이 동일하게 표시.
+enum DiarySource { text, voice }
+
+DiarySource diarySourceFromString(String? value) {
+  return DiarySource.values.firstWhere(
+    (s) => s.name == value,
+    orElse: () => DiarySource.text,
+  );
+}
+
 EmotionType emotionFromString(String value) {
   return EmotionType.values.firstWhere(
     (e) => e.name == value,
@@ -130,6 +142,7 @@ class DiaryEntry {
   final int createdAt;
   final int updatedAt;
   final int analysisCount;
+  final DiarySource source;
 
   const DiaryEntry({
     required this.id,
@@ -142,6 +155,7 @@ class DiaryEntry {
     required this.createdAt,
     required this.updatedAt,
     this.analysisCount = 0,
+    this.source = DiarySource.text,
   });
 
   bool get canAnalyze => analysisCount < kMaxAnalysisCount;
@@ -156,6 +170,7 @@ class DiaryEntry {
     String? color,
     int? updatedAt,
     int? analysisCount,
+    DiarySource? source,
   }) {
     return DiaryEntry(
       id: id,
@@ -168,6 +183,7 @@ class DiaryEntry {
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       analysisCount: analysisCount ?? this.analysisCount,
+      source: source ?? this.source,
     );
   }
 
@@ -182,6 +198,7 @@ class DiaryEntry {
         'created_at': createdAt,
         'updated_at': updatedAt,
         'analysis_count': analysisCount,
+        'source': source.name,
       };
 
   factory DiaryEntry.fromRow(Map<String, Object?> row) {
@@ -196,6 +213,7 @@ class DiaryEntry {
       createdAt: (row['created_at'] as num).toInt(),
       updatedAt: (row['updated_at'] as num).toInt(),
       analysisCount: (row['analysis_count'] as num?)?.toInt() ?? 0,
+      source: diarySourceFromString(row['source'] as String?),
     );
   }
 }

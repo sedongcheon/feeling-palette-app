@@ -1169,6 +1169,144 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'{datePart} {dayPart}'**
   String datePartWithDay(String datePart, String dayPart);
+
+  /// HomeScreen composer 우측 마이크 아이콘 툴팁
+  ///
+  /// In ko, this message translates to:
+  /// **'음성으로 일기 쓰기'**
+  String get voiceJournalMicEntryTooltip;
+
+  /// 녹음 화면 AppBar 제목
+  ///
+  /// In ko, this message translates to:
+  /// **'음성 일기'**
+  String get voiceJournalRecordingTitle;
+
+  /// STT 결과 편집 화면 AppBar 제목
+  ///
+  /// In ko, this message translates to:
+  /// **'내용 확인'**
+  String get voiceJournalEditTitle;
+
+  /// 분석 결과 화면 AppBar 제목
+  ///
+  /// In ko, this message translates to:
+  /// **'감정 분석'**
+  String get voiceJournalResultTitle;
+
+  /// 녹음 시작 전 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'탭하여 녹음을 시작하세요'**
+  String get voiceJournalTapToStart;
+
+  /// 녹음 중 / 편집 화면 hint
+  ///
+  /// In ko, this message translates to:
+  /// **'마음에 떠오르는 대로 말해 보세요'**
+  String get voiceJournalRecordingHint;
+
+  /// 녹음 화면 부가 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'최대 3분까지 녹음할 수 있어요'**
+  String get voiceJournalMaxDuration;
+
+  /// 녹음 화면 취소
+  ///
+  /// In ko, this message translates to:
+  /// **'취소'**
+  String get voiceJournalCancelButton;
+
+  /// 권한 거부 다이얼로그 제목
+  ///
+  /// In ko, this message translates to:
+  /// **'마이크 권한이 필요해요'**
+  String get voiceJournalPermissionDeniedTitle;
+
+  /// 권한 거부 다이얼로그 본문
+  ///
+  /// In ko, this message translates to:
+  /// **'음성 일기를 사용하려면 설정에서 마이크와 음성 인식 권한을 허용해주세요.'**
+  String get voiceJournalPermissionDeniedBody;
+
+  /// STT 인식 실패 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'음성을 인식하지 못했어요. 직접 입력해도 됩니다.'**
+  String get voiceJournalSttFailed;
+
+  /// 편집 화면 상단 가이드
+  ///
+  /// In ko, this message translates to:
+  /// **'들은 내용이 정확한지 확인하고 자유롭게 다듬어 보세요.'**
+  String get voiceJournalEditHint;
+
+  /// 편집 화면에서 녹음으로 돌아가기
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 말하기'**
+  String get voiceJournalReRecord;
+
+  /// 편집 화면 메인 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'이 일기로 분석받기'**
+  String get voiceJournalAnalyzeButton;
+
+  /// 백엔드 호출 실패
+  ///
+  /// In ko, this message translates to:
+  /// **'분석에 실패했어요. 잠시 후 다시 시도해주세요.'**
+  String get voiceJournalAnalyzeFailed;
+
+  /// 음성 일기 EditScreen에서 daily quota 초과 시
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘의 분석 한도에 도달했어요. 홈 화면에서 보상 광고로 추가 분석을 받을 수 있어요.'**
+  String get voiceJournalDailyLimitReached;
+
+  /// 편집 화면 익명화 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'전화번호, 이메일 같은 민감 정보는 자동으로 가려서 전송돼요.'**
+  String get voiceJournalAnonymizationNote;
+
+  /// 녹음 종료까지 남은 시간 카운트다운
+  ///
+  /// In ko, this message translates to:
+  /// **'{seconds}초 후 자동으로 종료돼요'**
+  String voiceJournalAutoStopWarning(int seconds);
+
+  /// 결과 화면 공감 카드 헤더
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘의 마음에게'**
+  String get voiceJournalResultEmpathy;
+
+  /// 결과 화면 테마 칩 헤더
+  ///
+  /// In ko, this message translates to:
+  /// **'이야기의 주제'**
+  String get voiceJournalResultThemes;
+
+  /// 감정별 색상 해설 — EmotionType enum의 name과 매칭
+  ///
+  /// In ko, this message translates to:
+  /// **'{emotion, select, joy{기쁨은 따뜻한 노란빛으로 표현했어요.} sadness{슬픔은 깊은 푸른빛으로 표현했어요.} anger{분노는 강렬한 빨간빛으로 표현했어요.} anxiety{불안은 차분한 보랏빛으로 표현했어요.} calm{평온은 잔잔한 초록빛으로 표현했어요.} excitement{설렘은 부드러운 핑크빛으로 표현했어요.} other{대표 색상이에요.}}'**
+  String voiceJournalColorReasoning(String emotion);
+
+  /// 결과 화면에서 entry로 저장
+  ///
+  /// In ko, this message translates to:
+  /// **'기록 보관'**
+  String get voiceJournalKeepAsEntry;
+
+  /// 결과 화면에서 저장 없이 홈으로
+  ///
+  /// In ko, this message translates to:
+  /// **'처음으로'**
+  String get voiceJournalBackHome;
 }
 
 class _AppLocalizationsDelegate

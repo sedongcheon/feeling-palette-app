@@ -1,7 +1,7 @@
 name: feeling_palette
 description: "AI 감정일기 앱 - Feeling Palette"
 publish_to: 'none'
-version: 1.0.3+17
+version: 1.0.4+18
 
 environment:
   sdk: ^3.11.4
@@ -34,6 +34,11 @@ dependencies:
   in_app_purchase: ^3.2.0
   firebase_core: ^4.7.0
   firebase_crashlytics: ^5.2.0
+  # Voice journal (exec-plan 002-voice-journal)
+  # speech_to_text는 live mic + STT를 한 패키지에서 제공하므로 record를
+  # 따로 두지 않는다. 오디오 파일 보관은 spec out of scope.
+  speech_to_text: ^7.0.0
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:

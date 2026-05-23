@@ -223,5 +223,48 @@
   "driveBackupFileEntryCount": "{count} entries",
   "driveBackupDefaultName": "Backup file",
 
-  "datePartWithDay": "{datePart} {dayPart}"
+  "datePartWithDay": "{datePart} {dayPart}",
+
+  "voiceJournalMicEntryTooltip": "Record a voice journal",
+
+  "voiceJournalRecordingTitle": "Voice journal",
+  "voiceJournalEditTitle": "Review transcript",
+  "voiceJournalResultTitle": "Analysis",
+
+  "voiceJournalTapToStart": "Tap to start recording",
+  "voiceJournalRecordingHint": "Say whatever is on your mind",
+  "voiceJournalMaxDuration": "Up to 3 minutes",
+  "voiceJournalCancelButton": "Cancel",
+
+  "voiceJournalPermissionDeniedTitle": "Microphone access needed",
+  "voiceJournalPermissionDeniedBody": "To use voice journals, allow microphone and speech recognition in Settings.",
+
+  "voiceJournalSttFailed": "Couldn't recognize speech. You can type instead.",
+
+  "voiceJournalEditHint": "Make sure the transcript looks right and edit it freely.",
+  "voiceJournalReRecord": "Record again",
+  "voiceJournalAnalyzeButton": "Analyze this entry",
+  "voiceJournalAnalyzeFailed": "Analysis failed. Please try again in a moment.",
+  "voiceJournalDailyLimitReached": "You've reached today's analysis limit. Watch a rewarded ad on the home screen for extra analyses.",
+  "voiceJournalAnonymizationNote": "Sensitive info like phone numbers and emails is masked before sending.",
+
+  "voiceJournalAutoStopWarning": "Stopping in {seconds}s",
+  "@voiceJournalAutoStopWarning": {
+    "placeholders": {
+      "seconds": { "type": "int" }
+    }
+  },
+
+  "voiceJournalResultEmpathy": "For your heart today",
+  "voiceJournalResultThemes": "Themes",
+
+  "voiceJournalColorReasoning": "{emotion, select, joy{Joy is warm yellow.} sadness{Sadness is deep blue.} anger{Anger is bold red.} anxiety{Anxiety is calm purple.} calm{Calm is gentle green.} excitement{Excitement is soft pink.} other{This is your dominant color.}}",
+  "@voiceJournalColorReasoning": {
+    "placeholders": {
+      "emotion": { "type": "String" }
+    }
+  },
+
+  "voiceJournalKeepAsEntry": "Keep as entry",
+  "voiceJournalBackHome": "Back to home"
 }

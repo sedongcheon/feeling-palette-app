@@ -382,5 +382,71 @@
       "datePart": { "type": "String" },
       "dayPart": { "type": "String" }
     }
-  }
+  },
+
+  "voiceJournalMicEntryTooltip": "음성으로 일기 쓰기",
+  "@voiceJournalMicEntryTooltip": { "description": "HomeScreen composer 우측 마이크 아이콘 툴팁" },
+
+  "voiceJournalRecordingTitle": "음성 일기",
+  "@voiceJournalRecordingTitle": { "description": "녹음 화면 AppBar 제목" },
+  "voiceJournalEditTitle": "내용 확인",
+  "@voiceJournalEditTitle": { "description": "STT 결과 편집 화면 AppBar 제목" },
+  "voiceJournalResultTitle": "감정 분석",
+  "@voiceJournalResultTitle": { "description": "분석 결과 화면 AppBar 제목" },
+
+  "voiceJournalTapToStart": "탭하여 녹음을 시작하세요",
+  "@voiceJournalTapToStart": { "description": "녹음 시작 전 안내" },
+  "voiceJournalRecordingHint": "마음에 떠오르는 대로 말해 보세요",
+  "@voiceJournalRecordingHint": { "description": "녹음 중 / 편집 화면 hint" },
+  "voiceJournalMaxDuration": "최대 3분까지 녹음할 수 있어요",
+  "@voiceJournalMaxDuration": { "description": "녹음 화면 부가 안내" },
+  "voiceJournalCancelButton": "취소",
+  "@voiceJournalCancelButton": { "description": "녹음 화면 취소" },
+
+  "voiceJournalPermissionDeniedTitle": "마이크 권한이 필요해요",
+  "@voiceJournalPermissionDeniedTitle": { "description": "권한 거부 다이얼로그 제목" },
+  "voiceJournalPermissionDeniedBody": "음성 일기를 사용하려면 설정에서 마이크와 음성 인식 권한을 허용해주세요.",
+  "@voiceJournalPermissionDeniedBody": { "description": "권한 거부 다이얼로그 본문" },
+
+  "voiceJournalSttFailed": "음성을 인식하지 못했어요. 직접 입력해도 됩니다.",
+  "@voiceJournalSttFailed": { "description": "STT 인식 실패 안내" },
+
+  "voiceJournalEditHint": "들은 내용이 정확한지 확인하고 자유롭게 다듬어 보세요.",
+  "@voiceJournalEditHint": { "description": "편집 화면 상단 가이드" },
+  "voiceJournalReRecord": "다시 말하기",
+  "@voiceJournalReRecord": { "description": "편집 화면에서 녹음으로 돌아가기" },
+  "voiceJournalAnalyzeButton": "이 일기로 분석받기",
+  "@voiceJournalAnalyzeButton": { "description": "편집 화면 메인 버튼" },
+  "voiceJournalAnalyzeFailed": "분석에 실패했어요. 잠시 후 다시 시도해주세요.",
+  "@voiceJournalAnalyzeFailed": { "description": "백엔드 호출 실패" },
+  "voiceJournalDailyLimitReached": "오늘의 분석 한도에 도달했어요. 홈 화면에서 보상 광고로 추가 분석을 받을 수 있어요.",
+  "@voiceJournalDailyLimitReached": { "description": "음성 일기 EditScreen에서 daily quota 초과 시" },
+  "voiceJournalAnonymizationNote": "전화번호, 이메일 같은 민감 정보는 자동으로 가려서 전송돼요.",
+  "@voiceJournalAnonymizationNote": { "description": "편집 화면 익명화 안내" },
+
+  "voiceJournalAutoStopWarning": "{seconds}초 후 자동으로 종료돼요",
+  "@voiceJournalAutoStopWarning": {
+    "description": "녹음 종료까지 남은 시간 카운트다운",
+    "placeholders": {
+      "seconds": { "type": "int" }
+    }
+  },
+
+  "voiceJournalResultEmpathy": "오늘의 마음에게",
+  "@voiceJournalResultEmpathy": { "description": "결과 화면 공감 카드 헤더" },
+  "voiceJournalResultThemes": "이야기의 주제",
+  "@voiceJournalResultThemes": { "description": "결과 화면 테마 칩 헤더" },
+
+  "voiceJournalColorReasoning": "{emotion, select, joy{기쁨은 따뜻한 노란빛으로 표현했어요.} sadness{슬픔은 깊은 푸른빛으로 표현했어요.} anger{분노는 강렬한 빨간빛으로 표현했어요.} anxiety{불안은 차분한 보랏빛으로 표현했어요.} calm{평온은 잔잔한 초록빛으로 표현했어요.} excitement{설렘은 부드러운 핑크빛으로 표현했어요.} other{대표 색상이에요.}}",
+  "@voiceJournalColorReasoning": {
+    "description": "감정별 색상 해설 — EmotionType enum의 name과 매칭",
+    "placeholders": {
+      "emotion": { "type": "String" }
+    }
+  },
+
+  "voiceJournalKeepAsEntry": "기록 보관",
+  "@voiceJournalKeepAsEntry": { "description": "결과 화면에서 entry로 저장" },
+  "voiceJournalBackHome": "처음으로",
+  "@voiceJournalBackHome": { "description": "결과 화면에서 저장 없이 홈으로" }
 }

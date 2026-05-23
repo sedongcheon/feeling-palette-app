@@ -12,6 +12,7 @@ import '../widgets/today_entry_card.dart';
 import '../widgets/weekly_insight_block.dart';
 import 'backup_screen.dart';
 import 'settings_screen.dart';
+import 'voice_recording_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -75,6 +76,17 @@ class _HomeScreenState extends State<HomeScreen> {
         content: Text(message),
         behavior: SnackBarBehavior.floating,
       ));
+  }
+
+  Future<void> _openVoiceJournal() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (_) => const VoiceRecordingScreen(),
+      ),
+    );
+    // 음성 일기가 저장됐다면 결과 화면이 popUntil(isFirst)로 holding을
+    // 다 닫고 돌아온다. provider notifyListeners로 자동 rebuild됨.
   }
 
   Future<void> _handleSave() async {
@@ -275,10 +287,26 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  '${_controller.text.length}/$_maxLength',
-                  style:
-                      TextStyle(fontSize: 12, color: palette.textSecondary),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      tooltip: loc.voiceJournalMicEntryTooltip,
+                      onPressed: _isSaving ? null : _openVoiceJournal,
+                      icon: Icon(Icons.mic_rounded,
+                          color: palette.tabBarActive),
+                      visualDensity: VisualDensity.compact,
+                      padding: EdgeInsets.zero,
+                      constraints:
+                          const BoxConstraints(minWidth: 36, minHeight: 36),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '${_controller.text.length}/$_maxLength',
+                      style: TextStyle(
+                          fontSize: 12, color: palette.textSecondary),
+                    ),
+                  ],
                 ),
                 ElevatedButton.icon(
                   onPressed:

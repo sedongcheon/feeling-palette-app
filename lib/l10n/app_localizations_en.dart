@@ -673,4 +673,92 @@ class AppLocalizationsEn extends AppLocalizations {
   String datePartWithDay(String datePart, String dayPart) {
     return '$datePart $dayPart';
   }
+
+  @override
+  String get voiceJournalMicEntryTooltip => 'Record a voice journal';
+
+  @override
+  String get voiceJournalRecordingTitle => 'Voice journal';
+
+  @override
+  String get voiceJournalEditTitle => 'Review transcript';
+
+  @override
+  String get voiceJournalResultTitle => 'Analysis';
+
+  @override
+  String get voiceJournalTapToStart => 'Tap to start recording';
+
+  @override
+  String get voiceJournalRecordingHint => 'Say whatever is on your mind';
+
+  @override
+  String get voiceJournalMaxDuration => 'Up to 3 minutes';
+
+  @override
+  String get voiceJournalCancelButton => 'Cancel';
+
+  @override
+  String get voiceJournalPermissionDeniedTitle => 'Microphone access needed';
+
+  @override
+  String get voiceJournalPermissionDeniedBody =>
+      'To use voice journals, allow microphone and speech recognition in Settings.';
+
+  @override
+  String get voiceJournalSttFailed =>
+      'Couldn\'t recognize speech. You can type instead.';
+
+  @override
+  String get voiceJournalEditHint =>
+      'Make sure the transcript looks right and edit it freely.';
+
+  @override
+  String get voiceJournalReRecord => 'Record again';
+
+  @override
+  String get voiceJournalAnalyzeButton => 'Analyze this entry';
+
+  @override
+  String get voiceJournalAnalyzeFailed =>
+      'Analysis failed. Please try again in a moment.';
+
+  @override
+  String get voiceJournalDailyLimitReached =>
+      'You\'ve reached today\'s analysis limit. Watch a rewarded ad on the home screen for extra analyses.';
+
+  @override
+  String get voiceJournalAnonymizationNote =>
+      'Sensitive info like phone numbers and emails is masked before sending.';
+
+  @override
+  String voiceJournalAutoStopWarning(int seconds) {
+    return 'Stopping in ${seconds}s';
+  }
+
+  @override
+  String get voiceJournalResultEmpathy => 'For your heart today';
+
+  @override
+  String get voiceJournalResultThemes => 'Themes';
+
+  @override
+  String voiceJournalColorReasoning(String emotion) {
+    String _temp0 = intl.Intl.selectLogic(emotion, {
+      'joy': 'Joy is warm yellow.',
+      'sadness': 'Sadness is deep blue.',
+      'anger': 'Anger is bold red.',
+      'anxiety': 'Anxiety is calm purple.',
+      'calm': 'Calm is gentle green.',
+      'excitement': 'Excitement is soft pink.',
+      'other': 'This is your dominant color.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get voiceJournalKeepAsEntry => 'Keep as entry';
+
+  @override
+  String get voiceJournalBackHome => 'Back to home';
 }

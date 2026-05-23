@@ -500,7 +500,11 @@ class DiaryProvider extends ChangeNotifier {
   }
 
   /// Creates a new diary entry. Multiple entries per day are allowed.
-  Future<DiaryEntry> createDiary(String content, {String? date}) async {
+  Future<DiaryEntry> createDiary(
+    String content, {
+    String? date,
+    DiarySource source = DiarySource.text,
+  }) async {
     final targetDate = date ?? todayString();
     final now = DateTime.now().millisecondsSinceEpoch;
     final entry = DiaryEntry(
@@ -513,6 +517,7 @@ class DiaryProvider extends ChangeNotifier {
       color: '#9CA3AF',
       createdAt: now,
       updatedAt: now,
+      source: source,
     );
     await _dao.insert(entry);
     if (targetDate == todayString()) {
@@ -564,13 +569,18 @@ class DiaryProvider extends ChangeNotifier {
     required EmotionScores emotions,
     required String aiComment,
     required String color,
+    bool bypassDailyQuota = false,
   }) async {
     final existing = await _dao.findById(id);
     if (existing == null) return null;
     // Defensive: a brand-new analysis on today's entry must respect the
     // daily quota. Re-analyses of already-analyzed entries are unaffected.
+    // [bypassDailyQuota]는 음성 일기 흐름(exec-plan 002)에서 사용 —
+    // EditScreen에서 이미 백엔드 호출이 완료된 상태로 결과 저장만 하므로
+    // quota 체크로 저장 실패하면 사용자 입장에서 황당하다.
     final isFirstAnalysis = existing.analysisCount == 0;
-    if (isFirstAnalysis &&
+    if (!bypassDailyQuota &&
+        isFirstAnalysis &&
         existing.date == todayString() &&
         dailyAnalysisLimitReached) {
       throw DailyAnalysisLimitException();

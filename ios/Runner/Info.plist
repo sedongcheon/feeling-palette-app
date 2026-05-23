@@ -15,6 +15,10 @@
 	<string>Use Face ID to unlock the app.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Access your photo library to pick or save backup files.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>일기를 음성으로 녹음하기 위해 마이크 접근이 필요합니다.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>음성을 텍스트로 변환하기 위해 음성 인식 권한이 필요합니다.</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-5457202364123068~2337687639</string>
 	<key>NSUserTrackingUsageDescription</key>

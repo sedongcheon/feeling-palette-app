@@ -12,7 +12,9 @@ last_verified: 2026-05-23
 
 ## Active
 
-_(없음. 다음 plan은 002-rewarded-ad-safety-net 후보로 tech-debt에 등록됨.)_
+| # | Slug | Created | Status |
+|---|------|---------|--------|
+| 002 | [voice-journal](active/002-voice-journal.md) | 2026-05-23 | in-progress — 음성 일기 + AI 코칭 플로우 추가. v1 안전. |
 
 ## Completed
 

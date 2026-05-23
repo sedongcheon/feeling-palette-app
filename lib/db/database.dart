@@ -2,7 +2,7 @@ import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
 const String _dbName = 'feelingpalette.db';
-const int _dbVersion = 5;
+const int _dbVersion = 6;
 
 class AppDatabase {
   AppDatabase._();
@@ -49,7 +49,8 @@ class AppDatabase {
             color TEXT NOT NULL DEFAULT '#9CA3AF',
             created_at INTEGER NOT NULL,
             updated_at INTEGER NOT NULL,
-            analysis_count INTEGER NOT NULL DEFAULT 0
+            analysis_count INTEGER NOT NULL DEFAULT 0,
+            source TEXT NOT NULL DEFAULT 'text'
           );
         ''');
         await db.execute('CREATE INDEX IF NOT EXISTS idx_diary_date ON diary_entries(date);');
@@ -144,6 +145,13 @@ class AppDatabase {
           );
           await db.execute(
             'CREATE INDEX IF NOT EXISTS idx_weekly_month ON weekly_insights(month_key);',
+          );
+        }
+        if (oldVersion < 6) {
+          // exec-plan 002-voice-journal: 'text' | 'voice'. 기존 entries는
+          // 모두 텍스트 입력이었으므로 DEFAULT 'text'로 안전하게 채워진다.
+          await db.execute(
+            "ALTER TABLE diary_entries ADD COLUMN source TEXT NOT NULL DEFAULT 'text';",
           );
         }
       },
