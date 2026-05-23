@@ -79,6 +79,23 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _openVoiceJournal() async {
+    // IconButton onPressed가 이미 quota를 통해 disable되지만, 그 사이에
+    // 다른 entry로 채워질 race를 막기 위한 안전망. UI에 도달했더라도
+    // 최신 상태를 다시 확인하고 스낵바로 차단한다.
+    final loc = AppLocalizations.of(context);
+    final store = context.read<DiaryProvider>();
+    await store.loadDailyBonus();
+    await store.loadTodayEntries();
+    if (!mounted) return;
+    if (store.dailyAnalysisLimitReached) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+          content: Text(loc.voiceJournalDailyLimitReached),
+          behavior: SnackBarBehavior.floating,
+        ));
+      return;
+    }
     await Navigator.of(context).push(
       MaterialPageRoute(
         fullscreenDialog: true,
@@ -188,7 +205,8 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16),
               const WeeklyInsightBlock(),
               const SizedBox(height: 16),
-              _buildComposer(palette, loc),
+              _buildComposer(palette, loc,
+                  micDisabled: store.dailyAnalysisLimitReached),
               if (entries.isNotEmpty) ...[
                 const SizedBox(height: 24),
                 Row(
@@ -248,7 +266,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildComposer(AppPalette palette, AppLocalizations loc) {
+  Widget _buildComposer(AppPalette palette, AppLocalizations loc,
+      {required bool micDisabled}) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -291,10 +310,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      tooltip: loc.voiceJournalMicEntryTooltip,
-                      onPressed: _isSaving ? null : _openVoiceJournal,
+                      tooltip: micDisabled
+                          ? loc.voiceJournalDailyLimitReached
+                          : loc.voiceJournalMicEntryTooltip,
+                      onPressed: _isSaving || micDisabled
+                          ? null
+                          : _openVoiceJournal,
                       icon: Icon(Icons.mic_rounded,
-                          color: palette.tabBarActive),
+                          color: micDisabled
+                              ? palette.textSecondary.withAlpha(0x66)
+                              : palette.tabBarActive),
                       visualDensity: VisualDensity.compact,
                       padding: EdgeInsets.zero,
                       constraints:
