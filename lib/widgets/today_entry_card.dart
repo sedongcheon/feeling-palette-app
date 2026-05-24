@@ -6,9 +6,11 @@ import '../constants/theme.dart';
 import '../l10n/app_localizations.dart';
 import '../models/diary.dart';
 import '../providers/diary_provider.dart';
+import '../screens/recommend_screen.dart';
 import '../services/ads_service.dart';
 import '../services/api_locale.dart';
 import '../services/emotion_analyzer.dart';
+import '../services/recommend_cache.dart';
 import 'emotion_result_card.dart';
 
 class TodayEntryCard extends StatefulWidget {
@@ -33,6 +35,7 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
   bool _isEditing = false;
   bool _isAnalyzing = false;
   bool _isSaving = false;
+  bool _isOpeningRecommend = false;
 
   @override
   void didUpdateWidget(covariant TodayEntryCard oldWidget) {
@@ -261,6 +264,11 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               child: EmotionResultCard(entry: entry),
             ),
+          if (hasAnalysis && !_isAnalyzing && !_isEditing)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              child: _buildRecommendButton(palette, loc),
+            ),
           if (!hasAnalysis && !_isAnalyzing && !_isEditing)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -340,6 +348,83 @@ class _TodayEntryCardState extends State<TodayEntryCard> {
         ),
       ),
     );
+  }
+
+  Widget _buildRecommendButton(AppPalette palette, AppLocalizations loc) {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        onPressed: _isOpeningRecommend ? null : _openRecommend,
+        icon: _isOpeningRecommend
+            ? SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: palette.tabBarActive,
+                ),
+              )
+            : Icon(Icons.card_giftcard_rounded,
+                size: 18, color: palette.tabBarActive),
+        label: Text(
+          loc.recommendCtaLabel,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: palette.tabBarActive,
+          ),
+        ),
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          side: BorderSide(color: palette.tabBarActive.withAlpha(0x66)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _openRecommend() async {
+    final loc = AppLocalizations.of(context);
+    final locale = apiLocaleOf(context);
+    final content = widget.entry.content;
+    // 세션 캐시 hit이면 광고 skip — 같은 일기에 대한 재진입은 이미 본 광고
+    // 한 번의 보상으로 자유롭게 다시 볼 수 있게 한다.
+    final cached =
+        RecommendCache.instance.get(content: content, locale: locale);
+    if (cached != null) {
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) =>
+              RecommendScreen(content: content, locale: locale),
+        ),
+      );
+      return;
+    }
+    setState(() => _isOpeningRecommend = true);
+    try {
+      final outcome = await AdsService.instance.showRewarded();
+      if (!mounted) return;
+      switch (outcome) {
+        case RewardedOutcome.earned:
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => RecommendScreen(
+                content: content,
+                locale: locale,
+              ),
+            ),
+          );
+        case RewardedOutcome.dismissedEarly:
+          _showSnack(loc.recommendAdDismissed);
+        case RewardedOutcome.notReady:
+        case RewardedOutcome.failed:
+          _showSnack(loc.recommendAdNotReady);
+      }
+    } finally {
+      if (mounted) setState(() => _isOpeningRecommend = false);
+    }
   }
 
   Future<void> _handleBonusUnlock() async {

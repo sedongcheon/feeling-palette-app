@@ -761,4 +761,49 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get voiceJournalBackHome => 'Back to home';
+
+  @override
+  String get recommendTitle => 'Picks for today';
+
+  @override
+  String get recommendLoading => 'Curating your picks...';
+
+  @override
+  String get recommendComfortHeader => 'A word for you';
+
+  @override
+  String get recommendMusicHeader => '🎵 Music';
+
+  @override
+  String get recommendBooksHeader => '📚 Books';
+
+  @override
+  String get recommendDisclaimerFallback =>
+      'These picks are AI-suggested, so some details may not be accurate.';
+
+  @override
+  String get recommendFailedTitle => 'We couldn\'t get your picks';
+
+  @override
+  String get recommendFailedBody => 'Please try again in a moment.';
+
+  @override
+  String get recommendRetry => 'Retry';
+
+  @override
+  String get recommendBackHome => 'Close';
+
+  @override
+  String get recommendCtaLabel => '🎁 Get music & book picks';
+
+  @override
+  String get recommendAdNotReady =>
+      'The ad isn\'t ready yet. Please try again in a moment.';
+
+  @override
+  String get recommendAdDismissed =>
+      'Please watch the ad through to the end to get picks.';
+
+  @override
+  String get recommendOpenLinkFailed => 'Couldn\'t open the search page.';
 }

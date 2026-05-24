@@ -1307,6 +1307,90 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'처음으로'**
   String get voiceJournalBackHome;
+
+  /// 추천 화면 AppBar 제목
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘을 위한 추천'**
+  String get recommendTitle;
+
+  /// 추천 화면 로딩 메시지
+  ///
+  /// In ko, this message translates to:
+  /// **'추천을 준비하고 있어요...'**
+  String get recommendLoading;
+
+  /// 위로 메시지 카드 헤더
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘의 한 마디'**
+  String get recommendComfortHeader;
+
+  /// 음악 추천 섹션 헤더
+  ///
+  /// In ko, this message translates to:
+  /// **'🎵 음악'**
+  String get recommendMusicHeader;
+
+  /// 책 추천 섹션 헤더
+  ///
+  /// In ko, this message translates to:
+  /// **'📚 책'**
+  String get recommendBooksHeader;
+
+  /// 서버 disclaimer가 빈 응답일 때 사용하는 fallback 텍스트
+  ///
+  /// In ko, this message translates to:
+  /// **'AI가 추천하는 콘텐츠라 일부 정보가 정확하지 않을 수 있어요.'**
+  String get recommendDisclaimerFallback;
+
+  /// 추천 호출 실패 상태 제목
+  ///
+  /// In ko, this message translates to:
+  /// **'추천을 가져오지 못했어요'**
+  String get recommendFailedTitle;
+
+  /// 추천 호출 실패 상태 본문
+  ///
+  /// In ko, this message translates to:
+  /// **'잠시 후 다시 시도해주세요.'**
+  String get recommendFailedBody;
+
+  /// 실패 상태 재시도 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 시도'**
+  String get recommendRetry;
+
+  /// 추천 화면 닫기 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'닫기'**
+  String get recommendBackHome;
+
+  /// 분석 결과 화면의 진입점 버튼 라벨 (텍스트/음성 공통)
+  ///
+  /// In ko, this message translates to:
+  /// **'🎁 음악·책 추천 받기'**
+  String get recommendCtaLabel;
+
+  /// rewarded 광고가 아직 로드 안 됨
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 준비 중이에요. 잠시 후 다시 시도해주세요.'**
+  String get recommendAdNotReady;
+
+  /// 사용자가 보상 임계점 전에 광고를 닫음
+  ///
+  /// In ko, this message translates to:
+  /// **'광고를 끝까지 봐야 추천을 받을 수 있어요.'**
+  String get recommendAdDismissed;
+
+  /// 추천 카드 탭 시 외부 검색 URL 열기 실패 SnackBar
+  ///
+  /// In ko, this message translates to:
+  /// **'검색 페이지를 열 수 없어요.'**
+  String get recommendOpenLinkFailed;
 }
 
 class _AppLocalizationsDelegate

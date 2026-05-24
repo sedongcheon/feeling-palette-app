@@ -27,6 +27,9 @@ class CalendarScreenState extends State<CalendarScreen> {
   void initState() {
     super.initState();
     _currentMonth = formatYearMonth(_focusedDay);
+    // 첫 진입 시 현재 달이 자동으로 보이고 오늘 날짜가 디폴트 선택되어
+    // 사용자가 바로 오늘 기록을 볼 수 있게 한다.
+    _selectedDay = _focusedDay;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<DiaryProvider>().loadMonthEntries(_currentMonth);
     });
@@ -37,6 +40,13 @@ class CalendarScreenState extends State<CalendarScreen> {
   /// provider's cache can't be left pointing at a different month.
   void refreshCurrentMonth() {
     if (_currentMonth.isEmpty) return;
+    // 사용자가 다른 탭 갔다 돌아왔을 때, 현재 보는 달이 오늘이 속한
+    // 달이고 아무 날도 선택 안 됐으면 오늘을 디폴트로 다시 잡아준다.
+    // 다른 달을 보고 있거나 이미 다른 날을 선택해뒀으면 그대로 둠.
+    final todayMonth = formatYearMonth(DateTime.now());
+    if (_selectedDay == null && _currentMonth == todayMonth) {
+      setState(() => _selectedDay = DateTime.now());
+    }
     context.read<DiaryProvider>().loadMonthEntries(_currentMonth);
   }
 

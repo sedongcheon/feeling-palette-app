@@ -31,6 +31,11 @@ class VoiceAnalyzeResponse {
   final double intensityScore; // 0.0–1.0
   final String empathyResponse;
   final String suggestedColorHex;
+  // 백엔드가 2026-05-23 머지에서 추가한 5색 팔레트
+  // (anchor / light / deep / pale / muted). `palette[0] == suggestedColorHex`
+  // 가 백엔드 보장이지만, 응답 누락 시 service가 `[suggestedColorHex]`로
+  // fallback해 항상 1개 이상이도록 만든다.
+  final List<String> palette;
   final List<String> themes;
   final List<Emotion> emotions;
 
@@ -39,6 +44,7 @@ class VoiceAnalyzeResponse {
     required this.intensityScore,
     required this.empathyResponse,
     required this.suggestedColorHex,
+    required this.palette,
     required this.themes,
     required this.emotions,
   });

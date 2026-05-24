@@ -740,4 +740,47 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get voiceJournalBackHome => '처음으로';
+
+  @override
+  String get recommendTitle => '오늘을 위한 추천';
+
+  @override
+  String get recommendLoading => '추천을 준비하고 있어요...';
+
+  @override
+  String get recommendComfortHeader => '오늘의 한 마디';
+
+  @override
+  String get recommendMusicHeader => '🎵 음악';
+
+  @override
+  String get recommendBooksHeader => '📚 책';
+
+  @override
+  String get recommendDisclaimerFallback =>
+      'AI가 추천하는 콘텐츠라 일부 정보가 정확하지 않을 수 있어요.';
+
+  @override
+  String get recommendFailedTitle => '추천을 가져오지 못했어요';
+
+  @override
+  String get recommendFailedBody => '잠시 후 다시 시도해주세요.';
+
+  @override
+  String get recommendRetry => '다시 시도';
+
+  @override
+  String get recommendBackHome => '닫기';
+
+  @override
+  String get recommendCtaLabel => '🎁 음악·책 추천 받기';
+
+  @override
+  String get recommendAdNotReady => '광고 준비 중이에요. 잠시 후 다시 시도해주세요.';
+
+  @override
+  String get recommendAdDismissed => '광고를 끝까지 봐야 추천을 받을 수 있어요.';
+
+  @override
+  String get recommendOpenLinkFailed => '검색 페이지를 열 수 없어요.';
 }

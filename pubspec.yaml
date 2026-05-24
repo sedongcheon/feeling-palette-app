@@ -1,7 +1,7 @@
 name: feeling_palette
 description: "AI 감정일기 앱 - Feeling Palette"
 publish_to: 'none'
-version: 1.0.4+18
+version: 1.0.5+19
 
 environment:
   sdk: ^3.11.4
@@ -39,18 +39,36 @@ dependencies:
   # 따로 두지 않는다. 오디오 파일 보관은 spec out of scope.
   speech_to_text: ^7.0.0
   permission_handler: ^11.3.1
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.7
 
 flutter:
   uses-material-design: true
   generate: true
   assets:
     - assets/icon/
+    - assets/splash/
+
+# 부트 시 흰 화면 노출을 막기 위한 네이티브 스플래시. 라이트/다크 모두 앱
+# 팔레트의 background에 맞춤. Android 12+는 별도 섹션이 필요해 동일 색상으로
+# 미러링. `dart run flutter_native_splash:create` 한 번 실행해서 ios
+# LaunchScreen + android drawable이 생성된다.
+flutter_native_splash:
+  color: "#FAFAF8"
+  image: assets/splash/icon.png
+  color_dark: "#1A1A2E"
+  image_dark: assets/splash/icon.png
+  android_12:
+    color: "#FAFAF8"
+    image: assets/splash/icon.png
+    color_dark: "#1A1A2E"
+    image_dark: assets/splash/icon.png
 
 flutter_launcher_icons:
   android: "ic_launcher"

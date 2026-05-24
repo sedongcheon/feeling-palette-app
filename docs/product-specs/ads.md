@@ -3,6 +3,8 @@ title: Ads — product spec
 owner: harness-engineer
 status: living
 last_verified: 2026-05-23
+related:
+  - recommend.md
 domain: ads
 ---
 
@@ -13,7 +15,7 @@ domain: ads
 ## User stories
 
 1. 무료 사용자가 타임라인을 스크롤하면 N개 일기마다 inline 광고 1개를 본다.
-2. 무료 사용자는 AI 분석을 3회(`kInterstitialEveryNAnalyses`) 누적할 때마다
+2. 무료 사용자는 AI 분석을 5회(`kInterstitialEveryNAnalyses`) 누적할 때마다
    전면(interstitial) 광고를 1번 본다. 단 직전 노출 후 90초
    (`kInterstitialCooldown`) 안엔 다시 안 뜬다. 텍스트 일기와 음성 일기는
    같은 카운터를 공유한다.
@@ -21,6 +23,9 @@ domain: ads
    봐서 보너스 분석을 받을 수 있다 (최대 5건/일).
 4. 프리미엄 사용자는 배너/전면 광고를 보지 않는다 (보상 광고는 계속 사용
    가능).
+5. 분석을 받은 일기에 대해 사용자가 결과 화면에서 "🎁 음악·책 추천 받기"를
+   누르면 보상 광고를 보고 위로 메시지 + 음악 + 책 추천을 받는다 (도메인:
+   [recommend](recommend.md)).
 
 ## Out of scope
 
@@ -51,10 +56,11 @@ domain: ads
 
 | 항목 | 값 | 근거 |
 |---|---|---|
-| 주기 | AI 분석 3회마다 1번 시도 | `kInterstitialEveryNAnalyses` |
+| 주기 | AI 분석 5회마다 1번 시도 | `kInterstitialEveryNAnalyses` |
 | 쿨다운 | 직전 노출 후 90초 안엔 skip | `kInterstitialCooldown` |
 | 카운터 영속화 | `SharedPreferences['ads_analysis_count']` (lifetime 누적) | — |
 | 보상 광고 직후 분석 | 카운트도 안 늘리고 광고도 안 뜸 | `_skipNextAnalysisInterstitial` |
+| 보상 광고 시청 후 차단 | 5분 동안 interstitial 시간 기반 차단 | `kInterstitialBlockAfterRewarded` / `_blockInterstitialUntil` |
 | Preload | 1개 사전 로드, dismiss 후 자동 재 preload | `preloadInterstitial` |
 | Prerequisite | UMP consent + SDK initialized + 비-프리미엄 | `initialize` / `setAdFree` |
 
@@ -65,6 +71,20 @@ domain: ads
 
 새 도메인이 AI 분석을 추가하면 동일 패턴으로 `onAnalysisCompleted()`를
 호출해 카운터에 합류시킨다.
+
+## 보상 광고 진입점
+
+같은 rewarded ad 자원(`AdsService.showRewarded()`)을 여러 진입점이 공유한다.
+각 진입점은 `earned` 콜백 후의 후속 동작만 다르고, 광고 자체는 동일.
+
+| 진입점 | 화면 / 위치 | earned 후 동작 |
+|---|---|---|
+| 보너스 분석 | HomeScreen quota 배지 / `today_entry_card` | `DiaryProvider._grantBonus` — 일일 분석 한도 +1 (최대 5건/일) |
+| Weekly insight unlock | `weekly_insight_block` | 주간 인사이트 1회 생성 권한 |
+| 음악·책 추천 | 분석 결과 화면 (텍스트 `today_entry_card` + 음성 `voice_analysis_result_screen`) | `RecommendService.recommend(content=일기 본문)` → `RecommendScreen` push |
+
+추천 흐름은 **분석으로 카운트되지 않는다** — `onAnalysisCompleted` 호출
+없음, quota 영향 없음.
 
 ## Non-functional
 

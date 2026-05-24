@@ -21,6 +21,7 @@ _(없음.)_
 | 000 | [bootstrap-harness](active/000-bootstrap-harness.md) | 2026-05-23 | harness engineering 1단계 도입 완료 (docs/agents/hooks). 코드 미수정, flutter analyze clean. |
 | 001 | [rewarded-ad-stuck-state](active/001-rewarded-ad-stuck-state.md) | 2026-05-23 | Phase A+B 적용 — RewardedOutcome enum + 메시지 분리. Phase C/D는 회귀 발견 후 revert (plan 002 분리). v1.0.3+17. iPhone 실기기 보상 시청 확인. |
 | 002 | [voice-journal](completed/002-voice-journal.md) | 2026-05-23 | 음성 일기 + AI 코칭 플로우 추가. DB v6 source 컬럼, 기존 /api/diary/analyze 매핑, daily quota 텍스트와 공유. v1.0.4+18. iPhone 실기기 happy path + quota 차단 검증 완료. |
+| 003 | [recommend-and-palette](completed/003-recommend-and-palette.md) | 2026-05-24 | `/api/diary/recommend` 신규 통합 (광고 → 음악 + 책 추천 + disclaimer) + analyze `palette` 5색 흡수 + 세션 캐시. 추천 카드 탭 → YouTube/Google 외부 검색. 부수 patch: 캘린더 오늘 디폴트, 보너스 +1→+3, interstitial 3→5회 + rewarded 후 5분 차단, native splash 추가. v1.0.5+19. iPhone + Galaxy S22 검증. |
 
 (_000, 001은 여전히 active/ 디렉토리에 있음 — 별도 정리 plan에서 git mv._
 _002는 본 commit에서 completed/로 이동됨._)

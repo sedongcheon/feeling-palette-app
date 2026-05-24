@@ -12,12 +12,17 @@ class AnalysisResult {
   final EmotionScores emotions;
   final String comment;
   final String color;
+  // 백엔드가 2026-05-23 머지에서 추가한 5색 팔레트
+  // (anchor / light / deep / pale / muted). 응답 누락 시
+  // `[color]`로 fallback해 항상 1개 이상.
+  final List<String> palette;
 
   const AnalysisResult({
     required this.primaryEmotion,
     required this.emotions,
     required this.comment,
     required this.color,
+    required this.palette,
   });
 }
 
@@ -56,11 +61,19 @@ class EmotionAnalyzer {
     final comment = parsed['comment'] is String ? parsed['comment'] as String : '';
     final color = emotionInfoOf(primary).hex;
 
+    final paletteRaw = parsed['palette'];
+    final paletteList = paletteRaw is List
+        ? paletteRaw.whereType<String>().toList()
+        : const <String>[];
+    final palette =
+        paletteList.isEmpty ? <String>[color] : paletteList;
+
     return AnalysisResult(
       primaryEmotion: primary,
       emotions: emotions,
       comment: comment,
       color: color,
+      palette: palette,
     );
   }
 }

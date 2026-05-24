@@ -43,12 +43,16 @@ class AdsService extends ChangeNotifier {
   AdsService._();
   static final AdsService instance = AdsService._();
 
-  // Throttle config — 분석 3번 누적마다 광고. 90초 쿨다운으로 연쇄 방지.
+  // Throttle config — 분석 5번 누적마다 광고. 90초 쿨다운으로 연쇄 방지.
   // 카운터는 SharedPreferences에 영속화되어 세션을 넘어 누적된다.
   // 보상 광고 직후의 분석은 카운터에서 제외해(_skipNextAnalysisInterstitial)
-  // 한 번에 두 광고가 연달아 뜨는 일을 방지한다.
-  static const int kInterstitialEveryNAnalyses = 3;
+  // 한 번에 두 광고가 연달아 뜨는 일을 방지하고, rewarded 광고가 끝난 후
+  // [kInterstitialBlockAfterRewarded] 동안은 시간 기반으로도 interstitial을
+  // 차단해 사용자가 빠르게 여러 번 분석할 때도 두 광고가 연달아 뜨지 않게
+  // 한다.
+  static const int kInterstitialEveryNAnalyses = 5;
   static const Duration kInterstitialCooldown = Duration(seconds: 90);
+  static const Duration kInterstitialBlockAfterRewarded = Duration(minutes: 5);
   static const String _kAnalysisCountKey = 'ads_analysis_count';
 
   bool _initialized = false;
@@ -65,6 +69,12 @@ class AdsService extends ChangeNotifier {
   // 직전에 보상 광고를 봐서 보너스 분석을 받은 사용자에게는 다음 분석 1회를
   // 자동 광고 카운터에서 제외한다. 보상 광고 + 전면 광고가 연달아 뜨는 부담 방지.
   bool _skipNextAnalysisInterstitial = false;
+  // 보상 광고가 끝난 시점 기준 [kInterstitialBlockAfterRewarded] 동안은
+  // 시간 기반으로도 interstitial을 차단한다. quota 채워서 보너스 광고를 본
+  // 사용자가 그 직후 보너스 분석을 여러 번 빠르게 돌릴 때, "다음 1회만 제외"
+  // 규칙만으로는 두 번째 보너스 분석부터 다시 interstitial이 뜨는 케이스를
+  // 방지한다.
+  DateTime? _blockInterstitialUntil;
 
   bool get isInitialized => _initialized;
   bool get adFree => _adFree;
@@ -168,6 +178,10 @@ class AdsService extends ChangeNotifier {
   /// Returns `true` when the ad was shown. Preloads the next one on dismiss.
   Future<bool> maybeShowInterstitial() async {
     if (_adFree || !_initialized) return false;
+    final blockedUntil = _blockInterstitialUntil;
+    if (blockedUntil != null && DateTime.now().isBefore(blockedUntil)) {
+      return false;
+    }
     final last = _lastInterstitialShownAt;
     if (last != null &&
         DateTime.now().difference(last) < kInterstitialCooldown) {
@@ -283,9 +297,12 @@ class AdsService extends ChangeNotifier {
     await ad.show(
       onUserEarnedReward: (ad, reward) {
         earned = true;
-        // 보상 받음 → 다음 분석 1회는 자동 광고 카운터에서 제외해
-        // 보상 광고와 전면 광고가 연달아 뜨는 부담을 막는다.
+        // 보상 받음 → 다음 분석 1회는 자동 광고 카운터에서 제외 +
+        // [kInterstitialBlockAfterRewarded] 동안은 시간 기반으로도
+        // interstitial 차단해 두 광고 연속 노출을 막는다.
         _skipNextAnalysisInterstitial = true;
+        _blockInterstitialUntil =
+            DateTime.now().add(kInterstitialBlockAfterRewarded);
       },
     );
     return completer.future;

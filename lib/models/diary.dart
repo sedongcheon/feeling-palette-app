@@ -108,7 +108,7 @@ const int kMaxDailyAnalyzedEntries = 3;
 
 // Rewarded-ad bonus unlock policy.
 // Absolute daily cap = kMaxDailyAnalyzedEntries + (kRewardBonusPerAd * kRewardMaxAdsPerDay).
-const int kRewardBonusPerAd = 1;
+const int kRewardBonusPerAd = 3;
 const int kRewardMaxAdsPerDay = 5;
 
 // Monthly AI summary quota — scoped per month key (YYYY-MM), not per day.

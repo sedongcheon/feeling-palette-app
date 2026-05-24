@@ -23,6 +23,7 @@ implementer agent는 exec-plan을 열기 전 이 스펙을 읽는다.
 | auth / app_lock    | [auth-app-lock.md](auth-app-lock.md)                | living  |
 | stats              | [stats.md](stats.md)                                | living  |
 | voice_journal      | [voice-journal.md](voice-journal.md)                | living  |
+| recommend          | [recommend.md](recommend.md)                        | living  |
 
 ## 저자 규칙
 

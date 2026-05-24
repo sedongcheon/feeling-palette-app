@@ -140,6 +140,15 @@ class VoiceJournalService {
         parsed['comment'] is String ? parsed['comment'] as String : '';
     final color = emotionInfoOf(dominant).hex;
 
+    // 백엔드 신규 `palette` (HEX 5개). 누락/형 불일치 시 anchor 1개로
+    // fallback해 caller가 항상 비어있지 않은 리스트를 받게 한다.
+    final paletteRaw = parsed['palette'];
+    final paletteList = paletteRaw is List
+        ? paletteRaw.whereType<String>().toList()
+        : const <String>[];
+    final palette =
+        paletteList.isEmpty ? <String>[color] : paletteList;
+
     // 기존 엔드포인트는 themes를 주지 않는다. 신규 엔드포인트로 swap 시
     // 채워짐.
     final themes = <String>[];
@@ -158,6 +167,7 @@ class VoiceJournalService {
       intensityScore: intensity,
       empathyResponse: comment,
       suggestedColorHex: color,
+      palette: palette,
       themes: themes,
       emotions: emotions,
     );

@@ -8,6 +8,9 @@ import '../models/diary.dart';
 import '../models/voice_journal.dart';
 import '../providers/diary_provider.dart';
 import '../services/ads_service.dart';
+import '../services/api_locale.dart';
+import '../services/recommend_cache.dart';
+import 'recommend_screen.dart';
 
 /// 음성 일기 분석 결과 화면. dominant emotion + 색상 원 + 공감 메시지 +
 /// 테마 칩을 보여주고, "기록 보관"으로 [DiaryEntry]를 저장(source: voice)
@@ -31,6 +34,7 @@ class _VoiceAnalysisResultScreenState
     extends State<VoiceAnalysisResultScreen> {
   bool _saving = false;
   bool _saved = false;
+  bool _isOpeningRecommend = false;
 
   Future<void> _saveAndExit() async {
     if (_saving || _saved) return;
@@ -75,6 +79,57 @@ class _VoiceAnalysisResultScreenState
           content: Text(AppLocalizations.of(context).voiceJournalAnalyzeFailed),
           behavior: SnackBarBehavior.floating,
         ));
+    }
+  }
+
+  Future<void> _openRecommend() async {
+    final loc = AppLocalizations.of(context);
+    final locale = apiLocaleOf(context);
+    final content = widget.originalContent;
+    // 세션 캐시 hit이면 광고 skip — text 진입점과 동일 정책.
+    final cached =
+        RecommendCache.instance.get(content: content, locale: locale);
+    if (cached != null) {
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) =>
+              RecommendScreen(content: content, locale: locale),
+        ),
+      );
+      return;
+    }
+    setState(() => _isOpeningRecommend = true);
+    try {
+      final outcome = await AdsService.instance.showRewarded();
+      if (!mounted) return;
+      switch (outcome) {
+        case RewardedOutcome.earned:
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => RecommendScreen(
+                content: content,
+                locale: locale,
+              ),
+            ),
+          );
+        case RewardedOutcome.dismissedEarly:
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+              content: Text(loc.recommendAdDismissed),
+              behavior: SnackBarBehavior.floating,
+            ));
+        case RewardedOutcome.notReady:
+        case RewardedOutcome.failed:
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+              content: Text(loc.recommendAdNotReady),
+              behavior: SnackBarBehavior.floating,
+            ));
+      }
+    } finally {
+      if (mounted) setState(() => _isOpeningRecommend = false);
     }
   }
 
@@ -258,6 +313,42 @@ class _VoiceAnalysisResultScreenState
                 const SizedBox(height: 24),
               ],
               const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: _saving || _isOpeningRecommend
+                      ? null
+                      : _openRecommend,
+                  icon: _isOpeningRecommend
+                      ? SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: palette.tabBarActive,
+                          ),
+                        )
+                      : Icon(Icons.card_giftcard_rounded,
+                          size: 18, color: palette.tabBarActive),
+                  label: Text(
+                    loc.recommendCtaLabel,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: palette.tabBarActive,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    side: BorderSide(
+                        color: palette.tabBarActive.withAlpha(0x66)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
               Row(
                 children: [
                   Expanded(

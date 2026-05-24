@@ -266,5 +266,20 @@
   },
 
   "voiceJournalKeepAsEntry": "Keep as entry",
-  "voiceJournalBackHome": "Back to home"
+  "voiceJournalBackHome": "Back to home",
+
+  "recommendTitle": "Picks for today",
+  "recommendLoading": "Curating your picks...",
+  "recommendComfortHeader": "A word for you",
+  "recommendMusicHeader": "🎵 Music",
+  "recommendBooksHeader": "📚 Books",
+  "recommendDisclaimerFallback": "These picks are AI-suggested, so some details may not be accurate.",
+  "recommendFailedTitle": "We couldn't get your picks",
+  "recommendFailedBody": "Please try again in a moment.",
+  "recommendRetry": "Retry",
+  "recommendBackHome": "Close",
+  "recommendCtaLabel": "🎁 Get music & book picks",
+  "recommendAdNotReady": "The ad isn't ready yet. Please try again in a moment.",
+  "recommendAdDismissed": "Please watch the ad through to the end to get picks.",
+  "recommendOpenLinkFailed": "Couldn't open the search page."
 }
